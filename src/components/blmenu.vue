@@ -1,11 +1,9 @@
 <template>
 	<div>
 		<div class="mdui-appbar mdui-appbar-inset">
-			<div class="mdui-toolbar mdui-color-white mdui-appbar-inset">
-
-				<a href="javascript:;" class="mdui-btn mdui-btn-icon " mdui-drawer="{target: '#drawer','overlay': false,
-					'swipe': true}"><i class="
-				mdui-icon material-icons">menu</i></a>
+			<div class="mdui-toolbar ">
+				<a href="javascript:;" class="mdui-btn mdui-btn-icon " mdui-drawer="{target: '#drawer','overlay': true,
+					'swipe': true}"><i class="mdui-icon material-icons">menu</i></a>
 				<span class="mdui-typo-title" id="menutitle">散<span id='rotate'>の</span>華</span>
 				<div class="mdui-toolbar-spacer"></div>
 				<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
@@ -15,16 +13,16 @@
 						class="mdui-icon material-icons">more_vert</i></a>
 			</div>
 		</div>
-		<div id="drawer" class="mdui-drawer-close mdui-drawer ">
+		<div id="drawer" class="mdui-drawer-close mdui-drawer mdui-color-white">
 			<drawercard :bgsrc="require('../assets/dcbg.jpg')"></drawercard>
 			<ul class="mdui-list">
 				<li class="mdui-list-item mdui-ripple">
-					<i class="mdui-list-item-icon mdui-icon material-icons">move_to_inbox</i>
-					<div class="mdui-list-item-content">Inbox</div>
+					<i class="mdui-list-item-icon mdui-icon material-icons">sort</i>
+					<div class="mdui-list-item-content">归档</div>
 				</li>
 				<li class="mdui-list-item mdui-ripple">
-					<i class="mdui-list-item-icon mdui-icon material-icons">star</i>
-					<div class="mdui-list-item-content">Starred</div>
+					<i class="mdui-list-item-icon mdui-icon material-icons">store</i>
+					<div class="mdui-list-item-content">资源站</div>
 				</li>
 				<li class="mdui-list-item mdui-ripple">
 					<i class="mdui-list-item-icon mdui-icon material-icons">send</i>
@@ -101,12 +99,12 @@
 	}
 
 	#menutitle:hover span {
-		transition-duration: 2s;
 		transform: rotate(360deg);
 		color: orange;
 	}
 
 	#rotate {
+		transition-duration: 2s;
 		display: inline-block;
 	}
 </style>

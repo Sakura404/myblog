@@ -19,12 +19,19 @@
 		},
 		methods: {
 			modchange() {
+				var bodyclass = document.getElementsByTagName("body")[0].classList;
+				var drawerclass = document.getElementById("drawer").classList;
 				if (this.check != 'day') {
-					document.getElementsByTagName("body")[0].classList.add("mdui-theme-layout-dark");
-					document.getElementsByTagName("body")[0].classList.remove("mdui-theme-layout-light")
+					bodyclass.add("mdui-theme-layout-dark")
+					bodyclass.remove("mdui-theme-layout-light")
+					drawerclass.add("mdui-theme-layout-dark")
+					drawerclass.remove("mdui-color-white")
+
 				} else {
-					document.getElementsByTagName("body")[0].classList.add("mdui-theme-layout-light");
-					document.getElementsByTagName("body")[0].classList.remove("mdui-theme-layout-dark")
+					bodyclass.add("mdui-theme-layout-light")
+					bodyclass.remove("mdui-theme-layout-dark")
+					drawerclass.add("mdui-color-white")
+					drawerclass.remove("mdui-theme-layout-dark")
 
 				}
 			}

@@ -13,7 +13,6 @@
 					class="mdui-ripple mdui-btn mdui-color-orange-100"
 					@click="addformula(buttonkey)">{{buttonkey}}</button></div>
 		</div>
-
 	</div>
 </template>
 
