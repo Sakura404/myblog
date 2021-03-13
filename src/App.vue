@@ -1,29 +1,22 @@
 <template>
 	<div id="app">
 		<blmenu></blmenu>
-		<br />
 		<headinfo></headinfo>
-		<br />
-		<login></login>
-		<br />
-		<counter></counter>
-		<br />
+		<bangumi></bangumi>
 	</div>
 </template>
 
 <script>
-	import login from './components/login.vue';
-	import Counter from './components/counter.vue'
 	import blmenu from './components/blmenu.vue'
 	import headinfo from'./components/headinfo.vue'
+	import bangumi from './components/bangumi.vue'
 	import 'mdui';
 	export default {
 		name: 'App',
 		components: {
-			Counter,
-			login,
 			blmenu,
 			headinfo,
+			bangumi,
 		},
 		methods: {
 			nameless() {

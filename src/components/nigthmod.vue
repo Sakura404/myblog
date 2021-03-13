@@ -20,7 +20,7 @@
 		methods: {
 			modchange() {
 				var bodyclass = document.getElementsByTagName("body")[0].classList;
-				var drawerclass = document.getElementById("drawer").classList;
+				var drawerclass = document.getElementById("app-menu").classList;
 				if (this.check != 'day') {
 					bodyclass.add("mdui-theme-layout-dark")
 					bodyclass.remove("mdui-theme-layout-light")
