@@ -51,7 +51,6 @@
 				.then((
 					response) => {
 					this.sentence = response.data.newslist[0].word;
-
 				})
 
 		}

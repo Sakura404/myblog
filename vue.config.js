@@ -2,15 +2,19 @@ module.exports = {
 	publicPath: './',
 	devServer: {
 		port: 8888,
-		proxy: {
-			'/myapi': {
-				target: 'https://api.bilibili.com',
-				changeOrigin: true,
-				ws: true,
-				pathRewrite: {
-					'^/myapi': ''
-				}
-			}
+	},
+	pages: {
+		homepage: {
+			entry: "src/index/main.js",
+			template: "public/index.html",
+			filename: "index.html",
+			title: "散の华",
 		},
+		management: {
+			entry: "src/management/main.js",
+			template: "public/management.html",
+			filename: "management.html",
+			title: "博客后台管理",
+		}
 	}
 }
