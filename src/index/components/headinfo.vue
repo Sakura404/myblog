@@ -1,10 +1,18 @@
 <template>
-	<div id="headinfo" :style="headinfoheight">
-		<div id="ones">
-			{{sentence}}
-		</div>
-		<div @click="downbtn" id="downbtn"><i class="mdui-icon material-icons">keyboard_arrow_down</i></div>
-	</div>
+  <div
+    id="headinfo"
+    :style="headinfoheight"
+  >
+    <div id="ones">
+      {{ sentence }}
+    </div>
+    <div
+      id="downbtn"
+      @click="downbtn"
+    >
+      <i class="mdui-icon material-icons">keyboard_arrow_down</i>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -29,16 +37,11 @@
 		}, 1)
 	}
 	export default {
-		name: 'headinfo',
+		name: 'Headinfo',
 		data() {
 			return {
 				sentence: 123,
 				headinfoheight: "height:" + document.documentElement.clientHeight + "px"
-			}
-		},
-		methods: {
-			downbtn() {
-				scrollAnimation(document.documentElement.scrollTop, document.documentElement.clientHeight -document.getElementsByClassName("mdui-appbar")[0].offsetHeight);
 			}
 		},
 		mounted: function() {
@@ -53,6 +56,11 @@
 					this.sentence = response.data.newslist[0].word;
 				})
 
+		},
+		methods: {
+			downbtn() {
+				scrollAnimation(document.documentElement.scrollTop, document.documentElement.clientHeight -document.getElementsByClassName("mdui-appbar")[0].offsetHeight);
+			}
 		}
 
 	}

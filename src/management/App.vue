@@ -1,14 +1,23 @@
 <template>
-	<a href="./index.html">
-			hello world
-	</a>
+  <v-app>
+    <v-main>
+      <HelloWorld />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-	export default {
-		name: "App"
-	}
-</script>
+import HelloWorld from './components/HelloWorld';
 
-<style>
-</style>
+export default {
+  name: 'App',
+
+  components: {
+    HelloWorld,
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>

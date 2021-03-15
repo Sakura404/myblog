@@ -1,9 +1,10 @@
 module.exports = {
-	publicPath: './',
-	devServer: {
+    publicPath: './',
+
+    devServer: {
 		port: 8888,
 	},
-	pages: {
+pages: {
 		homepage: {
 			entry: "src/index/main.js",
 			template: "public/index.html",
@@ -16,5 +17,8 @@ module.exports = {
 			filename: "management.html",
 			title: "博客后台管理",
 		}
-	}
+	},
+    transpileDependencies: [
+      'vuetify'
+    ]
 }

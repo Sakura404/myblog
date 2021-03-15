@@ -1,25 +1,48 @@
 <template>
-	<div id="counter" class="mdui-hidden-xs mdui-container mdui-color-blue-50">
-		<div class="mdui-container mdui-color-amber" id="output">
-			<div id="formula">
-				<p class="textright">{{formula}}</p>
-			</div>
-			<div id="result">
-				<p class="textright">{{result}}</p>
-			</div>
-		</div>
-		<div class="mdui-row-xs-4" v-for="(buttonli,liindex) in butarr" :key='liindex'>
-			<div class="mdui-col" v-for="(buttonkey,keyindex) in buttonli" :key='keyindex'><button
-					class="mdui-ripple mdui-btn mdui-color-orange-100"
-					@click="addformula(buttonkey)">{{buttonkey}}</button></div>
-		</div>
-	</div>
+  <div
+    id="counter"
+    class="mdui-hidden-xs mdui-container mdui-color-blue-50"
+  >
+    <div
+      id="output"
+      class="mdui-container mdui-color-amber"
+    >
+      <div id="formula">
+        <p class="textright">
+          {{ formula }}
+        </p>
+      </div>
+      <div id="result">
+        <p class="textright">
+          {{ result }}
+        </p>
+      </div>
+    </div>
+    <div
+      v-for="(buttonli,liindex) in butarr"
+      :key="liindex"
+      class="mdui-row-xs-4"
+    >
+      <div
+        v-for="(buttonkey,keyindex) in buttonli"
+        :key="keyindex"
+        class="mdui-col"
+      >
+        <button
+          class="mdui-ripple mdui-btn mdui-color-orange-100"
+          @click="addformula(buttonkey)"
+        >
+          {{ buttonkey }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 	const execMathExpress=require('exec-mathexpress');
 	export default {
-		name: 'counter',
+		name: 'Counter',
 		data() {
 			return {
 				result: 0,

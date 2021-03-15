@@ -1,9 +1,9 @@
 <template>
-	<div id="app">
-		<blmenu></blmenu>
-		<headinfo></headinfo>
-		<bangumi></bangumi>
-	</div>
+  <div id="app">
+    <blmenu />
+    <headinfo />
+    <bangumi />
+  </div>
 </template>
 
 <script>
@@ -18,13 +18,13 @@
 			headinfo,
 			bangumi,
 		},
+		data() {
+			return {}
+		},
 		methods: {
 			nameless() {
 				console.log("hello world");
 			},
-		},
-		data() {
-			return {}
 		},
 	}
 </script>

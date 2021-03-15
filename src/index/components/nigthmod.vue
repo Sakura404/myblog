@@ -1,17 +1,26 @@
 <template>
-	<li class="mdui-list-item mdui-ripple">
-		<i class="mdui-list-item-icon mdui-icon material-icons">brightness_2</i>
-		<div class="mdui-list-item-content">夜间模式</div>
-		<label class="mdui-switch">
-			<input type="checkbox" @change="modchange()" v-model="check" true-value="nigth" false-value="day" checked />
-			<i class="mdui-switch-icon"></i>
-		</label>
-	</li>
+  <li class="mdui-list-item mdui-ripple">
+    <i class="mdui-list-item-icon mdui-icon material-icons">brightness_2</i>
+    <div class="mdui-list-item-content">
+      夜间模式
+    </div>
+    <label class="mdui-switch">
+      <input
+        v-model="check"
+        type="checkbox"
+        true-value="nigth"
+        false-value="day"
+        checked
+        @change="modchange()"
+      >
+      <i class="mdui-switch-icon" />
+    </label>
+  </li>
 </template>
 
 <script>
 	export default {
-		name: 'nightmod',
+		name: 'Nightmod',
 		data() {
 			return {
 				check: 'day'
