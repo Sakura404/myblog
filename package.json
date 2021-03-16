@@ -16,10 +16,11 @@
     "exec-mathexpress": "^1.0.15",
     "mdui": "^1.0.2",
     "roboto-fontface": "*",
-    "vue": "^3.0.7",
+    "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
     "vue-meta": "^2.4.0",
-    "vuetify": "^3.0.0-alpha.0"
+    "vue-template-compiler": "^2.6.12",
+    "vuetify": "^2.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.11",

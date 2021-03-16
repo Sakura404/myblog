@@ -18,7 +18,7 @@ pages: {
 			title: "博客后台管理",
 		}
 	},
-    transpileDependencies: [
-      'vuetify'
-    ]
+  transpileDependencies: [
+    'vuetify'
+  ]
 }
