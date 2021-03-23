@@ -21,7 +21,7 @@
 				<v-divider></v-divider>
 
 				<v-list>
-					<v-list-item v-for="[icon, text] in links" :key="icon" link>
+					<v-list-item v-for="[icon, text,link] in links" :href="link" :key="icon" link>
 						<v-list-item-icon>
 							<v-icon>{{ icon }}</v-icon>
 						</v-list-item-icon>
@@ -42,13 +42,13 @@
 	import post from './post.vue'
 	export default {
 		components: {
-			post
+			post,
 		},
 		data: () => ({
 			cards: ['Today', 'Yesterday'],
 			drawer: null,
 			links: [
-				['mdi-home', '首页'],
+				['mdi-home', '首页', './index.html'],
 				['mdi-post-outline', '文章管理'],
 				['mdi-comment', '评论管理'],
 				['mdi-delete', '用户管理'],
