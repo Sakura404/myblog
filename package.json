@@ -9,17 +9,19 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "vue-axios": "^3.2.4",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.1",
+    "mdui": "^1.0.2",
     "vue": "^2.6.11",
-    "vuetify": "^2.4.0",
-    "mdui": "^1.0.2"
+    "vue-axios": "^3.2.4",
+    "vue-router": "^3.5.1",
+    "vuetify": "^2.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.12",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

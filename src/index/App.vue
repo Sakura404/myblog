@@ -2,6 +2,7 @@
   <div id="app">
     <blmenu />
     <headinfo />
+    <login/>
     <bangumi />
   </div>
 </template>
@@ -10,6 +11,7 @@
 	import blmenu from './components/blmenu.vue'
 	import headinfo from'./components/headinfo.vue'
 	import bangumi from './components/bangumi.vue'
+    import login from './components/login.vue'
 	import 'mdui';
 	export default {
 		name: 'App',
@@ -17,6 +19,7 @@
 			blmenu,
 			headinfo,
 			bangumi,
+            login
 		},
 		data() {
 			return {}

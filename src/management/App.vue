@@ -1,21 +1,25 @@
 <template>
-
-      <HelloWorld/>
-
+	<div>
+		<navm>
+			<keep-alive>
+				<router-view></router-view>
+				</keep-alive >
+		</navm>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+	import navm from './components/navm.vue';
+	export default {
+		name: 'App',
 
-export default {
-  name: 'App',
+		components: {
+			navm,
 
-  components: {
-    HelloWorld,
-  },
+		},
 
-  data: () => ({
-    //
-  }),
-};
+		data: () => ({
+			//
+		}),
+	};
 </script>
