@@ -1,126 +1,42 @@
 <template>
-  <div>
-    <div class="mdui-appbar mdui-appbar-fixed ">
-      <div class="mdui-toolbar mdui-color-white">
-        <a
-          href="javascript:;"
-          class=" mdui-hidden-md-up mdui-btn mdui-btn-icon"
-          mdui-drawer="{target: '#app-menu','overlay': true,
-					'swipe': true}"
-        ><i class="mdui-icon material-icons">menu</i></a>
-        <span
-          id="menutitle"
-          class="mdui-typo-title"
-        >散<span id="rotate">の</span>華</span>
-        <div class="mdui-toolbar-spacer" />
-        <div
-          id="pc-menu"
-          class="mdui-hidden-sm-down "
-        >
-          <ul class="mdui-list ">
-            <a href="management.html"><li class="mdui-list-item mdui-ripple">
-              <i class="mdui-list-item-icon mdui-icon material-icons">sort</i>
-              <div class="mdui-list-item-content">归档</div>
-            </li></a>
-            <li class="mdui-list-item mdui-ripple">
-              <i class="mdui-list-item-icon mdui-icon material-icons">store</i>
-              <div class="mdui-list-item-content">
-                资源站
-              </div>
-            </li>
-            <li class="mdui-list-item mdui-ripple">
-              <i class="mdui-list-item-icon mdui-icon material-icons">link</i>
-              <div class="mdui-list-item-content">
-                友情链接
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="mdui-toolbar-spacer" />
-        <a
-          href="javascript:;"
-          class="mdui-btn mdui-btn-icon"
-        ><i class="mdui-icon material-icons">search</i></a>
-        <a
-          href="javascript:;"
-          class="mdui-btn mdui-btn-icon"
-        ><i
-          class="mdui-icon material-icons"
-        >refresh</i></a>
-        <a
-          href="javascript:;"
-          class="mdui-btn mdui-btn-icon"
-        ><i
-          class="mdui-icon material-icons"
-        >more_vert</i></a>
-      </div>
-    </div>
-    <div
-      id="app-menu"
-      class="mdui-drawer-close mdui-hidden-md-up mdui-drawer mdui-color-white "
-    >
-      <drawercard :bgsrc="require('../assets/dcbg.jpg')" />
-      <ul class="mdui-list">
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">sort</i>
-          <div class="mdui-list-item-content">
-            归档
-          </div>
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">store</i>
-          <div class="mdui-list-item-content">
-            资源站
-          </div>
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">link</i>
-          <div class="mdui-list-item-content">
-            友情链接
-          </div>
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">drafts</i>
-          <div class="mdui-list-item-content">
-            Drafts
-          </div>
-        </li>
-        <li class="mdui-subheader">
-          Subheader
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">email</i>
-          <div class="mdui-list-item-content">
-            All mail
-          </div>
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">delete</i>
-          <div class="mdui-list-item-content">
-            Trash
-          </div>
-        </li>
-        <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
-          <div class="mdui-list-item-content">
-            Spam
-          </div>
-        </li>
-        <nightmod />
-      </ul>
-    </div>
-  </div>
+	<div>
+		<div class="mdui-appbar mdui-appbar-fixed ">
+			<div class="mdui-toolbar mdui-color-white">
+				<a href="javascript:;" class=" mdui-hidden-md-up mdui-btn mdui-btn-icon" mdui-drawer="{target: '#app-menu','overlay': true,
+					'swipe': true}"><i class="mdui-icon material-icons">menu</i></a>
+				<span id="menutitle" class="mdui-typo-title">散<span id="rotate">の</span>華</span>
+				<div class="mdui-toolbar-spacer" />
+				<div id="pc-menu" class="mdui-hidden-sm-down ">
+					<navlink></navlink>
+				</div>
+				<div class="mdui-toolbar-spacer" />
+				<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
+				<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+						class="mdui-icon material-icons">refresh</i></a>
+				<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+						class="mdui-icon material-icons">more_vert</i></a>
+			</div>
+		</div>
+		<div id="app-menu" class="mdui-drawer-close mdui-hidden-md-up mdui-drawer mdui-color-white ">
+			<drawercard :bgsrc="require('../assets/dcbg.jpg')" />
+			<navlink></navlink>
+			<nightmod></nightmod>
+		</div>
+	</div>
 </template>
 
 <script>
 	import mdui from 'mdui';
 	import drawercard from './drawercard.vue'
 	import nightmod from './nigthmod.vue'
+	import navlink from './navlink.vue'
 	export default {
 		name: 'Blmenu',
 		components: {
 			drawercard,
 			nightmod,
+			navlink
+
 		},
 		data() {
 			return {
@@ -170,7 +86,7 @@
 	}
 
 	#pc-menu ul li {
-		
+
 		display: inline-flex;
 		height: 100%;
 	}
