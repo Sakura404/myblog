@@ -40,7 +40,7 @@
 		name: 'Headinfo',
 		data() {
 			return {
-				sentence: 123,
+				sentence: "既然已经做出了选择，最好还是先假定自己是对的。焦虑未来和后悔过去，只经历一个就够了。",
 				headinfoheight: "height:" + document.documentElement.clientHeight + "px"
 			}
 		},

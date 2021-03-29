@@ -27,27 +27,31 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.opreation`]="{ item }">
-          <v-btn icon>
+          <v-btn icon :to="'/editor?id=' + item.postid">
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
           <v-btn icon @click="delect(item)">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
-        <template auto v-slot:[`item.state`]="{ item }">
-          <v-menu>
+        <template v-slot:[`item.state`]="{ item }">
+          <v-menu offset-y auto>
             <template v-slot:activator="{ on, attrs }">
-              <div v-on="on" v-bind="attrs">{{ item.state }}</div>
+              <v-btn depressed v-on="on" v-bind="attrs">{{ item.state }}</v-btn>
             </template>
             <v-list rounded dense>
-              <v-list-item @click="changestate(item, '发表')">发表</v-list-item>
-              <v-list-item @click="changestate(item, '审核')">审核</v-list-item>
-              <v-list-item @click="changestate(item, '草稿')">草稿</v-list-item>
+              <v-list-item
+                v-for="(statename, key) in otherstate(item.state)"
+                @click="changestate(item, statename)"
+                :key="key"
+                >{{ statename }}</v-list-item
+              >
             </v-list>
           </v-menu>
         </template>
       </v-data-table>
     </v-card>
+    {{ allstate }}
   </v-container>
 </template>
 
@@ -56,6 +60,7 @@ export default {
   name: "post",
   data() {
     return {
+      allstate: ["审核", "草稿", "发布"],
       dialogdelete: false,
       iw: 1,
       changeitem: null,
@@ -92,6 +97,7 @@ export default {
         {
           text: "状态",
           value: "state",
+          align: "center",
         },
         {
           text: "操作",
@@ -130,6 +136,15 @@ export default {
     this.updata();
   },
   methods: {
+    otherstate(name) {
+      var statearr = this.allstate.slice(0);
+      if (statearr.indexOf(name) != -1) {
+        statearr.splice(statearr.indexOf(name), 1);
+        return statearr;
+      } else {
+        return this.allstate;
+      }
+    },
     changestate(item, state) {
       this.changeitem = this.desserts.indexOf(item);
       this.desserts[this.changeitem].state = state;
