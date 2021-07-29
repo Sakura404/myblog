@@ -123,9 +123,8 @@ export default {
     );
     this.$http.interceptors.response.use(
       function (response) {
-        setTimeout(() => {
           that.loading = false;
-        }, 1000);
+
         return response;
       },
       function (error) {

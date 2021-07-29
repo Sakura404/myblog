@@ -1,50 +1,32 @@
 <template>
-  <div id="headinfo" :style="headinfoheight">
+  <div id="headinfo" v-resize="onResize" :style="headinfoheight">
     <div id="ones">
       {{ sentence }}
-      {{ tops }}
     </div>
   </div>
 </template>
 
 <script>
-function scrollAnimation(currentY, targetY) {
-  // 获取当前位置方法
-  // const currentY = document.documentElement.scrollTop || document.body.scrollTop
-
-  // 计算需要移动的距离
-  let needScrollTop = targetY - currentY;
-  let _currentY = currentY;
-  setTimeout(() => {
-    // 一次调用滑动帧数，每次调用会不一样
-    const dist = Math.ceil(needScrollTop / 10);
-    _currentY += dist;
-    window.scrollTo(_currentY, currentY);
-    // 如果移动幅度小于十个像素，直接移动，否则递归调用，实现动画效果
-    if (needScrollTop > 10 || needScrollTop < -10) {
-      scrollAnimation(_currentY, targetY);
-    } else {
-      window.scrollTo(_currentY, targetY);
-    }
-  }, 1);
-}
 export default {
   name: "Headinfo",
   data() {
     return {
+      windowSize: {
+        x: 0,
+        y: 0,
+      },
       tops: 0,
       sentence:
         "既然已经做出了选择，最好还是先假定自己是对的。焦虑未来和后悔过去，只经历一个就够了。",
-      headinfoheight: "height:" + document.documentElement.clientHeight + "px",
     };
   },
+  computed: {
+    headinfoheight() {
+      return "height: " + (this.windowSize.y + 12) + "px";
+    },
+  },
   mounted: function () {
-    const that = this;
-    window.onresize = () => {
-      that.headinfoheight =
-        "height:" + document.documentElement.clientHeight + "px";
-      that.tops = document.getElementById("headinfo").scrollTop;
-    };
+    this.onResize();
     this.$http
       .get(
         "http://api.tianapi.com/txapi/one/index?key=0b5ca2dd448bb6b4b8eb0da46a27d0d9"
@@ -54,12 +36,8 @@ export default {
       });
   },
   methods: {
-    downbtn() {
-      scrollAnimation(
-        document.documentElement.scrollTop,
-        document.documentElement.clientHeight -
-          document.getElementsByClassName("mdui-appbar")[0].offsetHeight
-      );
+    onResize() {
+      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
   },
 };
@@ -86,7 +64,7 @@ export default {
   background-position: top center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size:cover;
   height: 1000px;
   transition: 0.2s;
 }
