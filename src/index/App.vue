@@ -9,7 +9,7 @@
 
 <script>
 	import blmenu from './components/blmenu.vue'
-	import headinfo from'./components/headinfo.vue'
+	import headinfo from'../components/headinfo.vue'
 	import bangumi from './components/bangumi.vue'
     import login from './components/login.vue'
 	import 'mdui';

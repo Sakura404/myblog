@@ -168,7 +168,7 @@ export default {
       this.deleteitem = null;
     },
     updata() {
-      this.$http.get("/post.json").then((res) => {
+      this.$http.get("./post.json").then((res) => {
         setTimeout(() => {
           this.desserts = res.data;
         }, 1000);
