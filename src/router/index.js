@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import work from '../components/working.vue'
-import post from '../components/post.vue'
+import post from '../components/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
 import navm from '../components/navm.vue'
 import home from '../components/home.vue'
+import edior from '../components/edior.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -25,8 +26,12 @@ const routes = [{
         path: 'post',
         name: 'post',
         component: post
-    }
-        ,
+    },
+    {
+        path: 'edior',
+        name: 'edior',
+        component: edior
+    },
     {
         path: '/',
         redirect: 'dashboard'
@@ -42,7 +47,9 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    mode: 'history',
+    base: process.env.BASE_URL,
 })
 
 export default router

@@ -1,6 +1,13 @@
 <template>
   <div id="headinfo" v-resize="onResize" :style="headinfoheight">
-    <div id="ones">
+    <div
+      :style="rotate_one"
+      @mouseleave="rotateOff()"
+      @mouseenter="rotateOn()"
+      @mousemove="getclient($event)"
+      :class="{ rotateoff: isrotate }"
+      id="ones"
+    >
       {{ sentence }}
     </div>
   </div>
@@ -11,7 +18,16 @@ export default {
   name: "Headinfo",
   data() {
     return {
+      isrotate: false,
+      m_client: {
+        X: 0,
+        Y: 0,
+      },
       windowSize: {
+        x: 0,
+        y: 0,
+      },
+      rotate_a: {
         x: 0,
         y: 0,
       },
@@ -23,6 +39,11 @@ export default {
   computed: {
     headinfoheight() {
       return "height: " + (this.windowSize.y + 12) + "px";
+    },
+    rotate_one() {
+      return `transform: perspective(1000px) rotateY(${this.rotate_a.y.toFixed(
+        2
+      )}deg)  rotateX(${this.rotate_a.x.toFixed(2)}deg)  scale3d(1, 1, 1);`;
     },
   },
   mounted: function () {
@@ -36,6 +57,31 @@ export default {
       });
   },
   methods: {
+    rotateOn() {
+      this.isrotate = true;
+      setTimeout(() => {
+        this.isrotate = false;
+      }, 2000);
+    },
+    rotateOff() {
+      this.rotate_a.x = 0;
+      this.rotate_a.y = 0;
+      this.rotateOn();
+    },
+    getclient(ev) {
+      this.m_client.X = ev.offsetX;
+      this.m_client.Y = ev.offsetY;
+      var dom = ev.currentTarget;
+      let reg = 13;
+      this.rotate_a.y =
+        (ev.offsetX > dom.offsetWidth / 2 ? reg : -reg) *
+        Math.abs(ev.offsetX / (dom.offsetWidth / 2) - 1);
+      this.rotate_a.x =
+        (ev.offsetY > dom.offsetHeight / 2 ? -reg : reg) *
+        Math.abs(ev.offsetY / (dom.offsetHeight / 2) - 1);
+      //   this.rotate_a.y = 100*(ev.offsetY - dom.offsetHeight / 2) / dom.offsetHeight;
+      //   this.rotate_a.x = 100*(ev.offsetX - dom.offsetWidth / 2) / dom.offsetWidth;
+    },
     onResize() {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
@@ -44,6 +90,9 @@ export default {
 </script>
 
 <style>
+.rotateoff {
+  transition: all 400ms cubic-bezier(0.03, 0.98, 0.52, 0.99) 0s;
+}
 #ones {
   border-radius: 10px;
   margin: 0 auto;
@@ -58,13 +107,26 @@ export default {
   top: 50%;
   font-weight: 700;
 }
-
+.under:hover::before {
+  transform: scaleX(0.9);
+}
+.under::before {
+  content: "";
+  left: 0;
+  height: 2px;
+  background: black;
+  bottom: 10%;
+  position: absolute;
+  transform: scaleX(0);
+  width: 100%;
+  transition: all 0.5s ease-in-out;
+}
 #headinfo {
   background-image: url(../assets/dcbg.jpg);
   background-position: top center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size:cover;
+  background-size: cover;
   height: 1000px;
   transition: 0.2s;
 }
@@ -80,6 +142,15 @@ export default {
   user-select: none;
   cursor: pointer;
   padding-top: 20px;
+}
+
+.arrow {
+  width: 50px;
+  height: 50px;
+  border: 10px solid blue;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(45deg);
 }
 
 #downbtn .mdui-icon {
