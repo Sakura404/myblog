@@ -4,13 +4,15 @@ import work from '../components/working.vue'
 import post from '../components/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
 import navm from '../components/navm.vue'
-import home from '../components/home.vue'
+import home from '../views/home.vue'
 import edior from '../components/edior.vue'
+import article from '../components/aticle.vue'
+import homepage from '../components/homepage.vue'
+import game from '../views/game.vue'
 Vue.use(VueRouter)
 
 const routes = [{
     path: '/admin',
-    name: 'admin',
     component: navm,
     children: [{
         path: 'dashboard',
@@ -37,12 +39,27 @@ const routes = [{
         redirect: 'dashboard'
     }]
 }, {
-    path: '/home',
-    name: 'home',
-    component: home
-}, {
     path: '/',
-    redirect: '/home'
+    component: home,
+    children: [{
+        path: '/',
+        name: 'home',
+        component: homepage,
+    }, {
+        path: '/post',
+        name: 'post',
+        component: article
+    }, {
+        path: '/game',
+        name: 'game',
+        component: game
+    }, {
+        path: '/*',
+        redirect: '/'
+    }]
+}, {
+    path: '/*',
+    redirect: '/'
 }
 ]
 
@@ -50,6 +67,9 @@ const router = new VueRouter({
     routes,
     mode: 'history',
     base: process.env.BASE_URL,
+    scrollBehavior() {
+        return { x: 0, y: 0 }
+    }
 })
 
 export default router
