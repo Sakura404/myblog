@@ -19,7 +19,7 @@ export default {
   data: () => ({
     Vertical: 20,
     Horizontal: 20,
-    mineTotal: 50,
+    mineTotal: 6,
     gamearr: null,
     test: 0,
   }),
@@ -37,14 +37,15 @@ export default {
       }
       //炸弹生成
       let mineXY = new Set();
-      const minelength = this.mineTotal.toString().length;
+      const minelength = this.Vertical.toString().length;
       while (mineXY.size < this.mineTotal) {
-        let locationX = Math.floor(Math.random() * this.Horizontal);
+        let locationX = Math.floor(Math.random() * (this.Horizontal));
         let locationY =
-          Math.floor(Math.random() * (this.Vertical - 1)) *
+          Math.floor(Math.random() * this.Vertical) *
           (0.1 ** minelength).toFixed(minelength);
         mineXY.add((locationX + locationY).toFixed(minelength));
       }
+      console.log(mineXY)
       let minelocations = new Array();
       for (let XY of Array.from(mineXY)) {
         var t = new Array();
@@ -87,7 +88,6 @@ export default {
         blockDom.classList.remove("sweeperblock-hidden");
         blockDom.classList.add("sweeperblock-active");
         if (blockItem == 0) {
-          console.log(this.test++);
           if (y + 1 < this.Vertical && way != "up") this.dig(y + 1, x, "down");
           if (y - 1 >= 0 && way != "down") this.dig(y - 1, x, "up");
           if (x + 1 < this.Horizontal && way != "left")
@@ -102,7 +102,10 @@ export default {
           let range = Math.sqrt(Math.pow(y - v, 2) + Math.pow(x - h, 2));
           let blockDom =
             document.getElementsByClassName("sweeperline")[v].children[h];
-          blockDom.setAttribute("style", `transition-delay:${(range * 0.1).toFixed(2)}s`);
+          blockDom.setAttribute(
+            "style",
+            `transition-delay:${(range * 0.1).toFixed(2)}s`
+          );
           blockDom.children[0].style.setProperty(
             "transition-delay",
             `${range * 0.1}s`
