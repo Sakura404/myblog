@@ -1,12 +1,20 @@
 <template>
-  <div class="minesweeper text-center">
+  <div v-resize="onResize" class="minesweeper text-center">
+    <v-dialog v-model="gamestar" max-width="600 " hide-overlay>
+      <v-card>
+        <v-row align-content="center" no-gutters justify="center">
+          <v-col class="text-center"> 游戏开始</v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
     <div class="sweeperline" v-for="(y, i) of gamearr" :key="i">
       <span
         class="sweeperblock sweeperblock-hidden"
+        :style="blocksize"
         v-for="(x, n) of y"
         :key="n"
         @click="dig(i, n, 'center'), setAnimation(i, n)"
-        ><v-icon style="height: 40px; width: 40px" x-large>{{
+        ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
         }}</v-icon
         >&nbsp;</span
@@ -19,10 +27,22 @@ export default {
   data: () => ({
     Vertical: 20,
     Horizontal: 20,
-    mineTotal: 6,
+    mineTotal: 20,
     gamearr: null,
-    test: 0,
+    gamestar: true,
+    gamewindow: 700,
   }),
+  computed: {
+    blocksize() {
+      let width;
+      let height;
+      width = (this.gamewindow - 120) / this.Horizontal;
+      height = width;
+      return `width:${width >= 0 ? width : 20}px;height: ${
+        height >= 0 ? height : 20
+      }px;`;
+    },
+  },
   methods: {
     initGame() {
       this.gamearr = new Array(this.Vertical);
@@ -39,13 +59,13 @@ export default {
       let mineXY = new Set();
       const minelength = this.Vertical.toString().length;
       while (mineXY.size < this.mineTotal) {
-        let locationX = Math.floor(Math.random() * (this.Horizontal));
+        let locationX = Math.floor(Math.random() * this.Horizontal);
         let locationY =
           Math.floor(Math.random() * this.Vertical) *
           (0.1 ** minelength).toFixed(minelength);
         mineXY.add((locationX + locationY).toFixed(minelength));
       }
-      console.log(mineXY)
+      console.log(mineXY);
       let minelocations = new Array();
       for (let XY of Array.from(mineXY)) {
         var t = new Array();
@@ -76,24 +96,39 @@ export default {
       }
       //
     },
-    dig(y, x, way) {
+    dig(y, x) {
       let blockItem = this.gamearr[y][x];
       let blockDom =
         document.getElementsByClassName("sweeperline")[y].children[x];
-
       if (
         blockItem != "mdi-mine" &&
-        !blockDom.classList.contains("sweeperblock-active")
+        blockDom.classList.contains("sweeperblock-hidden")
       ) {
         blockDom.classList.remove("sweeperblock-hidden");
         blockDom.classList.add("sweeperblock-active");
         if (blockItem == 0) {
-          if (y + 1 < this.Vertical && way != "up") this.dig(y + 1, x, "down");
-          if (y - 1 >= 0 && way != "down") this.dig(y - 1, x, "up");
-          if (x + 1 < this.Horizontal && way != "left")
-            this.dig(y, x + 1, "right");
-          if (x - 1 >= 0 && way != "right") this.dig(y, x - 1, "left");
+          let around = [-1, 0, 1];
+          for (let l of around) {
+            for (let r of around) {
+              if (
+                !(r == 0 && l == 0) &&
+                y + l >= 0 &&
+                x + r >= 0 &&
+                y + l < this.Vertical &&
+                x + r < this.Horizontal
+              ) {
+                this.dig(y + l, x + r);
+              }
+            }
+          }
         }
+        // if (blockItem == 0) {
+        //   if (y + 1 < this.Vertical && way != "up") this.dig(y + 1, x, "down");
+        //   if (y - 1 >= 0 && way != "down") this.dig(y - 1, x, "up");
+        //   if (x + 1 < this.Horizontal && way != "left")
+        //     this.dig(y, x + 1, "right");
+        //   if (x - 1 >= 0 && way != "right") this.dig(y, x - 1, "left");
+        // }
       }
     },
     setAnimation(y, x) {
@@ -111,6 +146,10 @@ export default {
             `${range * 0.1}s`
           );
         }
+    },
+    onResize() {
+      this.gamewindow =
+        document.getElementsByClassName("minesweeper")[0].offsetWidth;
     },
     // setAnimation(y, x) {
     //   let around = [1, 0, -1];
@@ -153,6 +192,8 @@ export default {
   },
   mounted: function () {
     this.initGame();
+    this.gamewindow =
+      document.getElementsByClassName("minesweeper")[0].offsetWidth;
   },
 };
 </script>
@@ -161,11 +202,9 @@ export default {
   transition-duration: 0.3s;
   display: inline-block;
   margin: 1px;
-  box-shadow: 1px 1px 1px black;
-  background-color: rgb(150, 150, 150);
+  box-shadow: 1px 1px 2px black;
+  background-color: darkorange;
   color: #000;
-  width: 40px;
-  height: 40px;
 }
 .sweeperblock i {
   transition-duration: 0.3s;
