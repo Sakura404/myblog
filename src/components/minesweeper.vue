@@ -13,6 +13,7 @@
         :style="blocksize"
         v-for="(x, n) of y"
         :key="n"
+        @click.once="initGame(i, n)"
         @click="dig(i, n, 'center'), setAnimation(i, n)"
         ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
@@ -27,10 +28,11 @@ export default {
   data: () => ({
     Vertical: 20,
     Horizontal: 20,
-    mineTotal: 20,
+    mineTotal: 40,
     gamearr: null,
     gamestar: true,
-    gamewindow: 700,
+    gamewindow: null,
+    initflag: true,
   }),
   computed: {
     blocksize() {
@@ -38,13 +40,16 @@ export default {
       let height;
       width = (this.gamewindow - 120) / this.Horizontal;
       height = width;
-      return `width:${width >= 0 ? width : 20}px;height: ${
-        height >= 0 ? height : 20
+      if (width >= 0) {
+        this.onResize();
+      }
+      return `width:${width >= 0 ? width : 30}px;height: ${
+        height >= 0 ? height : 30
       }px;`;
     },
   },
   methods: {
-    initGame() {
+    initWindow() {
       this.gamearr = new Array(this.Vertical);
       for (let i = 0; i < this.Vertical; i++) {
         this.gamearr[i] = new Array(this.Horizontal);
@@ -55,51 +60,73 @@ export default {
           this.gamearr[i][e] = 0;
         }
       }
-      //炸弹生成
-      let mineXY = new Set();
-      const minelength = this.Vertical.toString().length;
-      while (mineXY.size < this.mineTotal) {
-        let locationX = Math.floor(Math.random() * this.Horizontal);
-        let locationY =
-          Math.floor(Math.random() * this.Vertical) *
-          (0.1 ** minelength).toFixed(minelength);
-        mineXY.add((locationX + locationY).toFixed(minelength));
-      }
-      console.log(mineXY);
-      let minelocations = new Array();
-      for (let XY of Array.from(mineXY)) {
-        var t = new Array();
-        XY.toString()
-          .split(".")
-          .forEach((element) => {
-            t.push(parseInt(element));
-          });
-        minelocations.push(t);
-      }
-
-      console.log(minelocations);
-      let around = [-1, 0, 1];
-      for (let i = 0; i < this.mineTotal; i++) {
-        this.gamearr[minelocations[i][1]][minelocations[i][0]] = "mdi-mine";
-        for (let r of around)
-          for (let l of around) {
-            if (
-              minelocations[i][0] + r >= 0 &&
-              minelocations[i][0] + r < this.Horizontal &&
-              minelocations[i][1] + l >= 0 &&
-              minelocations[i][1] + l < this.Vertical &&
-              this.gamearr[minelocations[i][1] + l][minelocations[i][0] + r] !=
-                "mdi-mine"
-            )
-              this.gamearr[minelocations[i][1] + l][minelocations[i][0] + r]++;
+    },
+    initGame(row, col) {
+      if (this.initflag) {
+        this.initflag = false;
+        for (let i = 0; i < this.Vertical; i++) {
+          for (let e = 0; e < this.Horizontal; e++) {
+            this.gamearr[i][e] = 0;
           }
+        }
+        //炸弹生成
+
+        let mineXY = new Set();
+        const minelength = this.Vertical.toString().length;
+        while (mineXY.size < this.mineTotal) {
+          let locationX = Math.floor(Math.random() * this.Horizontal);
+          let locationY = Math.floor(Math.random() * this.Vertical);
+          if (locationX == col && locationY == row) {
+            continue;
+          }
+          mineXY.add(
+            (
+              locationX +
+              locationY * (0.1 ** minelength).toFixed(minelength)
+            ).toFixed(minelength)
+          );
+        }
+        console.log(mineXY);
+        let minelocations = new Array();
+        for (let XY of Array.from(mineXY)) {
+          var t = new Array();
+          XY.toString()
+            .split(".")
+            .forEach((element) => {
+              t.push(parseInt(element));
+            });
+          minelocations.push(t);
+        }
+
+        console.log(minelocations);
+        let around = [-1, 0, 1];
+        for (let i = 0; i < this.mineTotal; i++) {
+          this.gamearr[minelocations[i][1]][minelocations[i][0]] = "mdi-mine";
+          for (let r of around)
+            for (let l of around) {
+              if (
+                minelocations[i][0] + r >= 0 &&
+                minelocations[i][0] + r < this.Horizontal &&
+                minelocations[i][1] + l >= 0 &&
+                minelocations[i][1] + l < this.Vertical &&
+                this.gamearr[minelocations[i][1] + l][
+                  minelocations[i][0] + r
+                ] != "mdi-mine"
+              )
+                this.gamearr[minelocations[i][1] + l][
+                  minelocations[i][0] + r
+                ]++;
+            }
+        }
+        //
+        this.$forceUpdate();
       }
-      //
     },
     dig(y, x) {
       let blockItem = this.gamearr[y][x];
       let blockDom =
         document.getElementsByClassName("sweeperline")[y].children[x];
+      //检测方块是否被打开防止反复递归
       if (
         blockItem != "mdi-mine" &&
         blockDom.classList.contains("sweeperblock-hidden")
@@ -107,9 +134,10 @@ export default {
         blockDom.classList.remove("sweeperblock-hidden");
         blockDom.classList.add("sweeperblock-active");
         if (blockItem == 0) {
-          let around = [-1, 0, 1];
+          let around = [-1, 0, 1]; //检测周围九格
           for (let l of around) {
             for (let r of around) {
+              //检测数组下标是否越界，跳过自身递归
               if (
                 !(r == 0 && l == 0) &&
                 y + l >= 0 &&
@@ -132,6 +160,9 @@ export default {
       }
     },
     setAnimation(y, x) {
+      /*
+       对每个方块用勾股定理计算与点击方块的距离，距离和动画延时成正相关
+       */
       for (let v = 0; v < this.Vertical; v++)
         for (let h = 0; h < this.Horizontal; h++) {
           let range = Math.sqrt(Math.pow(y - v, 2) + Math.pow(x - h, 2));
@@ -191,9 +222,13 @@ export default {
     // },
   },
   mounted: function () {
-    this.initGame();
+    this.initWindow();
     this.gamewindow =
       document.getElementsByClassName("minesweeper")[0].offsetWidth;
+    document.getElementsByClassName("minesweeper")[0].oncontextmenu =
+      function () {
+        return false;
+      };
   },
 };
 </script>
