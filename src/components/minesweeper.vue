@@ -1,10 +1,30 @@
 <template>
   <div v-resize="onResize" class="minesweeper text-center">
-    <v-dialog v-model="gamestar" max-width="600 " hide-overlay>
+    <v-dialog v-model="gameStar" max-width="600" hide-overlay>
       <v-card>
         <v-row align-content="center" no-gutters justify="center">
-          <v-col class="text-center"> 游戏开始</v-col>
+          <v-col class="text-center text-h"> 游戏开始</v-col>
         </v-row>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      persistent
+      transition="dialog-top-transition"
+      v-model="gameVictory"
+      max-width="600 "
+    >
+      <v-card
+        @click="(gameVictory = false), (initflag = true), initWindow()"
+        class="Matte"
+      >
+        <v-row align-content="center" no-gutters justify="center">
+          <h2 style="user-select: none">游戏胜利</h2></v-row
+        >
+        <v-row justify="center" no-gutters>
+          <p style="user-select: none" class="mb-0 text-colorfull">
+            点击任意地方重新开始游戏
+          </p></v-row
+        >
       </v-card>
     </v-dialog>
     <div class="sweeperline" v-for="(y, i) of gamearr" :key="i">
@@ -14,7 +34,7 @@
         v-for="(x, n) of y"
         :key="n"
         @click.once="initGame(i, n)"
-        @click="dig(i, n, 'center'), setAnimation(i, n)"
+        @click="dig(i, n, 'center'), setAnimation(i, n), victory()"
         ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
         }}</v-icon
@@ -28,10 +48,11 @@ export default {
   data: () => ({
     Vertical: 20,
     Horizontal: 20,
-    mineTotal: 40,
+    mineTotal: 10,
     gamearr: null,
-    gamestar: true,
+    gameStar: false,
     gamewindow: null,
+    gameVictory: true,
     initflag: true,
   }),
   computed: {
@@ -60,6 +81,12 @@ export default {
           this.gamearr[i][e] = 0;
         }
       }
+      let block = document.getElementsByClassName("sweeperblock");
+      for (let a of block)
+        if (!a.classList.contains("sweeperblock-hidden")) {
+          a.classList.remove("sweeperblock-active");
+          a.classList.add("sweeperblock-hidden");
+        }
     },
     initGame(row, col) {
       if (this.initflag) {
@@ -182,6 +209,23 @@ export default {
       this.gamewindow =
         document.getElementsByClassName("minesweeper")[0].offsetWidth;
     },
+    flagMark(e, row, col) {
+      if (e.button == 2) {
+        e.currentTarget.appendChild("v-icon");
+        this.$set(this.gamearr[row], col, "mdi-flag");
+        this.$forceUpdate();
+        e.style.style.setProperty;
+      }
+    },
+    defeat() {},
+    victory() {
+      if (
+        document.getElementsByClassName("sweeperblock-hidden").length ==
+        this.mineTotal
+      ) {
+        this.gameVictory = true;
+      }
+    },
     // setAnimation(y, x) {
     //   let around = [1, 0, -1];
     //   document
@@ -225,15 +269,16 @@ export default {
     this.initWindow();
     this.gamewindow =
       document.getElementsByClassName("minesweeper")[0].offsetWidth;
-    document.getElementsByClassName("minesweeper")[0].oncontextmenu =
-      function () {
-        return false;
-      };
+    // document.getElementsByClassName("minesweeper")[0].oncontextmenu =
+    //   function () {
+    //     return false;
+    //   };
   },
 };
 </script>
 <style>
 .sweeperblock {
+  position: relative;
   transition-duration: 0.3s;
   display: inline-block;
   margin: 1px;
@@ -268,5 +313,43 @@ export default {
   height: auto;
   width: 100%;
   white-space: pre-line;
+}
+.text-colorfull {
+  background: linear-gradient(to right, pink, purple, deepskyblue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: large;
+  font-weight: 700;
+  color: transparent;
+}
+.dialogshadow {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+.mineshake {
+  animation: shake 1s 1;
+}
+
+@keyframes shake {
+  /* 水平抖动，核心代码 */
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(+2px, 0, 0);
+  }
+  30%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(+4px, 0, 0);
+  }
+  50% {
+    transform: translate3d(-4px, 0, 0);
+  }
 }
 </style>

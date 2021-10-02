@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="serif">
     <v-navigation-drawer temporary v-model="drawer" app>
       <v-sheet outlined>
         <v-img src="../assets\dcbg.jpg">
@@ -45,13 +45,21 @@
       <v-app-bar-title>散の華</v-app-bar-title>
       <v-spacer></v-spacer>
 
-      <v-btn icon >
+      <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-      <v-btn  icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn></v-app-bar
-    >
+
+      <v-menu  offset-y fixed bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list outlined >
+          <v-list-item to="/admin"> 管理系统 </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
 
     <v-main>
       <v-container fluid class="pa-0">

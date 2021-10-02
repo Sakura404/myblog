@@ -1,5 +1,5 @@
 <template>
-  <v-row style="margin-top: 56px" justify="center" class="no-gutters">
+  <v-row style="margin-top: 56px" justify="center" class="serif no-gutters">
     <v-col
       v-intersect="onIntersect"
       style="background-color: white"
@@ -12,13 +12,14 @@
       >
         <v-card-title
           style="text-shadow: 2px 2px 10px #000"
-          class="text-h2 py-10 font-weight-thin"
+          class="py-10 font-weight-thin"
         >
-          オレンジ
+          <h1>オレンジ</h1>
         </v-card-title>
         <v-card-subtitle class="white--text"
-          ><v-icon small color="white">mdi-clock</v-icon>
-          2020-7-31</v-card-subtitle
+          ><h2>
+             <v-icon small color="white">mdi-clock</v-icon> 2020-7-31 
+          </h2></v-card-subtitle
         ></v-img
       >
       <v-card class="px-6 py-6">
@@ -1020,3 +1021,10 @@ export default {
   },
 };
 </script>
+<style>
+.serif {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Source Han Serif",
+    source-han-serif-sc, "PT Serif", "SongTi SC", "MicroSoft Yahei", Georgia,
+    serif !important;
+}
+</style>

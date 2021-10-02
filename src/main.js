@@ -7,7 +7,6 @@ import VueTinymce from '@packy-tang/vue-tinymce'
 import './styles.scss'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
 import Prism from 'prismjs';
 
 Vue.use(Prism)
