@@ -7,7 +7,7 @@ import navm from '../components/navm.vue'
 import home from '../views/home.vue'
 import edior from '../components/edior.vue'
 import article from '../components/aticle.vue'
-import homepage from '../components/homepage.vue'
+import homepage from '../views/postpage.vue'
 import game from '../views/game.vue'
 Vue.use(VueRouter)
 
@@ -65,7 +65,6 @@ const routes = [{
 
 const router = new VueRouter({
     routes,
-    mode: 'history',
     base: process.env.BASE_URL,
     scrollBehavior() {
         return { x: 0, y: 0 }

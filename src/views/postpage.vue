@@ -48,8 +48,8 @@
                 <v-chip outlined class="mr-1 mb-1" color="primary">日常</v-chip>
                 <v-chip outlined class="mr-1 mb-1" color="primary"
                   >念念碎</v-chip
-                > </v-col 
-              ><v-spacer     ></v-spacer>
+                > </v-col
+              ><v-spacer></v-spacer>
               <v-btn text to="/post"
                 >阅读全文 <v-icon>mdi-arrow-right</v-icon></v-btn
               >

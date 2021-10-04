@@ -138,6 +138,7 @@ export default {
 }
 .biyin {
   background-attachment: fixed;
+  background-repeat: repeat;
 }
 code {
   background-color: rgba(1, 1, 1, 0) !important;

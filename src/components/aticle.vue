@@ -18,11 +18,11 @@
         </v-card-title>
         <v-card-subtitle class="white--text"
           ><h2>
-             <v-icon small color="white">mdi-clock</v-icon> 2020-7-31 
+            <v-icon small color="white">mdi-clock</v-icon> 2020-7-31
           </h2></v-card-subtitle
         ></v-img
       >
-      <v-card class="px-6 py-6">
+      <v-card outlined flat class="px-6 py-6">
         <h1
           class="md-end-block md-heading"
           style="
@@ -1003,13 +1003,32 @@
             </tbody>
           </table>
         </figure>
+        <v-divider></v-divider>
+        <span class="text-colorfull">comment | 32</span>
+        <comment
+          datetime="2021-10-3 16:00"
+          author="奥尔加"
+          content="我们根本不需要最后的落脚处，只要不断前进就行了！只要不停下来，道路就会...不断延伸！......所以，不要停下来啊..."
+        ></comment>
+        <comment
+          datetime="2021-10-2 16:00"
+          author="奥尔加"
+          content="我们根本不需要最后的落脚处，只要不断前进就行了！只要不停下来，道路就会...不断延伸！......所以，不要停下来啊..."
+        ></comment>
+        <comment
+          datetime="2021-1-3 16:00"
+          author="奥尔加"
+          content="我们根本不需要最后的落脚处，只要不断前进就行了！只要不停下来，道路就会...不断延伸！......所以，不要停下来啊..."
+        ></comment>
       </v-card>
     </v-col>
   </v-row>
 </template>
 <script>
 import Prism from "prismjs";
+import comment from "./comment.vue";
 export default {
+  components: { comment },
   data: () => ({}),
   methods: {
     onIntersect(entries) {

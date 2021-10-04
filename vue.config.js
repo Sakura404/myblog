@@ -1,9 +1,11 @@
 module.exports = {
-	publicPath: '/',
-	devServer: {
+    devServer: {
 		port: 8888,
 	},
-	transpileDependencies: [
+
+    transpileDependencies: [
 		'vuetify'
 	],
+
+    publicPath: './'
 }
