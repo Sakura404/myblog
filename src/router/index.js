@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import work from '../components/working.vue'
-import post from '../components/admin-post.vue'
+import adminpost from '../components/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
 import navm from '../components/navm.vue'
 import home from '../views/home.vue'
 import edior from '../components/edior.vue'
-import article from '../components/aticle.vue'
+import article from '../components/post.vue'
 import homepage from '../views/postpage.vue'
 import game from '../views/game.vue'
 Vue.use(VueRouter)
@@ -27,7 +27,7 @@ const routes = [{
     {
         path: 'post',
         name: 'post',
-        component: post
+        component: adminpost
     },
     {
         path: 'edior',

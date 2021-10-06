@@ -1,58 +1,65 @@
 <template>
-  <div class="comment">
-    <v-row class="py-3" no-gutters>
-      <v-col align-self="center" cols="2" sm="1">
-        <v-avatar size="54" color="orange">
-          <v-img
-            min-width="170%"
-            position="top"
-            src="../assets/奥尔加·伊兹卡.png"
-          ></v-img
-        ></v-avatar>
-      </v-col>
-      <v-col cols="10" align-self="center"
-        ><v-row
-          no-gutters
-          style="color: #3daee9"
-          class="font-weight-bold comment-author"
-          >{{ author }}</v-row
-        >
-        <v-row no-gutters>
-          <v-col class="grey--text comment-datetime"
-            >发布于 {{ lagtime }}前</v-col
+  <v-row no-gutters>
+    <v-col v-if="toUser" cols="2" sm="1"></v-col>
+    <v-col class="comment">
+      <v-row class="py-3" no-gutters>
+        <v-col align-self="center" cols="2" sm="1">
+          <v-avatar size="54" color="orange">
+            <v-img
+              min-width="170%"
+              position="top"
+              src="../assets/奥尔加·伊兹卡.png"
+            ></v-img
+          ></v-avatar>
+        </v-col>
+        <v-col cols="10" align-self="center"
+          ><v-row
+            no-gutters
+            style="color: #3daee9"
+            class="font-weight-bold comment-author"
+            >{{ author }}</v-row
           >
-          <v-spacer></v-spacer
-        ></v-row>
-      </v-col>
-      <v-col align-self="center" class="text-right"
-        ><v-chip
-          transition="fade-transition"
-          color="primary"
-          class="comment-reply"
-          small
-          >回复</v-chip
-        ></v-col
-      >
-    </v-row>
-    <v-row no-gutters>
-      <v-col cols="2" sm="1"></v-col>
-      <v-col cols="10">
-        <p>
-          {{ content }}
-        </p>
-      </v-col>
-    </v-row>
-    <v-divider></v-divider>
-  </div>
+          <v-row no-gutters>
+            <v-col class="grey--text comment-datetime"
+              >发布于 {{ lagtime }}</v-col
+            >
+            <v-spacer></v-spacer
+          ></v-row>
+        </v-col>
+        <v-col align-self="center" class="text-left"
+          ><v-chip
+            transition="fade-transition"
+            color="primary"
+            class="comment-reply"
+            small
+            >回复</v-chip
+          ></v-col
+        >
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="2" sm="1"></v-col>
+        <v-col cols="11">
+          <p>
+            <span v-if="toUser">
+              回复 <a class="comment-toUser" href="">@{{ toUser }} </a>:</span
+            >
+            {{ content }}
+          </p>
+        </v-col>
+      </v-row>
+      <v-divider></v-divider>
+    </v-col>
+  </v-row>
 </template>
 <script>
+import Moment from "moment";
 export default {
   props: {
     author: {
       type: String,
       default: "作者",
     },
-    datetime: {
+    dateTime: {
       type: String,
       default: "2021-10-4 15:00",
     },
@@ -60,24 +67,27 @@ export default {
       type: String,
       default: "空白评论",
     },
+    toUser: {
+      type: String,
+      default: null,
+    },
   },
   computed: {
     lagtime() {
-      let pasttime = new Date(this.datetime);
+      let pasttime = new Date(this.dateTime);
       let nowtime = new Date();
       let lag = nowtime.getTime() - pasttime.getTime();
       lag =
         lag / 1000 < 60
-          ? `${parseInt(lag / 1000)} 秒`
+          ? `${parseInt(lag / 1000)} 秒 前`
           : lag / 1000 / 60 < 60
-          ? `${parseInt(lag / 1000 / 60)} 分`
+          ? `${parseInt(lag / 1000 / 60)} 分 前`
           : lag / 1000 / 60 / 60 < 24
-          ? `${parseInt(lag / 1000 / 60 / 60)} 小时`
-          : lag / 1000 / 60 / 60 / 24 < 30
-          ? `${parseInt(lag / 1000 / 60 / 60 / 24)} 天`
-          : lag / 1000 / 60 / 60 / 24 / 30 < 12
-          ? `${parseInt(lag / 1000 / 60 / 60 / 24 / 30)} 月`
-          : `${parseInt(lag / 1000 / 60 / 60 / 24 / 365)} 年`;
+          ? `${parseInt(lag / 1000 / 60 / 60)} 小时 前`
+          : lag / 1000 / 60 / 60 / 24 < 7
+          ? `${parseInt(lag / 1000 / 60 / 60 / 24)} 天 前`
+          : `${Moment(pasttime).format('YYYY-MM-DD HH:mm')}
+            `;
       return lag;
     },
   },
@@ -97,11 +107,14 @@ export default {
 }
 .comment-reply {
   visibility: hidden;
-  transition: all .5s;
-  opacity:0
+  transition: all 0.5s;
+  opacity: 0;
 }
 .comment:hover .comment-reply {
   visibility: visible;
-  opacity:1
+  opacity: 1;
+}
+.comment-toUser {
+  text-decoration: none;
 }
 </style>

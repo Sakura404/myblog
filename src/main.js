@@ -15,6 +15,7 @@ Prism.highlightAll();
 Vue.use(VueAxios, axios)
 
 
+
 Vue.prototype.$tinymce = tinymce // 将全局tinymce对象指向给Vue作用域下
 Vue.use(VueTinymce)              // 安装vue的tinymce组件
 

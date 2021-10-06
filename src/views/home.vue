@@ -1,5 +1,5 @@
 <template>
-  <v-app class="serif">
+  <v-app class="chinese-font serif">
     <v-navigation-drawer temporary v-model="drawer" app>
       <v-sheet outlined>
         <v-img src="../assets\dcbg.jpg">
