@@ -41,7 +41,7 @@
         <v-col cols="11">
           <p>
             <span v-if="toUser">
-              回复 <a class="comment-toUser" href="">@{{ toUser }} </a>:</span
+              回复 <a class="comment-toUser underlink" href="">@{{ toUser }} </a>:</span
             >
             {{ content }}
           </p>

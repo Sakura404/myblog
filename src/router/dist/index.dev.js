@@ -62,7 +62,7 @@ var routes = [{
     name: 'home',
     component: _postpage["default"]
   }, {
-    path: '/post',
+    path: '/post/:id',
     name: 'post',
     component: _post["default"]
   }, {

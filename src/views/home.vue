@@ -1,5 +1,5 @@
 <template>
-  <v-app class="chinese-font serif">
+  <v-app class="serif chinese-font">
     <v-navigation-drawer temporary v-model="drawer" app>
       <v-sheet outlined>
         <v-img src="../assets\dcbg.jpg">
@@ -49,13 +49,13 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-menu  offset-y fixed bottom>
+      <v-menu offset-y fixed bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list outlined >
+        <v-list outlined>
           <v-list-item to="/admin"> 管理系统 </v-list-item>
         </v-list>
       </v-menu>
@@ -88,6 +88,7 @@ export default {
       ["mdi-alert-octagon", "关于"],
     ],
     biyinapi: [],
+
   }),
   computed: {
     mainimg() {
@@ -106,6 +107,7 @@ export default {
           ? true
           : false;
     },
+  
     onToolfixed() {
       console.log(1);
       window.pageYOffset;

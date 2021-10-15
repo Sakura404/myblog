@@ -46,7 +46,7 @@ const routes = [{
         name: 'home',
         component: homepage,
     }, {
-        path: '/post',
+        path: '/post/:id',
         name: 'post',
         component: article
     }, {
