@@ -5,7 +5,7 @@ import adminpost from '../components/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
 import navm from '../components/navm.vue'
 import home from '../views/home.vue'
-import edior from '../components/edior.vue'
+import editor from '../components/editor.vue'
 import article from '../components/post.vue'
 import homepage from '../views/postpage.vue'
 import game from '../views/game.vue'
@@ -30,9 +30,14 @@ const routes = [{
         component: adminpost
     },
     {
-        path: 'edior',
-        name: 'edior',
-        component: edior
+        path: 'editor/:id',
+        name: 'editorwithid',
+        component: editor
+    },
+    {
+        path: 'editor',
+        name: 'editor',
+        component: editor
     },
     {
         path: '/',

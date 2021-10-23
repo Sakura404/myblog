@@ -52,9 +52,10 @@ export default {
     cards: ["Today", "Yesterday"],
     drawer: null,
     links: [
-      ["mdi-home", "首页", "dashboard"],
-      ["mdi-post-outline", "文章管理", "post"],
-      ["mdi-comment", "评论管理", "edior"],
+      ["mdi-home", "首页", "/admin/dashboard"],
+      ["mdi-post-outline", "文章管理", "/admin/post"],
+      ["mdi-comment", "评论管理", ""],
+      ["mdi-pencil","文章管理器","/admin/editor"],
       ["mdi-delete", "用户管理"],
       ["mdi-account-details", "媒体管理"],
       ["mdi-alert-octagon", "关于"],

@@ -1,58 +1,56 @@
 <template>
   <v-row style="margin-top: 56px" justify="center" class="serif no-gutters">
-    <v-col
-      v-intersect="onIntersect"
-      style="background-color: white"
-      lg="5"
-      cols="12"
-      class=""
+    <v-img
+      class="white--text align-end"
+      height="300"
+      gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
+      :src="`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`"
     >
-      <v-card >
-        <v-img
-          class="white--text align-end"
-          height="300px"
-          src="../assets/73718346_p0.png"
+      <v-card-title
+        style="text-shadow: 2px 2px 10px #000"
+        class="py-8 font-weight-thin justify-center"
+      >
+        <h1>{{ post.title }}</h1>
+      </v-card-title>
+      <v-card-subtitle class="white--text text-center">
+        <h2 class="py-2">
+          <v-icon color="white">mdi-clock</v-icon>
+          {{ moment(post.date) }}
+          <v-icon color="white">mdi-pen</v-icon>
+          {{ post.author }}
+        </h2>
+      </v-card-subtitle>
+    </v-img>
+    <v-col v-intersect="onIntersect" lg="7" xl="6" cols="12">
+      <v-card
+        elevation="10"
+        outlined
+        flat
+        style="background-color: rgba(255, 255, 255, 0.8)"
+        class="px-6 py-6"
+      >
+        <!--  -->
+        <div v-html="post.content"></div>
+        <!--  -->
+        <v-divider></v-divider>
+        <span class="text-colorfull">comment | {{ comments.length }}</span>
+        <comment
+          v-for="(commentItem, index) of eachPageComments"
+          :dateTime="commentItem.dateTime"
+          :author="commentItem.author"
+          :toUser="commentItem.toUser"
+          :content="commentItem.content"
+          :key="index"
         >
-          <v-card-title
-            style="text-shadow: 2px 2px 10px #000"
-            class="py-8 font-weight-thin"
-          >
-            <h2>{{ post.title }}</h2>
-          </v-card-title>
-          <v-card-subtitle class="white--text">
-            <h2 class="py-2">
-              <v-icon color="white">mdi-pen</v-icon>
-              {{ post.author }}
-
-              <v-icon color="white">mdi-clock</v-icon>
-              {{ moment(post.date) }}
-            </h2>
-          </v-card-subtitle></v-img
-        >
-        <v-card outlined flat class="px-6 py-6">
-          <!--  -->
-          <div v-html="post.content"></div>
-          <!--  -->
-          <v-divider></v-divider>
-          <span class="text-colorfull">comment | 32</span>
-          <comment
-            v-for="(commentItem, index) of eachPageComments"
-            :dateTime="commentItem.dateTime"
-            :author="commentItem.author"
-            :toUser="commentItem.toUser"
-            :content="commentItem.content"
-            :key="index"
-          >
-          </comment>
-          <v-pagination
-            class="my-4"
-            v-model="commentPage"
-            v-if="commentLength > 1"
-            :length="commentLength"
-            :total-visible="7"
-            circle
-          ></v-pagination>
-        </v-card>
+        </comment>
+        <v-pagination
+          class="my-4"
+          v-model="commentPage"
+          v-if="commentLength > 1"
+          :length="commentLength"
+          :total-visible="7"
+          circle
+        ></v-pagination>
       </v-card>
     </v-col>
   </v-row>
@@ -74,7 +72,15 @@ export default {
         content: "我们根1",
       },
     ],
-    post: {author:null,content:null,date:null,except:null,modified:null,status:null,title:null,},
+    post: {
+      author: null,
+      content: null,
+      date: null,
+      except: null,
+      modified: null,
+      status: null,
+      title: null,
+    },
   }),
   computed: {
     eachPageComments() {
@@ -94,18 +100,16 @@ export default {
       this.$emit("onIntersect", entries);
     },
     getPost() {
-      this.$http
-        .get(`/api/post/get?id=${this.$route.params.id}`)
-        .then((res) => {
-          if (res.data.code == 10000) this.post = res.data.data;
-          console.log(res.data.data);
-        });
+      this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
+        if (res.data.code == 10000) this.post = res.data.data;
+        console.log(res.data.data);
+      });
     },
     moment(time) {
       return moment(time).format("YYYY-MM-DD");
     },
   },
-  mounted() {
+  created() {
     Prism.highlightAll();
     this.getPost();
   },

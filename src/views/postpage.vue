@@ -22,7 +22,10 @@
             <v-card-title> {{ post.title }} </v-card-title>
             <v-card-subtitle class="white--text"
               ><v-icon small color="white">mdi-clock</v-icon>
-              {{ lagtime(post.date) }}</v-card-subtitle
+              {{ lagtime(post.date) }}
+              &nbsp;
+               <v-icon small color="white"> mdi-pen</v-icon
+              > {{ post.author }}</v-card-subtitle
             ></v-img
           >
           <v-card-text> {{ post.excerpt }}...... </v-card-text>
@@ -33,14 +36,14 @@
                 <v-chip
                   v-for="term in post.termList"
                   outlined
+                  link
                   class="mr-1 mb-1"
                   color="primary"
                   :key="term.id"
-                  >{{term.name}}</v-chip
+                  >{{ term.name }}</v-chip
                 > </v-col
               ><v-spacer></v-spacer>
-              <v-btn text 
-              :to="('/post/'+post.id)"
+              <v-btn text :to="'/post/' + post.id"
                 >阅读全文<v-icon>mdi-arrow-right</v-icon></v-btn
               >
             </v-row>
@@ -66,7 +69,7 @@ export default {
     },
     getPosts() {
       this.$http
-        .get("/api/post/getlist")
+        .get("/api/posts/")
         .then((res) => {
           if (res.data.code == 10000) {
             console.log(res.data.data);
@@ -80,16 +83,16 @@ export default {
     lagtime(dateTime) {
       let pasttime = new Date(dateTime);
       let nowtime = new Date();
-      let lag = nowtime.getTime() - pasttime.getTime();
+      let lag = Math.abs(nowtime.getTime() - pasttime.getTime());
       lag =
         lag / 1000 < 60
-          ? `${parseInt(lag / 1000)} 秒 前`
+          ? `${parseInt(lag / 1000)} 秒前`
           : lag / 1000 / 60 < 60
-          ? `${parseInt(lag / 1000 / 60)} 分 前`
+          ? `${parseInt(lag / 1000 / 60)} 分前`
           : lag / 1000 / 60 / 60 < 24
-          ? `${parseInt(lag / 1000 / 60 / 60)} 小时 前`
+          ? `${parseInt(lag / 1000 / 60 / 60)} 小时前`
           : lag / 1000 / 60 / 60 / 24 < 7
-          ? `${parseInt(lag / 1000 / 60 / 60 / 24)} 天 前`
+          ? `${parseInt(lag / 1000 / 60 / 60 / 24)} 天前`
           : `${Moment(pasttime).format("YYYY-MM-DD HH:mm")}
             `;
       return lag;

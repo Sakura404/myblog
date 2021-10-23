@@ -19,7 +19,7 @@ var _navm = _interopRequireDefault(require("../components/navm.vue"));
 
 var _home = _interopRequireDefault(require("../views/home.vue"));
 
-var _edior = _interopRequireDefault(require("../components/edior.vue"));
+var _editor = _interopRequireDefault(require("../components/editor.vue"));
 
 var _post = _interopRequireDefault(require("../components/post.vue"));
 
@@ -47,9 +47,13 @@ var routes = [{
     name: 'post',
     component: _adminPost["default"]
   }, {
-    path: 'edior',
-    name: 'edior',
-    component: _edior["default"]
+    path: 'editor/:id',
+    name: 'editorwithid',
+    component: _editor["default"]
+  }, {
+    path: 'editor',
+    name: 'editor',
+    component: _editor["default"]
   }, {
     path: '/',
     redirect: 'dashboard'

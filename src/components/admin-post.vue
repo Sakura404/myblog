@@ -27,40 +27,43 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.opreation`]="{ item }">
-          <v-btn icon :to="'/editor?id=' + item.postid">
+          <v-btn icon :to="`editor/${item.id}`">
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
           <v-btn icon @click="delect(item)">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
-        <template v-slot:[`item.state`]="{ item }">
-          <v-menu offset-y auto>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-menu offset-y bottom >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn depressed v-on="on" v-bind="attrs">{{ item.state }}</v-btn>
+              <v-btn depressed v-on="on" v-bind="attrs">{{
+                item.status
+              }}</v-btn>
             </template>
-            <v-list rounded dense>
+            <v-list  dense>
               <v-list-item
-                v-for="(statename, key) in otherstate(item.state)"
-                @click="changestate(item, statename)"
+                v-for="(status, key) in otherstate(item.status)"
+                @click="changestate(item, status)"
                 :key="key"
-                >{{ statename }}</v-list-item
+                class="text-center"
+                >{{ status }}</v-list-item
               >
             </v-list>
           </v-menu>
         </template>
       </v-data-table>
     </v-card>
-    {{ allstate }}
   </v-container>
 </template>
 
 <script>
+import Moment from "moment";
 export default {
   name: "post",
   data() {
     return {
-      allstate: ["审核", "草稿", "发布"],
+      allstate: ["public", "draft", "hidden"],
       dialogdelete: false,
       iw: 1,
       changeitem: null,
@@ -69,16 +72,16 @@ export default {
       loadingmeg: "please wait",
       headers: [
         {
-          text: "名字",
-          value: "postname",
+          text: "标题",
+          value: "title",
         },
         {
           text: "编号",
-          value: "postid",
+          value: "id",
         },
         {
           text: "作者",
-          value: "postauthor",
+          value: "author",
         },
         {
           text: "评论数",
@@ -86,17 +89,17 @@ export default {
         },
         {
           text: "发表时间",
-          value: "time",
+          value: "date",
           align: "center",
         },
         {
           text: "最后修改时间",
-          value: "lasttime",
+          value: "modified",
           align: "center",
         },
         {
           text: "状态",
-          value: "state",
+          value: "status",
           align: "center",
         },
         {
@@ -123,7 +126,7 @@ export default {
     );
     this.$http.interceptors.response.use(
       function (response) {
-          that.loading = false;
+        that.loading = false;
 
         return response;
       },
@@ -132,9 +135,20 @@ export default {
         return Promise.reject(error);
       }
     );
-    this.updata();
+    // this.updata();
+    this.getPosts();
   },
   methods: {
+    getPosts() {
+      this.$http.get("api/posts/").then((res) => {
+        console.log(res);
+        this.desserts = res.data.data;
+        this.desserts.forEach((e, n, a) => {
+          a[n].date = Moment(e.date).format("yyyy-MM-DD HH:mm:ss");
+          a[n].modified = Moment(e.modified).format("yyyy-MM-DD HH:mm:ss");
+        });
+      });
+    },
     otherstate(name) {
       var statearr = this.allstate.slice(0);
       if (statearr.indexOf(name) != -1) {
@@ -144,9 +158,9 @@ export default {
         return this.allstate;
       }
     },
-    changestate(item, state) {
+    changestate(item, status) {
       this.changeitem = this.desserts.indexOf(item);
-      this.desserts[this.changeitem].state = state;
+      this.desserts[this.changeitem].status = status;
       //发送改变状态请求到后端
       //this.updata()
       this.changeitem = null;
