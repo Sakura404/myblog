@@ -1,5 +1,5 @@
 <template>
-  <div id="headinfo" v-resize="onResize" :style="headinfoheight">
+  <div id="headinfo" v-resize="onResize" style="height:100vh">
     <div
       :style="rotate_one"
       @mouseleave="rotateOff()"

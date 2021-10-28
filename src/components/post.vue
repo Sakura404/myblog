@@ -4,7 +4,7 @@
       class="white--text align-end"
       height="300"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
-      :src="`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`"
+      :src="require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`)"
     >
       <v-card-title
         style="text-shadow: 2px 2px 10px #000"
@@ -26,7 +26,7 @@
         elevation="10"
         outlined
         flat
-        style="background-color: rgba(255, 255, 255, 0.8)"
+        style=" background-color: rgba(255, 255, 255, 0.8)"
         class="px-6 py-6"
       >
         <!--  -->
@@ -65,12 +65,12 @@ export default {
     commentPage: 1,
     eachPage: 10,
     comments: [
-      {
-        dateTime: "2021-10-5 12:49",
-        author: "apex",
-        toUser: null,
-        content: "我们根1",
-      },
+      //   {
+      //     // dateTime: "2021-10-5 12:49",
+      //     // author: "",
+      //     // toUser: "",
+      //     // content: "",
+      //   },
     ],
     post: {
       author: null,

@@ -17,15 +17,16 @@
           <v-img
             class="white--text align-end"
             height="300px"
-            src="../assets/73718346_p0.png"
-          >
+            lazy-src
+            :src="randomImg()"
+            >{{ randomImg() }}
             <v-card-title> {{ post.title }} </v-card-title>
             <v-card-subtitle class="white--text"
               ><v-icon small color="white">mdi-clock</v-icon>
               {{ lagtime(post.date) }}
               &nbsp;
-               <v-icon small color="white"> mdi-pen</v-icon
-              > {{ post.author }}</v-card-subtitle
+              <v-icon small color="white"> mdi-pen</v-icon>
+              {{ post.author }}</v-card-subtitle
             ></v-img
           >
           <v-card-text> {{ post.excerpt }}...... </v-card-text>
@@ -64,6 +65,9 @@ export default {
     postList: null,
   }),
   methods: {
+    randomImg() {
+      return require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
+    },
     onIntersect(entries) {
       this.$emit("onIntersect", entries);
     },

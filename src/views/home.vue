@@ -63,7 +63,7 @@
 
     <v-main>
       <v-container fluid class="pa-0">
-        <div :style="mainimg" class="biyin">
+        <div  :style="mainimg"  class="biyin">
           <router-view @onIntersect="onIntersect"></router-view>
         </div>
       </v-container>
@@ -88,7 +88,6 @@ export default {
       ["mdi-alert-octagon", "关于"],
     ],
     biyinapi: [],
-
   }),
   computed: {
     mainimg() {
@@ -107,12 +106,13 @@ export default {
           ? true
           : false;
     },
-  
+
     onToolfixed() {
       console.log(1);
       window.pageYOffset;
     },
     onIntersect(entries) {
+      console.log(entries[0].intersectionRatio );
       this.toolcolor = !entries[0].isIntersecting;
       this.toolcolorlock = entries[0].isIntersecting;
     },
@@ -141,6 +141,7 @@ export default {
 .biyin {
   background-attachment: fixed;
   background-repeat: repeat;
+  min-height:  100vh;
 }
 code {
   background-color: rgba(1, 1, 1, 0) !important;

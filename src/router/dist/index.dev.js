@@ -25,6 +25,8 @@ var _post = _interopRequireDefault(require("../components/post.vue"));
 
 var _postpage = _interopRequireDefault(require("../views/postpage.vue"));
 
+var _login = _interopRequireDefault(require("../views/login.vue"));
+
 var _game = _interopRequireDefault(require("../views/game.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -34,6 +36,9 @@ _vue["default"].use(_vueRouter["default"]);
 var routes = [{
   path: '/admin',
   component: _navm["default"],
+  meta: {
+    requireAuth: true
+  },
   children: [{
     path: 'dashboard',
     name: 'dashboard',
@@ -58,6 +63,10 @@ var routes = [{
     path: '/',
     redirect: 'dashboard'
   }]
+}, {
+  path: '/login',
+  name: 'login',
+  component: _login["default"]
 }, {
   path: '/',
   component: _home["default"],
@@ -89,6 +98,31 @@ var router = new _vueRouter["default"]({
       x: 0,
       y: 0
     };
+  }
+});
+router.beforeEach(function (to, from, next) {
+  if (to.matched.some(function (res) {
+    return res.meta.requireAuth;
+  })) {
+    // 验证是否需要登陆
+    var id = window.sessionStorage.getItem('token');
+
+    if (id) {
+      // 查询本地存储信息是否已经登陆 
+      console.log(id);
+      next();
+    } else {
+      next({
+        path: '/login',
+        // 未登录则跳转至login页面
+        query: {
+          redirect: to.fullPath // 登陆成功后回到当前页面，这里传值给login页面，to.fullPath为当前点击的页面
+
+        }
+      });
+    }
+  } else {
+    next();
   }
 });
 var _default = router;
