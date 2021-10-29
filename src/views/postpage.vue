@@ -1,10 +1,8 @@
 <template>
   <div>
-    <headinfo class="d-md-block"></headinfo>
     <v-row no-gutters>
       <v-spacer></v-spacer>
       <v-col
-        v-intersect="onIntersect"
         style="
           background-color: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(20px);
@@ -19,7 +17,7 @@
             height="300px"
             lazy-src
             :src="randomImg()"
-            >{{ randomImg() }}
+          >
             <v-card-title> {{ post.title }} </v-card-title>
             <v-card-subtitle class="white--text"
               ><v-icon small color="white">mdi-clock</v-icon>
@@ -57,13 +55,13 @@
 </template>
 
 <script>
-import headinfo from "../components/headinfo.vue";
 import Moment from "moment";
 export default {
-  components: { headinfo },
+
   data: () => ({
     postList: null,
   }),
+  computed: {},
   methods: {
     randomImg() {
       return require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
@@ -76,7 +74,6 @@ export default {
         .get("/api/posts/")
         .then((res) => {
           if (res.data.code == 10000) {
-            console.log(res.data.data);
             this.postList = res.data.data;
           }
         })

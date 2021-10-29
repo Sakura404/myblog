@@ -1,23 +1,35 @@
 <template>
-  <div id="headinfo" v-resize="onResize" style="height:100vh">
+  <div style="background-color: white" :style="headStyle">
     <div
-      :style="rotate_one"
-      @mouseleave="rotateOff()"
-      @mouseenter="rotateOn()"
-      @mousemove="getclient($event)"
-      :class="{ rotateoff: isrotate }"
-      id="ones"
+      id="headinfo"
+      v-bind:style="loginBackgroundSrc"
+      v-resize="onResize"
+      style="height: 100vh"
     >
-      {{ sentence }}
+      <div
+        :style="rotate_one"
+        @mouseleave="rotateOff()"
+        @mouseenter="rotateOn()"
+        @mousemove="getclient($event)"
+        :class="{ rotateoff: isrotate }"
+        id="ones"
+      >
+        {{ sentence }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+const loginbg = require(`../assets/bg/${
+  Math.floor(Math.random() * 16) + 1
+}.jpg`);
 export default {
   name: "Headinfo",
+
   data() {
     return {
+      headOpactiy: 1,
       isrotate: false,
       m_client: {
         X: 0,
@@ -37,6 +49,18 @@ export default {
     };
   },
   computed: {
+    loginBackgroundSrc() {
+      return `background-image:url('${loginbg}') `;
+    },
+    headStyle() {
+      return `opacity: ${
+        this.headOpactiy.toFixed(2) > 0.5
+          ? 1
+          : this.headOpactiy.toFixed(2) > 0.1
+          ? this.headOpactiy.toFixed(2) * 2
+          : 0
+      } `;
+    },
     headinfoheight() {
       return "height: " + (this.windowSize.y + 12) + "px";
     },
@@ -55,8 +79,26 @@ export default {
       .then((response) => {
         this.sentence = response.data.newslist[0].word;
       });
+    let options = {
+      threshold: [],
+    };
+    for (let i = 0; i <= 1.0; i += 0.01) {
+      options.threshold.push(i);
+    }
+    let headObserver = new IntersectionObserver(this.headeEntries, options);
+    headObserver.observe(document.querySelector("#headinfo"));
   },
+
   methods: {
+    randomImg() {
+      return `background-image: url(../assets/bg/${
+        Math.floor(Math.random() * 16) + 1
+      }.jpg)`;
+    },
+    headeEntries(entries) {
+      this.headOpactiy = entries[0].intersectionRatio;
+      this.$emit("observe", this.headOpactiy);
+    },
     rotateOn() {
       this.isrotate = true;
       setTimeout(() => {

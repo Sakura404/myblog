@@ -1,6 +1,7 @@
 <template>
-  <v-row style="margin-top: 56px" justify="center" class="serif no-gutters">
+  <v-row style="" justify="center" class="serif no-gutters">
     <v-img
+      v-intersect="onIntersect"
       class="white--text align-end"
       height="300"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
@@ -26,7 +27,7 @@
         elevation="10"
         outlined
         flat
-        style=" background-color: rgba(255, 255, 255, 0.8)"
+        style="background-color: rgba(255, 255, 255, 0.8)"
         class="px-6 py-6"
       >
         <!--  -->

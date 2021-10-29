@@ -60,8 +60,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data.code == "10000") {
-        
-        sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
+            sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
             if (this.$route.query.redirect) {
               this.$router.push(this.$route.query.redirect);
             } else {
