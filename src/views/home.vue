@@ -1,14 +1,12 @@
 <template>
   <v-app class="serif chinese-font">
-    <v-navigation-drawer temporary v-model="drawer" app>
-      <v-sheet outlined>
-        <v-img src="../assets\dcbg.jpg">
-          <v-card-title></v-card-title>
-          <v-avatar class="mb-4" color="grey darken-1" size="64"
-            ><img src="../assets/mk.jpg"
-          /></v-avatar>
-        </v-img>
-      </v-sheet>
+    <v-navigation-drawer clipped temporary v-model="drawer" app>
+      <v-img src="../assets\dcbg.jpg">
+        <v-card-title></v-card-title>
+        <v-avatar class="mb-4" color="grey darken-1" size="64"
+          ><img src="../assets/mk.jpg"
+        /></v-avatar>
+      </v-img>
 
       <v-divider></v-divider>
 
@@ -131,6 +129,7 @@ export default {
     },
     onIntersect(entries) {
       this.toolcolor = !entries[0].isIntersecting;
+      this.toolflat = entries[0].isIntersecting;
     },
   },
   mounted: function () {
@@ -157,10 +156,28 @@ export default {
 .biyin {
   background-attachment: fixed;
   background-repeat: repeat;
+  background-size: 100%;
   min-height: 100vh;
 }
 
 code {
   background-color: rgba(1, 1, 1, 0) !important;
+}
+.bounce-enter-active {
+  animation: bounce-in 1s;
+}
+.bounce-leave-active {
+  animation: bounce-in 1s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
 }
 </style>

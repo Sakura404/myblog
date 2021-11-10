@@ -11,10 +11,16 @@
         lg="6"
         cols="12"
       >
-        <v-card v-for="post in postList" hover class="my-4" :key="post.id">
+        <v-card
+          v-for="post in postList"
+          hover
+          class="scaleImg my-6"
+          :key="post.id"
+        >
           <v-img
-            class="white--text align-end"
+            class="white--text csfsdgf align-end"
             height="300px"
+            gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
             lazy-src
             :src="randomImg()"
           >
@@ -57,7 +63,6 @@
 <script>
 import Moment from "moment";
 export default {
-
   data: () => ({
     postList: null,
   }),
@@ -104,3 +109,13 @@ export default {
   },
 };
 </script>
+<style>
+.scaleImg:hover .v-image__image {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+}
+.scaleImg .v-image__image {
+  transition: transform 0.3s ease-in-out;
+  transform: scale(1);
+}
+</style>

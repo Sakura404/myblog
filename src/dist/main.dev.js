@@ -20,11 +20,15 @@ var _vueAxios = _interopRequireDefault(require("vue-axios"));
 
 var _prismjs = _interopRequireDefault(require("prismjs"));
 
+var _randomImg = _interopRequireDefault(require("./plugins/randomImg.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_prismjs["default"]);
 
 _prismjs["default"].highlightAll();
+
+_vue["default"].prototype.$randomImg = _randomImg["default"];
 
 _vue["default"].use(_vueAxios["default"], _axios["default"]);
 

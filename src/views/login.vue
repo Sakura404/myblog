@@ -94,4 +94,19 @@ export default {
   bottom: 50%;
   position: absolute;
 }
+#loginTitle::after {
+  content: "";
+  transform: scaleX(0.5);
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    rgb(78, 109, 134),
+    rgba(255, 255, 255, 0.007)
+  );
+  width: 100%;
+  left: 50%;
+  height: 2px;
+  bottom: 50%;
+  position: absolute;
+}
 </style>

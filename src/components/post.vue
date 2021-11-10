@@ -1,17 +1,26 @@
 <template>
-  <v-row style="" justify="center" class="serif no-gutters">
+  <v-row style="position: relative" justify="center" class="serif no-gutters">
     <v-img
-      v-intersect="onIntersect"
       class="white--text align-end"
       height="300"
+      min-width="100%"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
-      :src="require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`)"
+      :src="imgSrc"
     >
       <v-card-title
         style="text-shadow: 2px 2px 10px #000"
         class="py-8 font-weight-thin justify-center"
       >
-        <h1>{{ post.title }}</h1>
+        <h1
+          v-intersect="{
+            handler: onIntersect,
+            options: {
+              threshold: [0, 0.8],
+            },
+          }"
+        >
+          {{ post.title }}
+        </h1>
       </v-card-title>
       <v-card-subtitle class="white--text text-center">
         <h2 class="py-2">
@@ -22,7 +31,9 @@
         </h2>
       </v-card-subtitle>
     </v-img>
-    <v-col v-intersect="onIntersect" lg="7" xl="6" cols="12">
+    <v-spacer></v-spacer>
+    <v-col :class="navStatu" cols="2"></v-col>
+    <v-col lg="7" xl="6" cols="12">
       <v-card
         elevation="10"
         outlined
@@ -31,10 +42,16 @@
         class="px-6 py-6"
       >
         <!--  -->
-        <div v-html="post.content"></div>
+        <div
+          id="postContent"
+          v-resize="onNavResize"
+          v-html="post.content"
+        ></div>
         <!--  -->
         <v-divider></v-divider>
-        <span class="text-colorfull">comment | {{ comments.length }}</span>
+        <span v-if="comments.length != 0" class="text-colorfull"
+          >comment | {{ comments.length }}</span
+        >
         <comment
           v-for="(commentItem, index) of eachPageComments"
           :dateTime="commentItem.dateTime"
@@ -52,19 +69,79 @@
           :total-visible="7"
           circle
         ></v-pagination>
+
+        <v-divider> </v-divider>
+
+        <v-row class="my-4" justify="center" no-gutters>
+          <v-col
+            v-for="(item, index) in postguide"
+            :key="index"
+            cols="12"
+            :md="postguide.length > 1 ? 6 : 12"
+            ><a style="text-decoration: none" :href="`/post/${item.post_id}`">
+              <v-img
+                height="150"
+                :src="item.img"
+                class="white--text postguide align-center"
+                ><p
+                  style="padding: 40px; height: 50%"
+                  class="subtitle-1"
+                  :class="item.type == 'PREVIOUS' ? 'text-light' : 'text-right'"
+                >
+                  {{ item.type }} POST<br />
+                  {{ item.post_title }}
+                </p></v-img
+              >
+            </a></v-col
+          >
+          <!-- <v-col cols="12" md="6"
+            ><a style="text-decoration: none" href="">
+              <v-img
+                height="150"
+                gradient="rgba(0,0,0,0.3),rgba(0,0,0,0.3)"
+                :src="imgSrc"
+                class="white--text align-center"
+                ><p
+                  style="padding: 40px; height: 50%"
+                  class="text-right subtitle-1"
+                >
+                  后一篇 文章<br />
+                  {{ s }}
+                </p></v-img
+              >
+            </a></v-col
+          > -->
+        </v-row>
       </v-card>
+    </v-col>
+
+    <v-col
+      :style="navstyle"
+      :class="navStatu"
+      style=""
+      class="d-none d-lg-block pl-6"
+      cols="2"
+      xl="2"
+    >
+      <div>
+        <postnav v-if="nav.length > 0" :navlist="nav"></postnav>
+      </div>
     </v-col>
   </v-row>
 </template>
+
 <script>
+var imgSrc = require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
 import Prism from "prismjs";
 import comment from "./comment.vue";
 import moment from "moment";
+import Postnav from "./postnav.vue";
 export default {
-  components: { comment },
+  components: { comment, Postnav },
   data: () => ({
     commentPage: 1,
     eachPage: 10,
+    nav: [],
     comments: [
       //   {
       //     // dateTime: "2021-10-5 12:49",
@@ -82,8 +159,17 @@ export default {
       status: null,
       title: null,
     },
+    navleft: 0,
+    navStatu: "nav-absolute ",
+    postguide: "",
   }),
   computed: {
+    imgSrc() {
+      return imgSrc;
+    },
+    navstyle() {
+      return `left : ${this.navleft}px`;
+    },
     eachPageComments() {
       return this.comments.slice(
         (this.commentPage - 1) * this.eachPage,
@@ -103,16 +189,80 @@ export default {
     getPost() {
       this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) this.post = res.data.data;
-        console.log(res.data.data);
+        this.$nextTick(this.tonavlist);
       });
+    },
+    imgHoverIn() {},
+    getPostguide() {
+      this.$http
+        .get(`/api/common/findbeforafter/${this.$route.params.id}`)
+        .then((res) => {
+          if (res.data.code == 10000) {
+            this.postguide = res.data.data;
+            this.postguide.forEach((e) => {
+              e.img = this.$randomImg.randomImg();
+            });
+          }
+        });
     },
     moment(time) {
       return moment(time).format("YYYY-MM-DD");
     },
+    getTocDepth(dom) {
+      let top = document.querySelector("#postContent");
+      if (dom.parentNode == top) return 1;
+      if (dom.parentNode == document.querySelector("html")) return 0;
+      return this.getTocDepth(dom.parentNode) + 1;
+    },
+    tonavlist() {
+      let list = new Array();
+      console.log("1");
+      document.querySelectorAll(".mce-toc a").forEach((e) => {
+        let text = e.innerText;
+        let href = e.getAttribute("href");
+        list.push({ text: text, href: href, deep: this.getTocDepth(e) });
+      });
+      this.nav = list;
+    },
+    randomImg() {
+      return require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
+    },
+    handleScroll() {
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (scrollTop >= 300 - 56) {
+        this.navStatu = "nav-fixed";
+      } else {
+        this.navStatu = "nav-absolute";
+      }
+    },
+    onNavResize() {
+      let content = document.querySelector("#postContent");
+      const windowX = document.documentElement.offsetWidth;
+      const navMr = (windowX + content.offsetWidth) / 2 + 56; //(X-w/2 + w)化简
+      this.navleft = navMr;
+    },
   },
   created() {
-    Prism.highlightAll();
     this.getPost();
+    this.getPostguide();
+  },
+  mounted() {
+    console.log(this.$randomImg.randomImg());
+    let that = this;
+    window.onload = function () {
+      that.tonavlist();
+    };
+    window.addEventListener("scroll", this.handleScroll, true);
+  },
+  updated() {
+    Prism.highlightAll();
+  },
+  destroyed() {
+    // 离开该页面需要移除这个监听的事件，不然会报错
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
@@ -124,6 +274,14 @@ export default {
 }
 .underlink:hover {
   color: orange;
+}
+.postguide .v-image__image {
+  transition: all 0.4s ease-in-out;
+  filter: brightness(20%);
+}
+.postguide:hover .v-image__image {
+  transition: all 0.4s ease-in-out;
+  filter: brightness(40%);
 }
 .underlink:after {
   content: "";
@@ -140,5 +298,18 @@ export default {
 .underlink:hover:after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+.mce-toc {
+  display: none;
+}
+.nav-absolute {
+  position: absolute;
+  top: 300px;
+  left: 80vw;
+}
+.nav-fixed {
+  position: fixed;
+  top: 57px;
+  left: 80vw;
 }
 </style>

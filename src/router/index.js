@@ -7,7 +7,7 @@ import navm from '../components/navm.vue'
 import home from '../views/home.vue'
 import editor from '../components/editor.vue'
 import article from '../components/post.vue'
-import homepage from '../views/postpage.vue'
+import postlist from '../views/postlist.vue'
 import login from '../views/login.vue'
 import game from '../views/game.vue'
 Vue.use(VueRouter)
@@ -58,7 +58,7 @@ const routes = [
         children: [{
             path: '/',
             name: 'home',
-            component: homepage,
+            component: postlist,
         }, {
             path: '/post/:id',
             name: 'post',
@@ -79,6 +79,7 @@ const routes = [
 
 const router = new VueRouter({
     routes,
+    mode: 'history',
     base: process.env.BASE_URL,
     scrollBehavior() {
         return { x: 0, y: 0 }

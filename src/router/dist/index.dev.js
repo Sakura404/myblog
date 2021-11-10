@@ -23,7 +23,7 @@ var _editor = _interopRequireDefault(require("../components/editor.vue"));
 
 var _post = _interopRequireDefault(require("../components/post.vue"));
 
-var _postpage = _interopRequireDefault(require("../views/postpage.vue"));
+var _postlist = _interopRequireDefault(require("../views/postlist.vue"));
 
 var _login = _interopRequireDefault(require("../views/login.vue"));
 
@@ -73,7 +73,7 @@ var routes = [{
   children: [{
     path: '/',
     name: 'home',
-    component: _postpage["default"]
+    component: _postlist["default"]
   }, {
     path: '/post/:id',
     name: 'post',
@@ -92,6 +92,7 @@ var routes = [{
 }];
 var router = new _vueRouter["default"]({
   routes: routes,
+  mode: 'history',
   base: process.env.BASE_URL,
   scrollBehavior: function scrollBehavior() {
     return {

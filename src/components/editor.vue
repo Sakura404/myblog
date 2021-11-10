@@ -1,7 +1,7 @@
 <template>
   <v-form class="mx-2">
     <v-row>
-      <v-col lg="10" cols="12">
+      <v-col lg="9" cols="12">
         <v-expansion-panels v-model="mainPanels" multiple>
           <v-expansion-panel class="mt-5">
             <v-expansion-panel-header>标题</v-expansion-panel-header>
@@ -35,7 +35,7 @@
             :setting="setting"
           /> </v-card
       ></v-col>
-      <v-col lg="2" cols="12"
+      <v-col lg="3" cols="12"
         ><v-expansion-panels v-model="supPanels" multiple class="my-5">
           <v-expansion-panel>
             <v-expansion-panel-header>作者</v-expansion-panel-header>
@@ -79,15 +79,20 @@
                     v-model="form.post.status"
                     menu-props="{ fixed:true,bottom: true, overflowY: true }"
                   ></v-select>
-                </v-col>
+                </v-col> </v-row
+              ><v-row no-gutters align="center"
+                ><v-col>发布日期:</v-col>
+                <v-col
+                  ><v-text-field v-model="date" type="date"></v-text-field
+                ></v-col>
               </v-row>
-              <v-row
-                ><v-col>发布时间:</v-col
-                ><v-col
-                  ><v-text-field
-                    type="datetime-local"
-                    v-model="date"
-                  ></v-text-field></v-col
+              <v-row align="center">
+                <v-col>发布时间:</v-col
+                ><v-col>
+                  <v-text-field
+                    v-model="time"
+                    type="time"
+                  ></v-text-field> </v-col
               ></v-row>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -98,7 +103,7 @@
         <v-btn v-if="newPost" @click="addPost()" block outlined>
           提交文章
         </v-btn>
-        <v-btn v-else @click="addPost()" block outlined>更新文章</v-btn>
+        <v-btn v-else @click="updataPost()" block outlined>更新文章</v-btn>
       </v-col>
     </v-row>
   </v-form>
@@ -113,14 +118,14 @@ export default {
     setting: {
       menubar: "file edit insert view format table tools help",
       toolbar:
-        "undo redo | fullscreen | formatselect alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media table | fontselect fontsizeselect lineheight forecolor backcolor | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat | codesample | restoredraft |code",
+        "undo redo | fullscreen | formatselect alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media table | fontselect fontsizeselect lineheight forecolor backcolor | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat | codesample | restoredraft toc |code|hr",
       toolbar_drawer: "sliding",
       font_formats:
         "serif= Noto Serif SC,Noto Serif SC, Source Han Serif SC, Source Han Serif, source-han-serif-sc, PT Serif, SongTi SC, MicroSoft Yahei, Georgia, serif ",
       quickbars_selection_toolbar:
         "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor ",
       plugins:
-        "importcss code link code codesample autosave image media table lists fullscreen quickbars",
+        "toc importcss hr code link code codesample autosave image media table lists fullscreen quickbars",
       language: "zh_CN", //本地化设置
       content_css:
         "https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Noto+Serif+SC ",
@@ -128,7 +133,8 @@ export default {
     },
     mainPanels: [0, 1],
     supPanels: [0, 1, 2],
-    date: Moment(new Date()).format("yyyy-MM-DDThh:mm"),
+    date: Moment(new Date()).format("yyyy-MM-DD"),
+    time: Moment(new Date()).format("hh:mm:ss"),
     form: {
       post: {
         title: "",
@@ -143,9 +149,7 @@ export default {
     users: ["orag", "senkaryouran", "Sakura"],
     status: ["public", "draft", "hidden"],
   }),
-  computed: {
-
-  },
+  computed: {},
   methods: {
     getterms() {
       this.$http.get("/api/terms/").then((res) => {
@@ -157,7 +161,11 @@ export default {
       this.form.terms.forEach((e, i, a) => {
         a[i] = { id: e };
       });
-      this.form.post.date = Moment(this.date).format("yyyy-MM-DD HH:mm:ss");
+      this.$set(
+        this.form.post,
+        "date",
+        Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
+      );
       console.log(this.form);
       this.$http
         .post("/api/posts/", this.form)
@@ -168,20 +176,42 @@ export default {
           console.error(err);
         });
     },
-    updataPost() {},
+    updataPost() {
+      this.form.terms.forEach((e, i, a) => {
+        a[i] = { id: e };
+      });
+      this.$set(
+        this.form.post,
+        "date",
+        Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
+      );
+      let Data = this.form;
+      console.log(Data);
+      this.$http
+        .put(`/api/posts/${this.$route.params.id}`, Data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   created() {
     this.getterms();
     if (this.$route.params.id) {
-      this.$http.get(`api/posts/${this.$route.params.id}`).then((res) => {
+      this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) {
           this.form.post = res.data.data;
+          this.date = Moment(res.data.data.date).format("yyyy-MM-DD");
+          this.time = Moment(res.data.data.time).format("hh:mm");
           this.newPost = false;
         } else {
           this.$router.push("/admin/editor");
         }
       });
-      this.$http.get(`api/terms/post/${this.$route.params.id}`).then((res) => {
+
+      this.$http.get(`/api/terms/post/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) {
           console.log(res);
           res.data.data.forEach((e) => {

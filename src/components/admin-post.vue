@@ -35,13 +35,13 @@
           </v-btn>
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <v-menu offset-y bottom >
+          <v-menu offset-y bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn depressed v-on="on" v-bind="attrs">{{
                 item.status
               }}</v-btn>
             </template>
-            <v-list  dense>
+            <v-list dense>
               <v-list-item
                 v-for="(status, key) in otherstate(item.status)"
                 @click="changestate(item, status)"
@@ -140,8 +140,7 @@ export default {
   },
   methods: {
     getPosts() {
-      this.$http.get("api/posts/").then((res) => {
-        console.log(res);
+      this.$http.get("/api/posts/").then((res) => {
         this.desserts = res.data.data;
         this.desserts.forEach((e, n, a) => {
           a[n].date = Moment(e.date).format("yyyy-MM-DD HH:mm:ss");
@@ -170,22 +169,26 @@ export default {
       this.dialogdelete = true;
     },
     delectsumbit() {
-      this.desserts.splice(this.deleteitem, 1);
-      this.dialogdelete = false;
+      this.$http
+        .delete(`/api/posts/${this.desserts[this.deleteitem].id}`)
+        .then((res) => {
+          if (res.data.code == 10000) {
+            this.desserts.splice(this.deleteitem, 1);
+            this.dialogdelete = false;
+            this.deleteitem = null;
+            this.$forceUpdate();
+          }
+        });
+
       //发生删除请求到后端
       //this.updata()
-      this.deleteitem = null;
     },
     delectcancel() {
       this.dialogdelete = false;
       this.deleteitem = null;
     },
     updata() {
-      this.$http.get("./post.json").then((res) => {
-        setTimeout(() => {
-          this.desserts = res.data;
-        }, 1000);
-      });
+      this.getPosts();
     },
   },
 };
