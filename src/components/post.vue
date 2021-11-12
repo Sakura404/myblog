@@ -78,7 +78,10 @@
             :key="index"
             cols="12"
             :md="postguide.length > 1 ? 6 : 12"
-            ><a style="text-decoration: none" :href="`/post/${item.post_id}`">
+            ><a
+              style="text-decoration: none"
+              :href="`/post/${item.post_id}`"
+            >
               <v-img
                 height="150"
                 :src="item.img"
@@ -127,6 +130,7 @@
         <postnav v-if="nav.length > 0" :navlist="nav"></postnav>
       </div>
     </v-col>
+    
   </v-row>
 </template>
 
@@ -250,7 +254,6 @@ export default {
     this.getPostguide();
   },
   mounted() {
-    console.log(this.$randomImg.randomImg());
     let that = this;
     window.onload = function () {
       that.tonavlist();

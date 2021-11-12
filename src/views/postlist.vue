@@ -16,6 +16,7 @@
           hover
           class="scaleImg my-6"
           :key="post.id"
+          :to="'/post/' + post.id"
         >
           <v-img
             class="white--text csfsdgf align-end"

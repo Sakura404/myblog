@@ -49,11 +49,11 @@
 
       <v-menu offset-y fixed bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" icon>
+          <v-btn class="mr-1" v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list outlined>
+        <v-list dense flat>
           <v-list-item to="/admin"> 管理系统 </v-list-item>
         </v-list>
       </v-menu>
