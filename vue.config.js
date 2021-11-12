@@ -23,5 +23,5 @@ module.exports = {
                 return args;
             });
     },
-    publicPath: '/'
+    outputDir: '/myblog/src/main/resources/static'
 }

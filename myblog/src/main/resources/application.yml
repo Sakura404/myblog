@@ -1,0 +1,13 @@
+server:
+  port: 1145
+
+spring:
+  datasource:
+    url: jdbc:mysql://112.74.125.3:3306/myblog
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: sakura
+    password: sakura00
+  jackson:
+    default-property-inclusion: non_null
+    date-format: YYYY-MM-dd HH:MM:SS
+

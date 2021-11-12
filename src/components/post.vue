@@ -3,9 +3,9 @@
     <v-img
       class="white--text align-end"
       height="300"
+      :src="imgSrc"
       min-width="100%"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
-      :src="imgSrc"
     >
       <v-card-title
         style="text-shadow: 2px 2px 10px #000"
@@ -78,10 +78,7 @@
             :key="index"
             cols="12"
             :md="postguide.length > 1 ? 6 : 12"
-            ><a
-              style="text-decoration: none"
-              :href="`/post/${item.post_id}`"
-            >
+            ><a style="text-decoration: none" :href="`/post/${item.post_id}`">
               <v-img
                 height="150"
                 :src="item.img"
@@ -130,12 +127,10 @@
         <postnav v-if="nav.length > 0" :navlist="nav"></postnav>
       </div>
     </v-col>
-    
   </v-row>
 </template>
 
 <script>
-var imgSrc = require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
 import Prism from "prismjs";
 import comment from "./comment.vue";
 import moment from "moment";
@@ -169,7 +164,7 @@ export default {
   }),
   computed: {
     imgSrc() {
-      return imgSrc;
+      return this.$randomImg.cdnRandomImg();
     },
     navstyle() {
       return `left : ${this.navleft}px`;
@@ -204,7 +199,7 @@ export default {
           if (res.data.code == 10000) {
             this.postguide = res.data.data;
             this.postguide.forEach((e) => {
-              e.img = this.$randomImg.randomImg();
+              e.img = this.$randomImg.cdnRandomImg();
             });
           }
         });

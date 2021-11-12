@@ -1,7 +1,7 @@
 <template>
   <v-app class="serif chinese-font">
     <v-navigation-drawer clipped temporary v-model="drawer" app>
-      <v-img src="../assets\dcbg.jpg">
+      <v-img :src="$randomImg.cdnRandomImg()">
         <v-card-title></v-card-title>
         <v-avatar class="mb-4" color="grey darken-1" size="64"
           ><img src="../assets/mk.jpg"

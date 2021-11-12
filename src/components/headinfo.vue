@@ -21,9 +21,6 @@
 </template>
 
 <script>
-const loginbg = require(`../assets/bg/${
-  Math.floor(Math.random() * 16) + 1
-}.jpg`);
 export default {
   name: "Headinfo",
 
@@ -50,7 +47,7 @@ export default {
   },
   computed: {
     loginBackgroundSrc() {
-      return `background-image:url('${loginbg}') `;
+      return `background-image:url('${this.$randomImg.cdnRandomImg()}') `;
     },
     headStyle() {
       return `opacity: ${

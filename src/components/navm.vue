@@ -14,7 +14,7 @@
       <v-navigation-drawer v-model="drawer" app>
         <v-sheet color="grey lighten-4" class="pa-4">
           <v-avatar class="mb-4" color="grey darken-1" size="64"
-            ><img src="../assets/mk.jpg"
+            ><img src="../assets/bg/1.jpg"
           /></v-avatar>
 
           <div>博客管理</div>
