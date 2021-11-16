@@ -3,7 +3,7 @@ module.exports = {
         port: 8888,
         proxy: {
             '/api': {
-                target: 'http://localhost:1145', // 后端提供给你的接口地址
+                target: 'http://112.74.125.3:1145', // 后端提供给你的接口地址
                 ws: true,
                 pathRewrite: {
                     '^/api': '/api' // 代理api使用方法=> /proxyApi/test/where

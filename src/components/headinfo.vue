@@ -2,7 +2,7 @@
   <div style="background-color: white" :style="headStyle">
     <div
       id="headinfo"
-      v-bind:style="loginBackgroundSrc"
+      :style="loginBackgroundSrc"
       v-resize="onResize"
       style="height: 100vh"
     >
@@ -41,13 +41,14 @@ export default {
         y: 0,
       },
       tops: 0,
+      bg: this.$randomImg.cdnRandomImg(),
       sentence:
         "既然已经做出了选择，最好还是先假定自己是对的。焦虑未来和后悔过去，只经历一个就够了。",
     };
   },
   computed: {
     loginBackgroundSrc() {
-      return `background-image:url('${this.$randomImg.cdnRandomImg()}') `;
+      return `background-image:url('${this.bg}') `;
     },
     headStyle() {
       return `opacity: ${

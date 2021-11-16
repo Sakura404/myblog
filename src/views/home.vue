@@ -54,7 +54,7 @@
           </v-btn>
         </template>
         <v-list dense flat>
-          <v-list-item to="/admin"> 管理系统 </v-list-item>
+          <v-list-item to="/admin"> 登录 </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>

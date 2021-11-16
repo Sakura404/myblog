@@ -1,9 +1,17 @@
+const end = 16
+    , start = 1;
 const randomImg = {
     randomImg: (() => {
-        return require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
+        return require(`../assets/bg/${Math.floor(Math.random() * end) + start}.jpg`);
     }),
-    cdnRandomImg: (() => {
-        return `https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`
+    cdnRandomImg: ((indexd) => {
+        let random = Math.floor(Math.random() * end) + start
+        while (random === indexd) {
+            random = Math.floor(Math.random() * end) + start
+            if (random)
+                break;
+        }
+        return `https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/bg/${random}.jpg`
     })
 }
 export default randomImg

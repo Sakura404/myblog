@@ -11,13 +11,27 @@
       app
     >
       <v-row no-gutters style="height: 100%" align="center" justify="center">
-        <v-col align-self="center" cols="3"
-          ><v-card color="rgb(255,255,255,.7)">
-            <v-form class="mx-5">
-              <h1 id="loginTitle" class="text-center blue-grey--text">
-                后台管理
-              </h1>
+        <v-col align-self="center" md="3" sm="6" cols="12">
+          <v-alert
+            transition="scroll-y-transition"
+            :value="this.alertmeg.length>0"
+            dismissible
+            type="error"
+            >{{ this.alertmeg }}</v-alert
+          >
+          <v-card color="rgb(255,255,255,.7)">
+            <v-form ref="login" @keyup.enter.native="userLogin()" class="mx-5">
+              <v-row justify="center" no-gutters>
+                <v-col><div id="loginTitle1"></div></v-col>
+                <v-col>
+                  <h1 id="loginTitle" class="text-center blue-grey--text">
+                    登录
+                  </h1>
+                </v-col>
+                <v-col><div id="loginTitle2"></div></v-col>
+              </v-row>
               <v-text-field
+                :rules="namerules"
                 v-model="account"
                 color="orange"
                 type="text"
@@ -25,13 +39,20 @@
               >
               </v-text-field>
               <v-text-field
+                :rules="pswrules"
                 v-model="password"
                 color="orange"
                 type="password"
                 label="密码"
               >
               </v-text-field>
-              <v-btn text block @click="userLogin()">登录</v-btn>
+              <v-btn
+                text
+                block
+                @keyup.enter.native="userLogin()"
+                @click="userLogin()"
+                >登录</v-btn
+              >
             </v-form>
           </v-card></v-col
         ></v-row
@@ -40,37 +61,48 @@
   </v-app>
 </template>
 <script>
-const loginbg = require(`../assets/bg/${
-  Math.floor(Math.random() * 16) + 1
-}.jpg`);
 export default {
   data: () => ({
     account: "",
     password: "",
-    loginBackgroundSrc: `background-image:url('${loginbg}')`,
+    namerules: [(v) => !!v || "名字不能为空"],
+    alertmeg: "",
+    pswrules: [
+      (v) => !!v || "密码不能为空",
+      (v) => v.length >= 6 || "密码不小于6位",
+    ],
   }),
+  computed: {
+    loginBackgroundSrc() {
+      return `background-image:url('${this.$randomImg.cdnRandomImg()}')`;
+    },
+  },
   methods: {
     userLogin() {
-      const data = {
-        account: this.account,
-        password: this.password,
-      };
-      this.$http
-        .post("api/users/login", data)
-        .then((res) => {
-          console.log(res);
-          if (res.data.code == "10000") {
-            sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
-            if (this.$route.query.redirect) {
-              this.$router.push(this.$route.query.redirect);
+      if (this.$refs.login.validate()) {
+        const data = {
+          account: this.account,
+          password: this.password,
+        };
+        this.$http
+          .post("api/users/login", data)
+          .then((res) => {
+            console.log(res);
+            if (res.data.code == "10000") {
+              sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
+              if (this.$route.query.redirect) {
+                this.$router.push(this.$route.query.redirect);
+              } else {
+                this.$router.push("/");
+              }
             } else {
-              this.$router.push("/");
+              this.alertmeg = res.data.meg;
             }
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     },
   },
 };
@@ -79,9 +111,9 @@ export default {
 #loginTitle {
   position: relative;
 }
-#loginTitle::before {
+#loginTitle1 {
   content: "";
-  transform: scaleX(0.5);
+  transform: scaleX(1);
   height: 2px;
   background-image: linear-gradient(
     to left,
@@ -89,14 +121,13 @@ export default {
     rgba(255, 255, 255, 0.007)
   );
   width: 100%;
-  right: 50%;
   height: 2px;
-  bottom: 50%;
-  position: absolute;
+  top: 50%;
+  position: relative;
 }
-#loginTitle::after {
+#loginTitle2 {
   content: "";
-  transform: scaleX(0.5);
+  transform: scaleX(1);
   height: 2px;
   background-image: linear-gradient(
     to right,
@@ -104,9 +135,9 @@ export default {
     rgba(255, 255, 255, 0.007)
   );
   width: 100%;
-  left: 50%;
+  top: 50%;
   height: 2px;
-  bottom: 50%;
-  position: absolute;
+
+  position: relative;
 }
 </style>
