@@ -133,8 +133,9 @@ export default {
     },
   },
   mounted: function () {
-    this.$http.get("https://api.xygeng.cn/Bing/url/").then((res) => {
+    this.$http.get("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").then((res) => {
       this.biyinapi = res.data;
+      console.log(res)
     });
     //  window.addEventListener("scroll", this.handleScroll, true);
   },

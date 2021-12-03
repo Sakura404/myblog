@@ -48,27 +48,6 @@
           v-html="post.content"
         ></div>
         <!--  -->
-        <v-divider></v-divider>
-        <span v-if="comments.length != 0" class="text-colorfull"
-          >comment | {{ comments.length }}</span
-        >
-        <comment
-          v-for="(commentItem, index) of eachPageComments"
-          :dateTime="commentItem.dateTime"
-          :author="commentItem.author"
-          :toUser="commentItem.toUser"
-          :content="commentItem.content"
-          :key="index"
-        >
-        </comment>
-        <v-pagination
-          class="my-4"
-          v-model="commentPage"
-          v-if="commentLength > 1"
-          :length="commentLength"
-          :total-visible="7"
-          circle
-        ></v-pagination>
 
         <v-divider> </v-divider>
 
@@ -94,6 +73,7 @@
               >
             </a></v-col
           >
+
           <!-- <v-col cols="12" md="6"
             ><a style="text-decoration: none" href="">
               <v-img
@@ -112,6 +92,27 @@
             </a></v-col
           > -->
         </v-row>
+        <v-divider></v-divider>
+        <span v-if="comments.length != 0" class="text-colorfull"
+          >comment | {{ comments.length }}</span
+        >
+        <comment
+          v-for="(commentItem, index) of eachPageComments"
+          :dateTime="commentItem.dateTime"
+          :author="commentItem.author"
+          :toUser="commentItem.toUser"
+          :content="commentItem.content"
+          :key="index"
+        >
+        </comment>
+        <!-- <v-pagination
+          class="my-4"
+          v-model="commentPage"
+          v-if="commentLength > 1"
+          :length="commentLength"
+          :total-visible="7"
+          circle
+        ></v-pagination> -->
       </v-card>
     </v-col>
 
@@ -148,6 +149,51 @@ export default {
       //     // toUser: "",
       //     // content: "",
       //   },
+      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる",
+      },      {
+        dateTime: "2021-10-5 12:49",
+        author: "orga",
+        content: "明日(あした)、今日(きょう)よりも好(す)きになれる1",
+      },
     ],
     post: {
       author: null,
