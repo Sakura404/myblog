@@ -5,7 +5,7 @@
         background-position: top center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: cover;
+        background-size: 100vw 100vh ;
       "
       :style="loginBackgroundSrc"
       app

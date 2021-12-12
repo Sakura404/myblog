@@ -16,4 +16,5 @@ public class User {
     private Date created;
     private Date Modified;
     private String status;
+    private String email;
 }

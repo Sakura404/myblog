@@ -156,7 +156,7 @@ export default {
 .biyin {
   background-attachment: fixed;
   background-repeat: repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   min-height: 100vh;
 }
 
