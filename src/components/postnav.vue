@@ -1,5 +1,5 @@
 <template>
-  <v-card tile class="py-3 px-3">
+  <v-card style="overflow: auto; max-height: 70vh" tile class="py-3 px-3">
     <h2 path="contents" class="mb-2 text--primary">目录</h2>
     <ul class="postnav pl-0 ml-3 mb-6">
       <li :style="navActive" class="nav-item-active"></li>
@@ -8,7 +8,7 @@
         v-for="(item, index) in navlist"
         :key="index"
         class="d-block nav-li"
-        :class="`pl-${(item.deep-3)*2}`"
+        :class="`pl-${(item.deep - 3) * 2}`"
       >
         <a
           @mouseenter="mouseIn"
@@ -98,11 +98,11 @@ export default {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 60px;
-} 
+}
 .nav-link {
   text-decoration: none;
   font-weight: bold;
-color: orange !important;;
+  color: orange !important;
 }
 
 .nav-link:hover {

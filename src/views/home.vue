@@ -97,8 +97,8 @@ export default {
   }),
   computed: {
     mainimg() {
-      let url = this.biyinapi.data;
-      const style = `background-image:url(${url})`;
+      let url = this.biyinapi;
+      const style = `background-image:url(https://bing.com${url})`;
       return style;
     },
   },
@@ -133,8 +133,9 @@ export default {
     },
   },
   mounted: function () {
-    this.$http.get("https://api.xygeng.cn/Bing/url/").then((res) => {
-      this.biyinapi = res.data;
+    this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
+      this.biyinapi = res.data.images[0].url;
+      console.log(res.data.images[0].url)
     });
     //  window.addEventListener("scroll", this.handleScroll, true);
   },

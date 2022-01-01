@@ -61,7 +61,7 @@ var routes = [{
     component: _editor["default"]
   }, {
     path: '/',
-    redirect: 'dashboard'
+    redirect: 'post'
   }]
 }, {
   path: '/login',

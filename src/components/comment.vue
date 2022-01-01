@@ -4,13 +4,15 @@
     <v-col class="comment">
       <v-row class="py-3" no-gutters>
         <v-col align-self="center" cols="2" sm="1">
-          <v-avatar size="54" color="orange">
+          <v-avatar size="54" color="blue">
             <v-img
+              v-if="this.avatar"
               min-width="170%"
               position="top"
               src="../assets/奥尔加·伊兹卡.png"
-            ></v-img
-          ></v-avatar>
+            ></v-img>
+            <h2 style="user-select: none">{{ this.author[0] }}</h2></v-avatar
+          >
         </v-col>
         <v-col cols="10" align-self="center"
           ><v-row
@@ -32,6 +34,8 @@
             color="primary"
             class="comment-reply"
             small
+            style="user-select: none"
+            @click="$emit('reply', id, author)"
             >回复</v-chip
           ></v-col
         >
@@ -41,7 +45,9 @@
         <v-col cols="11">
           <p>
             <span v-if="toUser">
-              回复 <a class="comment-toUser underlink" href="">@{{ toUser }} </a>:</span
+              回复
+              <a class="comment-toUser underlink" href="">@{{ toUser }} </a
+              >:</span
             >
             {{ content }}
           </p>
@@ -55,6 +61,9 @@
 import Moment from "moment";
 export default {
   props: {
+    id: {
+      type: Number,
+    },
     author: {
       type: String,
       default: "作者",
@@ -68,6 +77,10 @@ export default {
       default: "空白评论",
     },
     toUser: {
+      type: String,
+      default: null,
+    },
+    avatar: {
       type: String,
       default: null,
     },
@@ -86,7 +99,7 @@ export default {
           ? `${parseInt(lag / 1000 / 60 / 60)} 小时 前`
           : lag / 1000 / 60 / 60 / 24 < 7
           ? `${parseInt(lag / 1000 / 60 / 60 / 24)} 天 前`
-          : `${Moment(pasttime).format('YYYY-MM-DD HH:mm')}
+          : `${Moment(pasttime).format("YYYY-MM-DD HH:mm")}
             `;
       return lag;
     },

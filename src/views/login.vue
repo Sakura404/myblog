@@ -5,7 +5,7 @@
         background-position: top center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: 100vw 100vh ;
+        background-size: 1920px 1080px;
       "
       :style="loginBackgroundSrc"
       app
@@ -14,7 +14,7 @@
         <v-col align-self="center" md="3" sm="6" cols="12">
           <v-alert
             transition="scroll-y-transition"
-            :value="this.alertmeg.length>0"
+            :value="this.alertmeg.length > 0"
             dismissible
             type="error"
             >{{ this.alertmeg }}</v-alert

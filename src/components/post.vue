@@ -48,17 +48,23 @@
           v-html="post.content"
         ></div>
         <!--  -->
+
         <v-divider></v-divider>
-        <span v-if="comments.length != 0" class="text-colorfull"
+        <span
+          id="comment_top"
+          v-if="comments.length != 0"
+          class="text-colorfull"
           >comment | {{ comments.length }}</span
         >
         <comment
           v-for="(commentItem, index) of eachPageComments"
-          :dateTime="commentItem.dateTime"
-          :author="commentItem.author"
-          :toUser="commentItem.toUser"
+          :dateTime="commentItem.date"
+          :author="commentItem.user ? commentItem.user.name : null"
+          :toUser="commentItem.reply ? commentItem.reply.user.name : null"
           :content="commentItem.content"
+          :id="commentItem.id"
           :key="index"
+          @reply="reply"
         >
         </comment>
         <v-pagination
@@ -68,10 +74,60 @@
           :length="commentLength"
           :total-visible="7"
           circle
+          @input="tocommentTop()"
         ></v-pagination>
 
         <v-divider> </v-divider>
-
+        <v-form ref="comment">
+          <v-row class="my-4" no-gutters>
+            <v-col class="mr-5" cols="4">
+              <v-text-field
+                outlined
+                v-model="commentForm.name"
+                :rules="commentRules.name"
+                label="名称"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col class="mr-5" cols="4">
+              <v-text-field
+                type="email"
+                outlined
+                label="邮箱"
+                :rules="commentRules.email"
+                v-model="commentForm.email"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col class="mr-5" cols="3">
+              <v-btn
+                outlined
+                block
+                v-if="commentForm.replyName"
+                @click="replyCancel()"
+                >取消回复</v-btn
+              >
+            </v-col>
+            <v-col cols="12">
+              <v-textarea
+                :rules="commentRules.content"
+                outlined
+                :label="
+                  commentForm.replyName
+                    ? `回复 @${commentForm.replyName}:`
+                    : '评论'
+                "
+                v-model="commentForm.content"
+              ></v-textarea
+            ></v-col>
+            <v-col cols="12"
+              ><v-btn @click=" replysubmit() " outlined block>
+                {{ commentForm.replyName ? "回复" : "评论" }}
+              </v-btn></v-col
+            ></v-row
+          >
+        </v-form>
+        <v-divider></v-divider>
         <v-row class="my-4" justify="center" no-gutters>
           <v-col
             v-for="(item, index) in postguide"
@@ -141,14 +197,7 @@ export default {
     commentPage: 1,
     eachPage: 10,
     nav: [],
-    comments: [
-      //   {
-      //     // dateTime: "2021-10-5 12:49",
-      //     // author: "",
-      //     // toUser: "",
-      //     // content: "",
-      //   },
-    ],
+    comments: [],
     post: {
       author: null,
       content: null,
@@ -158,9 +207,25 @@ export default {
       status: null,
       title: null,
     },
+    commentForm: {
+      name: "",
+      postId: null,
+      replyId: null,
+      replyName: "",
+      email: "",
+      content: "",
+    },
     navleft: 0,
     navStatu: "nav-absolute ",
     postguide: "",
+    commentRules: {
+      name: [(v) => !!v || "名称不能为空"],
+      email: [
+        (v) => !!v || "邮箱不能为空",
+        (v) => /.+@.+/.test(v) || "邮箱格式不正确",
+      ],
+      content: [(v) => !!v || "内容不能为空"],
+    },
   }),
   computed: {
     imgSrc() {
@@ -169,6 +234,7 @@ export default {
     navstyle() {
       return `left : ${this.navleft}px`;
     },
+
     eachPageComments() {
       return this.comments.slice(
         (this.commentPage - 1) * this.eachPage,
@@ -182,8 +248,27 @@ export default {
     },
   },
   methods: {
+    reply(replyId, replyName) {
+      console.log(replyName, replyId);
+      this.commentForm.replyName = replyName;
+      this.commentForm.replyId = replyId;
+    },
+    replyCancel() {
+      this.commentForm.replyName = "";
+      this.commentForm.replyId = null;
+    },
+    replysubmit() {
+      if (this.$refs.comment.validate()) {
+        this.$http.post("/api/comments/",this.commentForm).then((res) => {
+          if (res.data.code == 10000) this.getComments();
+        });
+      }
+    },
     onIntersect(entries) {
       this.$emit("onIntersect", entries);
+    },
+    tocommentTop() {
+      document.getElementById("comment_top").scrollIntoView();
     },
     getPost() {
       this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
@@ -243,10 +328,20 @@ export default {
       const navMr = (windowX + content.offsetWidth) / 2 + 56; //(X-w/2 + w)化简
       this.navleft = navMr;
     },
+    getComments() {
+      this.$http.get(`/api/comments/${this.$route.params.id}`).then((res) => {
+        if (res.data.code == 10000) {
+          this.comments = res.data.data;
+          console.log(res.data.data);
+        }
+      });
+    },
   },
   created() {
     this.getPost();
     this.getPostguide();
+    this.getComments();
+    this.commentForm.postId = this.$route.params.id;
   },
   mounted() {
     let that = this;

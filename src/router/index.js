@@ -46,7 +46,7 @@ const routes = [
         },
         {
             path: '/',
-            redirect: 'dashboard'
+            redirect: 'post'
         }]
     }, {
         path: '/login',

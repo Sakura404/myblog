@@ -85,7 +85,7 @@ export default {
         },
         {
           text: "评论数",
-          value: "commentsum",
+          value: "commentCount",
         },
         {
           text: "发表时间",

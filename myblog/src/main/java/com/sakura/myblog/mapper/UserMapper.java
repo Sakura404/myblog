@@ -24,5 +24,13 @@ public interface UserMapper {
             @Result(column = "user_email", property = "email")
     })
     public User findUserByAccount(String account);
+
+    @ResultMap(value = "UserMap")
+    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status from mb_users where user_email = #{email}")
+    public User findUserByEmail(String email);
+
+    @ResultMap(value = "UserMap")
+    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status from mb_users where user_id = #{id}")
+    public User findUserById(int id);
 }
 

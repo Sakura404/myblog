@@ -17,7 +17,7 @@ public class TermServiceImpl implements TermService {
     TermMapper termMapper;
 
     @Autowired
-    public void SetTermMapper(TermMapper termMapper) {
+    public void setTermMapper(TermMapper termMapper) {
         this.termMapper = termMapper;
     }
 

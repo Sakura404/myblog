@@ -2,6 +2,7 @@ package com.sakura.myblog.service.impl;
 
 import com.sakura.myblog.constant.enums.LoginResponseEnum;
 import com.sakura.myblog.mapper.UserMapper;
+import com.sakura.myblog.model.dto.BaseException;
 import com.sakura.myblog.model.dto.LoginException;
 import com.sakura.myblog.model.entity.User;
 import com.sakura.myblog.service.intf.UserService;
@@ -29,8 +30,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addUser(User user) {
-        return 0;
+    public User addUser(User user) {
+        return null;
+    }
+
+    @Override
+    public User addtourist(String name, String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        int addFlag = userMapper.addUser(user);
+        if (addFlag != 1) {
+            throw new BaseException("-1", "添加失败");
+        }
+        return user;
     }
 
     @Override
@@ -53,4 +66,5 @@ public class UserServiceImpl implements UserService {
             throw new LoginException(LoginResponseEnum.PASSWORD_IS_ERROR.getCode(), LoginResponseEnum.PASSWORD_IS_ERROR.getMsg());
         }
     }
+
 }

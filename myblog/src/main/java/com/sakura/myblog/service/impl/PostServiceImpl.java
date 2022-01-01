@@ -1,6 +1,7 @@
 package com.sakura.myblog.service.impl;
 
 
+import com.sakura.myblog.mapper.CommentMapper;
 import com.sakura.myblog.mapper.PostMapper;
 import com.sakura.myblog.mapper.TermMapper;
 import com.sakura.myblog.model.VO.PostListVO;
@@ -34,12 +35,24 @@ public class PostServiceImpl implements PostService {
         this.postMapper = postMapper;
     }
 
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Override
     public List<PostListVO> getPost() {
         List<PostListVO> postList = postMapper.findPostList();
         if (postList.isEmpty()) {
             throw new BaseException("-1", "空查询");
+        }
+        Iterator<PostListVO> i = postList.iterator();
+        while (i.hasNext()) {
+            PostListVO item = i.next();
+            int postId = item.getId();
+            int count = commentMapper.findCommentsByPostId(postId).size();
+            int index = postList.indexOf(item);
+            PostListVO newItem = postList.get(index);
+            newItem.setCommentCount(count);
+            postList.set(index, newItem);
         }
         return postList;
     }

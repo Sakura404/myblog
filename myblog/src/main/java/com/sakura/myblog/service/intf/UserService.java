@@ -8,7 +8,11 @@ import java.util.Map;
  * @author Sakura
  */
 public interface UserService {
-    public int addUser(User user);
+    public User addUser(User user);
+
+    public User addtourist(String name,String email);
+
     public User updateUser(User user);
+
     public Map<String, String> userLogin(User user);
 }

@@ -8,7 +8,6 @@ import java.util.Objects;
  * @author Sakura
  */
 @Data
-
 public class Term {
     private int id;
     private String name;
