@@ -14,19 +14,17 @@
         <v-col align-self="center" md="3" sm="6" cols="12">
           <v-alert
             transition="scroll-y-transition"
-            :value="this.alertmeg.length > 0"
+            v-model="submitAlert.show"
             dismissible
-            type="error"
-            >{{ this.alertmeg }}</v-alert
+            :type="submitAlert.type"
+            >{{ this.submitAlert.meg }}</v-alert
           >
           <v-card color="rgb(255,255,255,.7)">
             <v-form ref="login" @keyup.enter.native="userLogin()" class="mx-5">
               <v-row justify="center" no-gutters>
                 <v-col><div id="loginTitle1"></div></v-col>
                 <v-col>
-                  <h1 id="loginTitle" class="text-center blue-grey--text">
-                    登录
-                  </h1>
+                  <h1 id="loginTitle" class="text-center">登录</h1>
                 </v-col>
                 <v-col><div id="loginTitle2"></div></v-col>
               </v-row>
@@ -36,6 +34,7 @@
                 color="orange"
                 type="text"
                 label="用户名"
+
               >
               </v-text-field>
               <v-text-field
@@ -51,6 +50,7 @@
                 block
                 @keyup.enter.native="userLogin()"
                 @click="userLogin()"
+                class="text-button"
                 >登录</v-btn
               >
             </v-form>
@@ -66,7 +66,7 @@ export default {
     account: "",
     password: "",
     namerules: [(v) => !!v || "名字不能为空"],
-    alertmeg: "",
+    submitAlert: { meg: "", show: false, type: "success" },
     pswrules: [
       (v) => !!v || "密码不能为空",
       (v) => v.length >= 6 || "密码不小于6位",
@@ -89,6 +89,9 @@ export default {
           .then((res) => {
             console.log(res);
             if (res.data.code == "10000") {
+              this.submitAlert.meg = "登录成功 ";
+              this.submitAlert.type = "success";
+              this.submitAlert.show = true;
               sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
               if (this.$route.query.redirect) {
                 this.$router.push(this.$route.query.redirect);
@@ -96,7 +99,9 @@ export default {
                 this.$router.push("/");
               }
             } else {
-              this.alertmeg = res.data.meg;
+              this.submitAlert.meg = res.data.message;
+              this.submitAlert.type = "error";
+              this.submitAlert.show = true;
             }
           })
           .catch((err) => {

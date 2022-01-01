@@ -49,6 +49,7 @@
         ></div>
         <!--  -->
 
+
         <v-divider></v-divider>
         <span
           id="comment_top"
@@ -150,6 +151,7 @@
               >
             </a></v-col
           >
+
           <!-- <v-col cols="12" md="6"
             ><a style="text-decoration: none" href="">
               <v-img
@@ -168,6 +170,27 @@
             </a></v-col
           > -->
         </v-row>
+        <v-divider></v-divider>
+        <span v-if="comments.length != 0" class="text-colorfull"
+          >comment | {{ comments.length }}</span
+        >
+        <comment
+          v-for="(commentItem, index) of eachPageComments"
+          :dateTime="commentItem.dateTime"
+          :author="commentItem.author"
+          :toUser="commentItem.toUser"
+          :content="commentItem.content"
+          :key="index"
+        >
+        </comment>
+        <!-- <v-pagination
+          class="my-4"
+          v-model="commentPage"
+          v-if="commentLength > 1"
+          :length="commentLength"
+          :total-visible="7"
+          circle
+        ></v-pagination> -->
       </v-card>
     </v-col>
 
@@ -197,6 +220,7 @@ export default {
     commentPage: 1,
     eachPage: 10,
     nav: [],
+
     comments: [],
     post: {
       author: null,
