@@ -53,7 +53,7 @@ export default {
     drawer: null,
     links: [
       ["mdi-home", "首页", "/admin/post"],
-      ["mdi-post-outline", "文章管理", "/admin/post"],
+     // ["mdi-post-outline", "文章管理", "/admin/post"],
       //  ["mdi-comment", "评论管理", ""],
       ["mdi-pencil", "文章编辑器", "/admin/editor"],
       //  ["mdi-delete", "用户管理"],

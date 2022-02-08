@@ -7,10 +7,10 @@ exports["default"] = void 0;
 var end = 16,
     start = 1;
 var randomImg = {
-  cdnRandomImg: function cdnRandomImg() {
+  RandomImg: function RandomImg() {
     return require("../assets/bg/".concat(Math.floor(Math.random() * end) + start, ".jpg"));
   },
-  s: function s(indexd) {
+  cdnRandomImg: function cdnRandomImg(indexd) {
     var random = Math.floor(Math.random() * end) + start;
 
     while (random === indexd) {

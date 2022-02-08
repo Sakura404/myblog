@@ -11,3 +11,20 @@ spring:
     default-property-inclusion: non_null
     date-format: YYYY-MM-dd HH:MM:SS
     time-zone: GMT+8
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 20
+        max-idle: -1
+        min-idle: 0
+    timeout: 1000
+logging:
+  level:
+    com:
+      sakura:
+        myblog:
+          mapper:
+            debug

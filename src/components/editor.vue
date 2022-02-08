@@ -62,7 +62,7 @@
                   :key="index"
                   :value="term.id"
                 >
-                  {{ term.name }}{{ term.id }}</v-chip
+                  {{ term.name }}</v-chip
                 >
               </v-chip-group>
             </v-expansion-panel-content></v-expansion-panel

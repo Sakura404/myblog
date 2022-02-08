@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jdk.jfr.Timestamp;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -13,8 +14,8 @@ import java.util.Date;
  * @author Sakura
  */
 @Data
-
-public class Post {
+public class Post implements Serializable {
+    private static final long serialVersionUID=1L;
     private int id;
     private String title;
     private String author;

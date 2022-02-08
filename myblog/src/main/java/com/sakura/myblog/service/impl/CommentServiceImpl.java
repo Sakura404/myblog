@@ -7,6 +7,8 @@ import com.sakura.myblog.model.entity.Comment;
 import com.sakura.myblog.model.entity.User;
 import com.sakura.myblog.service.intf.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.Map;
 /**
  * @author Sakura
  */
+@CacheConfig(cacheNames = "comment")
 @Service(value = "CommentService")
 public class CommentServiceImpl implements CommentService {
     @Autowired
@@ -23,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserMapper userMapper;
 
+    @Cacheable(key = "#postId")
     @Override
     public List<Comment> getComments(int postId) {
         List<Comment> commentList = commentMapper.findCommentsByPostId(postId);
@@ -32,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
         return commentList;
     }
 
+    @Cacheable(key = "#commentId")
     @Override
     public Comment findComment(int commentId) {
         Comment comment = commentMapper.findCommentsByCommentId(commentId);
@@ -49,8 +54,8 @@ public class CommentServiceImpl implements CommentService {
             user.setName(commentVO.get("name").toString());
             user.setEmail(commentVO.get("email").toString());
             user.setStatus("tourist");
-            user.setCreated(new Date(System.currentTimeMillis()));
-            user.setModified(new Date(System.currentTimeMillis()));
+            user.setCreated(new Date());
+            user.setModified(new Date());
             int addUserFlag = userMapper.addUser(user);
             if (addUserFlag != 1) {
                 throw new BaseException("-1", "添加失败");
@@ -63,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setPostId(Integer.parseInt(commentVO.get("postId").toString()));
         comment.setStatus("public");
-        comment.setDate(new Date(System.currentTimeMillis()));
+        comment.setDate(new Date());
         Comment reply = new Comment();
         if (commentVO.get("replyId") != null) {
             reply.setId(Integer.parseInt(commentVO.get("replyId").toString()));

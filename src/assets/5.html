@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC">
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        .header {
+            grid-area: header;
+        }
+
+        .aside {
+            grid-area: sidebar;
+        }
+
+        .main {
+            grid-area: content;
+        }
+
+        .footer {
+            grid-area: footer;
+        }
+
+        .layout {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-areas:
+                'header header  header header'
+                'sidebar sidebar  content content'
+                'footer footer  footer footer';
+        }
+
+        .layout div {
+            background-color: pink;
+        }
+
+        .chinese-font {
+            font-family: 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', sans-serif;
+        }
+
+        .other {
+            line-height: 30px;
+            width: 500px;
+            color: #797979;
+            font-size: 15px;
+        }
+
+        .serif {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif', source-han-serif-sc, 'PT Serif', 'SongTi SC', 'MicroSoft Yahei', Georgia, serif!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <div >1</div>
+        <div >2</div>
+        <div >3</div>
+        <div >4</div>
+    </div>
+</body>
+
+</html>

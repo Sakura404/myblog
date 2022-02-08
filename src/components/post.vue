@@ -49,7 +49,6 @@
         ></div>
         <!--  -->
 
-
         <v-divider></v-divider>
         <span
           id="comment_top"
@@ -122,7 +121,7 @@
               ></v-textarea
             ></v-col>
             <v-col cols="12"
-              ><v-btn @click=" replysubmit() " outlined block>
+              ><v-btn @click="replysubmit()" outlined block>
                 {{ commentForm.replyName ? "回复" : "评论" }}
               </v-btn></v-col
             ></v-row
@@ -170,19 +169,6 @@
             </a></v-col
           > -->
         </v-row>
-        <v-divider></v-divider>
-        <span v-if="comments.length != 0" class="text-colorfull"
-          >comment | {{ comments.length }}</span
-        >
-        <comment
-          v-for="(commentItem, index) of eachPageComments"
-          :dateTime="commentItem.dateTime"
-          :author="commentItem.author"
-          :toUser="commentItem.toUser"
-          :content="commentItem.content"
-          :key="index"
-        >
-        </comment>
         <!-- <v-pagination
           class="my-4"
           v-model="commentPage"
@@ -283,7 +269,7 @@ export default {
     },
     replysubmit() {
       if (this.$refs.comment.validate()) {
-        this.$http.post("/api/comments/",this.commentForm).then((res) => {
+        this.$http.post("/api/comments/", this.commentForm).then((res) => {
           if (res.data.code == 10000) this.getComments();
         });
       }

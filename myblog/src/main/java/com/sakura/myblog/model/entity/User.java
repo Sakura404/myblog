@@ -2,13 +2,14 @@ package com.sakura.myblog.model.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Sakura
  */
 @Data
-public class User {
+public class User implements Serializable {
     private int id;
     private String account;
     private String password;
