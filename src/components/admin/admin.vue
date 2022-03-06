@@ -1,5 +1,6 @@
 <template>
-  <v-app id="inspire" class="serif">
+  <v-app id="inspire"
+    class="serif">
     <v-main>
       <v-system-bar app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -11,11 +12,13 @@
         <v-icon>mdi-triangle</v-icon>
       </v-system-bar>
 
-      <v-navigation-drawer v-model="drawer" app>
-        <v-sheet color="grey lighten-4" class="pa-4">
-          <v-avatar class="mb-4" color="grey darken-1" size="64"
-            ><img src="../assets/bg/1.jpg"
-          /></v-avatar>
+      <v-navigation-drawer v-model="drawer"
+        app>
+        <v-sheet color="grey lighten-4"
+          class="pa-4">
+          <v-avatar class="mb-4"
+            color="grey darken-1"
+            size="64"><img src="../../assets/bg/1.jpg" /></v-avatar>
 
           <div>博客管理</div>
         </v-sheet>
@@ -23,12 +26,10 @@
         <v-divider></v-divider>
 
         <v-list>
-          <v-list-item
-            v-for="[icon, text, link] in links"
+          <v-list-item v-for="[icon, text, link] in links"
             :to="link"
             :key="icon"
-            link
-          >
+            link>
             <v-list-item-icon>
               <v-icon>{{ icon }}</v-icon>
             </v-list-item-icon>
@@ -40,7 +41,9 @@
         </v-list>
       </v-navigation-drawer>
 
-      <router-view></router-view>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -53,8 +56,8 @@ export default {
     drawer: null,
     links: [
       ["mdi-home", "首页", "/admin/post"],
-     // ["mdi-post-outline", "文章管理", "/admin/post"],
-      //  ["mdi-comment", "评论管理", ""],
+      // ["mdi-post-outline", "文章管理", "/admin/post"],
+      ["mdi-comment", "评论管理", "/admin/comment"],
       ["mdi-pencil", "文章编辑器", "/admin/editor"],
       //  ["mdi-delete", "用户管理"],
       //["mdi-account-details", "媒体管理"],

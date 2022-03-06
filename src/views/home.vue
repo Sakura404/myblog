@@ -1,23 +1,24 @@
 <template>
   <v-app class="serif chinese-font">
-    <v-navigation-drawer clipped temporary v-model="drawer" app>
+    <v-navigation-drawer clipped
+      temporary
+      v-model="drawer"
+      app>
       <v-img :src="$randomImg.cdnRandomImg()">
         <v-card-title></v-card-title>
-        <v-avatar class="mb-4" color="grey darken-1" size="64"
-          ><img src="../assets/mk.jpg"
-        /></v-avatar>
+        <v-avatar class="mb-4"
+          color="grey darken-1"
+          size="64"><img src="../assets/mk.jpg" /></v-avatar>
       </v-img>
 
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item
-          color="blue"
+        <v-list-item color="blue"
           v-for="[icon, text, link] in links"
           :to="link"
           :key="icon"
-          link
-        >
+          link>
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
@@ -26,47 +27,52 @@
             <v-list-item-title>{{ text }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list></v-navigation-drawer
-    >
+      </v-list>
+    </v-navigation-drawer>
 
-    <v-app-bar
-      clipped-left
+    <v-app-bar clipped-left
       style="transition: background-color 0s"
       :color="toolcolor ? 'white' : 'rgba(0, 0, 0, 0)'"
       :dark="!toolcolor"
       :flat="toolflat"
       short
       fixed
-      class="toolwhite"
-    >
+      class="toolwhite">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
       <v-app-bar-title>散の華</v-app-bar-title>
       <v-spacer></v-spacer>
-
-      <v-btn icon>
+                
+      <v-btn icon>  
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-menu offset-y fixed bottom>
+      <v-menu offset-y
+        fixed
+        bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="mr-1" v-bind="attrs" v-on="on" icon>
+          <v-btn class="mr-1"
+            v-bind="attrs"
+            v-on="on"
+            icon>
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list dense flat>
+        <v-list dense
+          flat>
           <v-list-item to="/admin"> 登录 </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
 
     <v-main>
-      <v-container id="main-container" fluid class="pa-0">
-        <headinfo
-          v-if="$route.path == '/'"
+      <v-container id="main-container"
+        fluid
+        class="pa-0">
+        <headinfo v-if="$route.path == '/'"
           @observe="headobserve"
-          class=""
-        ></headinfo>
-        <div :style="mainimg" class="biyin">
+          class=""></headinfo>
+        <div :style="mainimg"
+          class="biyin">
           <router-view @onIntersect="onIntersect"></router-view>
         </div>
       </v-container>
@@ -135,7 +141,7 @@ export default {
   mounted: function () {
     this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
       this.biyinapi = res.data.images[0].url;
-      console.log(res.data.images[0].url)
+      console.log(res.data.images[0].url);
     });
     //  window.addEventListener("scroll", this.handleScroll, true);
   },
@@ -158,7 +164,6 @@ export default {
   background-attachment: fixed;
   background-repeat: repeat;
   background-size: 100% 100%;
-  min-height: 100vh;
 }
 
 code {

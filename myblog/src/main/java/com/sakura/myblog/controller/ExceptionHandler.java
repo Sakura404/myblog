@@ -7,6 +7,8 @@ import com.sakura.myblog.utils.ResponseUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 /**
  * @author Sakura
  */
@@ -26,4 +28,9 @@ public class ExceptionHandler {
         return ResponseUtil.error(e.getCode(), e.getMessage());
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+    @ResponseBody
+    public ResponseDTO exceptionHandler(SQLIntegrityConstraintViolationException e) {
+        return ResponseUtil.error(-2, "关键数据为空");
+    }
 }

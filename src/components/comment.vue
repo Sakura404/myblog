@@ -1,54 +1,52 @@
 <template>
   <v-row no-gutters>
-    <v-col v-if="toUser" cols="2" sm="1"></v-col>
+    <v-col v-if="toUser"
+      cols="2"
+      sm="1"></v-col>
     <v-col class="comment">
-      <v-row class="py-3" no-gutters>
-        <v-col align-self="center" cols="2" sm="1">
-          <v-avatar size="54" color="blue">
-            <v-img
-              v-if="this.avatar"
+      <v-row class="py-3"
+        no-gutters>
+        <v-col align-self="center"
+          cols="2"
+          sm="1">
+          <v-avatar size="54"
+            color="blue">
+            <v-img v-if="this.avatar"
               min-width="170%"
               position="top"
-              src="../assets/奥尔加·伊兹卡.png"
-            ></v-img>
-            <h2 style="user-select: none">{{ this.author[0] }}</h2></v-avatar
-          >
+              src="../assets/奥尔加·伊兹卡.png"></v-img>
+            <h2 style="user-select: none">{{ this.author[0] }}</h2>
+          </v-avatar>
         </v-col>
-        <v-col cols="10" align-self="center"
-          ><v-row
-            no-gutters
+        <v-col cols="10"
+          align-self="center">
+          <v-row no-gutters
             style="color: #3daee9"
-            class="font-weight-bold comment-author"
-            >{{ author }}</v-row
-          >
+            class="font-weight-bold comment-author">{{ author }}</v-row>
           <v-row no-gutters>
-            <v-col class="grey--text comment-datetime"
-              >发布于 {{ lagtime }}</v-col
-            >
-            <v-spacer></v-spacer
-          ></v-row>
+            <v-col class="grey--text comment-datetime">发布于 {{ lagtime }}</v-col>
+            <v-spacer></v-spacer>
+          </v-row>
         </v-col>
-        <v-col align-self="center" class="text-left"
-          ><v-chip
-            transition="fade-transition"
+        <v-col align-self="center"
+          class="text-left">
+          <v-chip transition="fade-transition"
             color="primary"
             class="comment-reply"
             small
             style="user-select: none"
-            @click="$emit('reply', id, author)"
-            >回复</v-chip
-          ></v-col
-        >
+            @click="$emit('reply', id, author)">回复</v-chip>
+        </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="2" sm="1"></v-col>
+        <v-col cols="2"
+          sm="1"></v-col>
         <v-col cols="11">
           <p>
             <span v-if="toUser">
               回复
-              <a class="comment-toUser underlink" href="">@{{ toUser }} </a
-              >:</span
-            >
+              <a class="comment-toUser underlink"
+                href="">@{{ toUser }} </a>:</span>
             {{ content }}
           </p>
         </v-col>

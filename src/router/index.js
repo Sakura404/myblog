@@ -1,21 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import work from '../components/working.vue'
-import adminpost from '../components/admin-post.vue'
+import adminpost from '../components/admin/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
-import navm from '../components/navm.vue'
+import admin from '../components/admin/admin.vue'
 import home from '../views/home.vue'
-import editor from '../components/editor.vue'
+import editor from '../components/admin/editor.vue'
 import article from '../components/post.vue'
 import postlist from '../views/postlist.vue'
 import login from '../views/login.vue'
 import game from '../views/game.vue'
+import adminComment from '../components/admin/admin-comment.vue'
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/admin',
-        component: navm,
+        component: admin,
         meta: {
             requireAuth: true
         },
@@ -43,6 +44,11 @@ const routes = [
             path: 'editor',
             name: 'editor',
             component: editor
+        },
+        {
+            path: 'comment',
+            name: 'adminComment',
+            component: adminComment
         },
         {
             path: '/',

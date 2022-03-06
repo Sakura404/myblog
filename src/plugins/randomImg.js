@@ -1,10 +1,10 @@
 const end = 16
     , start = 1;
 const randomImg = {
-    RandomImg: (() => {
+    cdnRandomImg: (() => {
         return require(`../assets/bg/${Math.floor(Math.random() * end) + start}.jpg`);
     }),
-    cdnRandomImg: ((indexd) => {
+    RandomImg: ((indexd) => {
         let random = Math.floor(Math.random() * end) + start
         while (random === indexd) {
             random = Math.floor(Math.random() * end) + start

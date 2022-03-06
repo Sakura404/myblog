@@ -1,5 +1,5 @@
 <template>
-  <v-form class="mx-2">
+  <v-form >
     <v-row>
       <v-col lg="9" cols="12">
         <v-expansion-panels v-model="mainPanels" multiple>
@@ -166,7 +166,6 @@ export default {
         "date",
         Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
       );
-      console.log(this.form);
       this.$http
         .post("/api/posts/", this.form)
         .then((res) => {

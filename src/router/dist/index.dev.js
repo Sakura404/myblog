@@ -11,15 +11,15 @@ var _vueRouter = _interopRequireDefault(require("vue-router"));
 
 var _working = _interopRequireDefault(require("../components/working.vue"));
 
-var _adminPost = _interopRequireDefault(require("../components/admin-post.vue"));
+var _adminPost = _interopRequireDefault(require("../components/admin/admin-post.vue"));
 
 var _dashboard = _interopRequireDefault(require("../components/dashboard.vue"));
 
-var _navm = _interopRequireDefault(require("../components/navm.vue"));
+var _admin = _interopRequireDefault(require("../components/admin/admin.vue"));
 
 var _home = _interopRequireDefault(require("../views/home.vue"));
 
-var _editor = _interopRequireDefault(require("../components/editor.vue"));
+var _editor = _interopRequireDefault(require("../components/admin/editor.vue"));
 
 var _post = _interopRequireDefault(require("../components/post.vue"));
 
@@ -29,13 +29,15 @@ var _login = _interopRequireDefault(require("../views/login.vue"));
 
 var _game = _interopRequireDefault(require("../views/game.vue"));
 
+var _adminComment = _interopRequireDefault(require("../components/admin/admin-comment.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
 
 var routes = [{
   path: '/admin',
-  component: _navm["default"],
+  component: _admin["default"],
   meta: {
     requireAuth: true
   },
@@ -59,6 +61,10 @@ var routes = [{
     path: 'editor',
     name: 'editor',
     component: _editor["default"]
+  }, {
+    path: 'comment',
+    name: 'adminComment',
+    component: _adminComment["default"]
   }, {
     path: '/',
     redirect: 'post'

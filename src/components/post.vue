@@ -1,24 +1,20 @@
 <template>
-  <v-row style="position: relative" justify="center" class="serif no-gutters">
-    <v-img
-      class="white--text align-end"
+  <v-row v-if="post" style="position: relative"
+    justify="center"
+    class="serif no-gutters">
+    <v-img class="white--text align-end"
       height="300"
       :src="imgSrc"
       min-width="100%"
-      gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
-    >
-      <v-card-title
-        style="text-shadow: 2px 2px 10px #000"
-        class="py-8 font-weight-thin justify-center"
-      >
-        <h1
-          v-intersect="{
+      gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)">
+      <v-card-title style="text-shadow: 2px 2px 10px #000"
+        class="py-8 font-weight-thin justify-center">
+        <h1 v-intersect="{
             handler: onIntersect,
             options: {
               threshold: [0, 0.8],
             },
-          }"
-        >
+          }">
           {{ post.title }}
         </h1>
       </v-card-title>
@@ -32,124 +28,110 @@
       </v-card-subtitle>
     </v-img>
     <v-spacer></v-spacer>
-    <v-col :class="navStatu" cols="2"></v-col>
-    <v-col lg="7" xl="6" cols="12">
-      <v-card
-        elevation="10"
+    <v-col :class="navStatu"
+      cols="2"></v-col>
+    <v-col lg="7"
+      xl="6"
+      cols="12">
+      <v-card elevation="10"
         outlined
         flat
         style="background-color: rgba(255, 255, 255, 0.8)"
-        class="px-6 py-6"
-      >
+        class="px-6 py-6">
         <!--  -->
-        <div
-          id="postContent"
+        <div id="postContent"
           v-resize="onNavResize"
-          v-html="post.content"
-        ></div>
+          v-html="post.content"></div>
         <!--  -->
 
         <v-divider></v-divider>
-        <span
-          id="comment_top"
+        <span id="comment_top"
           v-if="comments.length != 0"
-          class="text-colorfull"
-          >comment | {{ comments.length }}</span
-        >
-        <comment
-          v-for="(commentItem, index) of eachPageComments"
+          class="text-colorfull">comment | {{ comments.length }}</span>
+        <comment v-for="(commentItem, index) of eachPageComments"
           :dateTime="commentItem.date"
           :author="commentItem.user ? commentItem.user.name : null"
           :toUser="commentItem.reply ? commentItem.reply.user.name : null"
           :content="commentItem.content"
           :id="commentItem.id"
           :key="index"
-          @reply="reply"
-        >
+          @reply="reply">
         </comment>
-        <v-pagination
-          class="my-4"
+        <v-pagination class="my-4"
           v-model="commentPage"
           v-if="commentLength > 1"
           :length="commentLength"
           :total-visible="7"
           circle
-          @input="tocommentTop()"
-        ></v-pagination>
+          @input="tocommentTop()"></v-pagination>
 
         <v-divider> </v-divider>
         <v-form ref="comment">
-          <v-row class="my-4" no-gutters>
-            <v-col class="mr-5" cols="4">
-              <v-text-field
-                outlined
+          <v-row class="my-4"
+            no-gutters>
+            <v-col class="mr-5"
+              cols="4">
+              <v-text-field outlined
                 v-model="commentForm.name"
                 :rules="commentRules.name"
-                label="名称"
-              >
+                label="名称">
               </v-text-field>
             </v-col>
-            <v-col class="mr-5" cols="4">
-              <v-text-field
-                type="email"
+            <v-col class="mr-5"
+              cols="4">
+              <v-text-field type="email"
                 outlined
                 label="邮箱"
                 :rules="commentRules.email"
-                v-model="commentForm.email"
-              >
+                v-model="commentForm.email">
               </v-text-field>
             </v-col>
-            <v-col class="mr-5" cols="3">
-              <v-btn
-                outlined
+            <v-col class="mr-5"
+              cols="3">
+              <v-btn outlined
                 block
                 v-if="commentForm.replyName"
-                @click="replyCancel()"
-                >取消回复</v-btn
-              >
+                @click="replyCancel()">取消回复</v-btn>
             </v-col>
             <v-col cols="12">
-              <v-textarea
-                :rules="commentRules.content"
+              <v-textarea :rules="commentRules.content"
                 outlined
                 :label="
                   commentForm.replyName
                     ? `回复 @${commentForm.replyName}:`
                     : '评论'
                 "
-                v-model="commentForm.content"
-              ></v-textarea
-            ></v-col>
-            <v-col cols="12"
-              ><v-btn @click="replysubmit()" outlined block>
+                v-model="commentForm.content"></v-textarea>
+            </v-col>
+            <v-col cols="12">
+              <v-btn @click="replysubmit()"
+                outlined
+                block>
                 {{ commentForm.replyName ? "回复" : "评论" }}
-              </v-btn></v-col
-            ></v-row
-          >
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-form>
         <v-divider></v-divider>
-        <v-row class="my-4" justify="center" no-gutters>
-          <v-col
-            v-for="(item, index) in postguide"
+        <v-row class="my-4"
+          justify="center"
+          no-gutters>
+          <v-col v-for="(item, index) in postguide"
             :key="index"
             cols="12"
-            :md="postguide.length > 1 ? 6 : 12"
-            ><a style="text-decoration: none" :href="`/post/${item.post_id}`">
-              <v-img
-                height="150"
+            :md="postguide.length > 1 ? 6 : 12"><a style="text-decoration: none"
+              :href="`/post/${item.post_id}`">
+              <v-img height="150"
                 :src="item.img"
-                class="white--text postguide align-center"
-                ><p
-                  style="padding: 40px; height: 50%"
+                class="white--text postguide align-center">
+                <p style="padding: 40px; height: 50%"
                   class="subtitle-1"
-                  :class="item.type == 'PREVIOUS' ? 'text-light' : 'text-right'"
-                >
+                  :class="item.type == 'PREVIOUS' ? 'text-light' : 'text-right'">
                   {{ item.type }} POST<br />
                   {{ item.post_title }}
-                </p></v-img
-              >
-            </a></v-col
-          >
+                </p>
+              </v-img>
+            </a></v-col>
 
           <!-- <v-col cols="12" md="6"
             ><a style="text-decoration: none" href="">
@@ -180,16 +162,15 @@
       </v-card>
     </v-col>
 
-    <v-col
-      :style="navstyle"
+    <v-col :style="navstyle"
       :class="navStatu"
       style=""
       class="d-none d-lg-block pl-6"
       cols="2"
-      xl="2"
-    >
+      xl="2">
       <div>
-        <postnav v-if="nav.length > 0" :navlist="nav"></postnav>
+        <postnav v-if="nav.length > 0"
+          :navlist="nav"></postnav>
       </div>
     </v-col>
   </v-row>
@@ -314,7 +295,12 @@ export default {
       document.querySelectorAll(".mce-toc a").forEach((e) => {
         let text = e.innerText;
         let href = e.getAttribute("href");
-        list.push({ text: text, href: href, deep: this.getTocDepth(e) });
+        list.push({
+          text: text,
+          href: href,
+          offsetTop: document.getElementById(href.substring(1)).offsetTop + 240,
+          deep: this.getTocDepth(e),
+        });
       });
       this.nav = list;
     },
