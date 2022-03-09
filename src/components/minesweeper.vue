@@ -48,7 +48,7 @@ export default {
   data: () => ({
     Vertical: 20,
     Horizontal: 20,
-    mineTotal: 10,
+    mineTotal: 40,
     gamearr: null,
     gameStar: false,
     gamewindow: null,

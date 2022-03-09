@@ -4,7 +4,8 @@
       class="text--primary">目录
     </h2>
     <v-divider class="mb-2"></v-divider>
-    <div style="overflow: auto; max-height: 60vh">
+    <div style="overflow: auto; max-height: 60vh"
+      class="nav-content">
       <ul class="postnav pl-1 ml-3 mb-6">
         <li :style="navActive"
           style="overflow:visible ;"
@@ -49,6 +50,8 @@ export default {
       this.navLastItem = e.currentTarget;
     },
     observer(dom) {
+      let offsetTop = dom.offsetTop;
+      document.querySelector(".nav-content").scrollTop = offsetTop-50;
       this.navItemActiveTop = dom.offsetTop;
       this.navItemActiveHeight = dom.offsetHeight;
       if (this.navLastItem)
@@ -73,15 +76,15 @@ export default {
     getFont(deep) {
       switch (deep) {
         case 4:
-          return "font-size:1.3rem";
+          return "font-size:1.1rem";
         case 6:
-          return "font-size:1.2rem";
+          return "font-size:1rem";
         case 8:
           return "font-size:1rem";
       }
     },
     scrollTo(offsetTop) {
-      document.documentElement.scrollTop = offsetTop ;
+      document.documentElement.scrollTop = offsetTop;
     },
     handleScroll() {
       const scrollTop =
@@ -147,6 +150,24 @@ export default {
   width: 2px;
   transition: 0.5s;
   transform: translateY(0);
+}
+.nav-content {
+  scrollbar-color: #6969dd #e0e0e0;
+  scrollbar-width: 12px;
+}
+.nav-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.nav-content::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 20px;
+}
+
+.nav-content::-webkit-scrollbar-thumb {
+  background-color: orange;
+
+  border-radius: 20px;
 }
 html {
   scroll-behavior: smooth;

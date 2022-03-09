@@ -139,6 +139,7 @@ export default {
   },
   methods: {
     getPosts() {
+        
       this.$http.get("/api/posts/").then((res) => {
         this.desserts = res.data.data;
         this.desserts.forEach((e, n, a) => {
@@ -194,4 +195,5 @@ export default {
 </script>
 
 <style>
+
 </style>

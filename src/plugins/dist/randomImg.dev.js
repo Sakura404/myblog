@@ -8,7 +8,7 @@ var end = 16,
     start = 1;
 var randomImg = {
   cdnRandomImg: function cdnRandomImg() {
-    return require("../assets/bg/".concat(Math.floor(Math.random() * end) + start, ".jpg"));
+    return require("../assets/docsmall/".concat(Math.floor(Math.random() * end) + start, ".jpg"));
   },
   RandomImg: function RandomImg(indexd) {
     var random = Math.floor(Math.random() * end) + start;
@@ -18,7 +18,7 @@ var randomImg = {
       if (random) break;
     }
 
-    return "https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/bg/".concat(random, ".jpg");
+    return "https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/docsmall/".concat(random, ".jpg");
   }
 };
 var _default = randomImg;

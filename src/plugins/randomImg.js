@@ -2,7 +2,7 @@ const end = 16
     , start = 1;
 const randomImg = {
     cdnRandomImg: (() => {
-        return require(`../assets/bg/${Math.floor(Math.random() * end) + start}.jpg`);
+        return require(`../assets/docsmall/${Math.floor(Math.random() * end) + start}.jpg`);
     }),
     RandomImg: ((indexd) => {
         let random = Math.floor(Math.random() * end) + start
@@ -11,7 +11,7 @@ const randomImg = {
             if (random)
                 break;
         }
-        return `https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/bg/${random}.jpg`
+        return `https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/docsmall/${random}.jpg`
     })
 }
 export default randomImg
