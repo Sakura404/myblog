@@ -51,7 +51,7 @@ export default {
     },
     observer(dom) {
       let offsetTop = dom.offsetTop;
-      document.querySelector(".nav-content").scrollTop = offsetTop-50;
+      document.querySelector(".nav-content").scrollTop = offsetTop - 50;
       this.navItemActiveTop = dom.offsetTop;
       this.navItemActiveHeight = dom.offsetHeight;
       if (this.navLastItem)
@@ -86,12 +86,11 @@ export default {
     scrollTo(offsetTop) {
       document.documentElement.scrollTop = offsetTop;
     },
-    handleScroll() {
+    scrollFollow() {
       const scrollTop =
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
         window.pageYOffset;
-
       if (this.navlist)
         for (let i = 1; i < this.navlist.length; i++) {
           if (
@@ -101,6 +100,7 @@ export default {
             let dom = document.getElementById(
               this.navlist[i - 1].href.substring(8)
             );
+            if(dom)
             this.observer(dom);
             break;
           }
@@ -127,11 +127,11 @@ export default {
       this.navItemActiveHeight = s.offsetHeight;
       this.navItemHoverHeight = s.offsetHeight;
     }
-    window.addEventListener("scroll", this.handleScroll, true);
+    window.addEventListener("scroll", this.scrollFollow, true);
   },
   destroyed() {
     // 离开该页面需要移除这个监听的事件，不然会报错
-    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("scroll", this.scrollFollow);
   },
 };
 </script>

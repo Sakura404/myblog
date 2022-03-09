@@ -41,8 +41,8 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
       <v-app-bar-title>散の華</v-app-bar-title>
       <v-spacer></v-spacer>
-                
-      <v-btn icon>  
+
+      <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
@@ -86,7 +86,7 @@ export default {
 
   data: () => ({
     drawer: false,
-    toolcolor: false,
+    toolcolor: true,
     toolcolorlock: false,
     toolflat: true,
     nai: true,
@@ -143,7 +143,18 @@ export default {
       this.biyinapi = res.data.images[0].url;
       console.log(res.data.images[0].url);
     });
+
     //  window.addEventListener("scroll", this.handleScroll, true);
+  },
+  created() {
+    this.$watch(
+      () => this.$route.name,
+      (name) => {
+        if (name != "home") {
+          this.toolcolor = true;
+        }
+      }
+    );
   },
 
   destroyed() {
