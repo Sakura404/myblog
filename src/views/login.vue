@@ -16,15 +16,13 @@
           md="3"
           sm="6"
           cols="12">
-          <v-snackbar 
-            style="transition-duration:0.5"
+          <v-snackbar style="transition-duration:0.5"
             :style="`translateY:60px`"
             transition="scroll-x-reverse-transition"
             timeout="2000"
             multi-line
             v-model="submitAlert.show"
-            :color="submitAlert.type=='error'?'red':'green'"
-            >
+            :color="submitAlert.type=='error'?'red':'green'">
             <v-icon class="mr-2">{{submitAlert.type=='error' ?"mdi-alert" :"mdi-check-circle"}}</v-icon> {{ submitAlert.meg }}
           </v-snackbar>
 

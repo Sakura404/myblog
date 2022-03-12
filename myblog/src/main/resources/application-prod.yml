@@ -22,6 +22,11 @@ spring:
         min-idle: 0
     timeout: 1000
     password: sakura
+file:
+  upload:
+    path: /var/www/image
+  coming:
+    path: http://senkaryouran.top/
 logging:
   level:
     com:

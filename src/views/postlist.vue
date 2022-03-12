@@ -50,9 +50,10 @@
           </v-card-actions>
         </v-card>
         <v-footer color='rgba(0,0,0,0.0)'>
-          <v-col class='text-center'
+          <v-col class='text-center '
             cols="12">
-            <strong><a href="https://beian.miit.gov.cn/"
+            <strong><a class="black--text"
+                href="https://beian.miit.gov.cn/"
                 target="_blank">粤ICP备2021170811号</a></strong>
           </v-col>
         </v-footer>

@@ -11,6 +11,7 @@ import postlist from '../views/postlist.vue'
 import login from '../views/login.vue'
 import game from '../views/game.vue'
 import adminComment from '../components/admin/admin-comment.vue'
+import adminImage from '../components/admin/admin-image.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,6 +25,10 @@ const routes = [
             path: 'dashboard',
             name: 'dashboard',
             component: dashboard
+        }, {
+            path: 'image',
+            name: 'adminImage',
+            component: adminImage
         },
         {
             path: 'work',

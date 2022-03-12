@@ -130,6 +130,7 @@ export default {
       content_css:
         "https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Noto+Serif+SC ",
       height: 700,
+      images_upload_url:"api/images/upload"
     },
     mainPanels: [0, 1],
     supPanels: [0, 1, 2],

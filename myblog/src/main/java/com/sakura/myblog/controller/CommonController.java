@@ -3,12 +3,17 @@ package com.sakura.myblog.controller;
 import com.sakura.myblog.model.dto.ResponseDTO;
 import com.sakura.myblog.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +26,9 @@ public class CommonController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Value("${file.upload.path}")
+    private String fileSavePath;
+
     @RequestMapping(value = "/findbeforafter/{id}")
     @ResponseBody
     public ResponseDTO findbeforafter(@PathVariable int id) {
@@ -29,4 +37,34 @@ public class CommonController {
         List<Map<String, Object>> r = jdbcTemplate.queryForList(sql, new Object[]{id, id, id});
         return ResponseUtil.success(r);
     }
+
+    @RequestMapping(value = "/imageupload")
+    @ResponseBody
+    public ResponseDTO imageupload(@RequestParam("files") MultipartFile[] files) {
+        String filePath = "";
+        for (MultipartFile file : files) {
+            String originalFilename = file.getOriginalFilename();
+            File fileSrc = new File(fileSavePath);
+            if (!fileSrc.exists() && !fileSrc.isDirectory()) {
+                fileSrc.mkdirs();
+            }
+            filePath = new StringBuilder(fileSavePath)
+                    .append(System.currentTimeMillis())
+                    .append(originalFilename)
+                    .toString();
+
+            try {
+                file.transferTo(new File(filePath));
+            } catch (IOException e) {
+                ResponseUtil.error(-10000, "上传失败");
+            }
+        }
+        return ResponseUtil.success(filePath);
+    }
+
+//    @RequestMapping(value = "/getimages")
+//    @ResponseBody
+//    public ResponseDTO getimages() {
+//        File files =new File(fileSavePath)
+//    }
 }

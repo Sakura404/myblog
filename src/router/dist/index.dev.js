@@ -31,6 +31,8 @@ var _game = _interopRequireDefault(require("../views/game.vue"));
 
 var _adminComment = _interopRequireDefault(require("../components/admin/admin-comment.vue"));
 
+var _adminImage = _interopRequireDefault(require("../components/admin/admin-image.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
@@ -45,6 +47,10 @@ var routes = [{
     path: 'dashboard',
     name: 'dashboard',
     component: _dashboard["default"]
+  }, {
+    path: 'image',
+    name: 'adminImage',
+    component: _adminImage["default"]
   }, {
     path: 'work',
     name: 'work',

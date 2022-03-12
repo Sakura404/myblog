@@ -1,15 +1,14 @@
 package com.sakura.myblog;
 
-import com.sakura.myblog.mapper.CommentMapper;
-import com.sakura.myblog.mapper.PostMapper;
-import com.sakura.myblog.mapper.TermMapper;
-import com.sakura.myblog.mapper.UserMapper;
+import com.sakura.myblog.mapper.*;
 import com.sakura.myblog.model.entity.Comment;
 import com.sakura.myblog.model.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.util.Date;
 
 @SpringBootTest
@@ -54,4 +53,35 @@ class MyBlogApplicationTests {
     void User() {
         System.out.println(userMapper.findUserByEmail("114514@xiabeize.com"));
     }
+
+    @Value("${file.upload.path}")
+    private String fileSavePath;
+    @Autowired
+    public MediaMapper mediaMapper;
+
+    @Test
+    void media() {
+//        Media m = new Media();
+//        m.setSize(12);
+//        m.setPath("D:/vue/image");
+//        m.setDate(new Date());
+//        m.setModified(new Date());
+//        m.setExcerpt("123123");
+//        m.
+//        mediaMapper.addMedia(m);
+        System.out.println(mediaMapper.findAll());
+        System.out.println(mediaMapper.deleteMedia(1));
+        System.out.println(mediaMapper.findMediaById(1));
+//        System.out.println(m);
+    }
+
+    @Test
+    void file() {
+        File file = new File(fileSavePath);
+        File[] files = file.listFiles();
+        for (File item : files) {
+            System.out.println(item.getName());
+        }
+    }
+
 }

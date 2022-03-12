@@ -59,6 +59,7 @@ export default {
       // ["mdi-post-outline", "文章管理", "/admin/post"],
       ["mdi-comment", "评论管理", "/admin/comment"],
       ["mdi-pencil", "文章编辑器", "/admin/editor"],
+      ["mdi-image", "图片", "/admin/image"],
       //  ["mdi-delete", "用户管理"],
       //["mdi-account-details", "媒体管理"],
       ["mdi-alert-octagon", "关于"],

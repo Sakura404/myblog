@@ -21,6 +21,11 @@ spring:
         max-idle: -1
         min-idle: 0
     timeout: 1000
+file:
+  upload:
+    path: D:/vue/image/
+  coming:
+    path: http://localhost:80/
 logging:
   level:
     com:
