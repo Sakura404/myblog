@@ -1,12 +1,26 @@
 <template>
   <div>
-    <v-dialog v-model="overlayFlag"
+    <v-dialog v-model="zoomFlag"
       max-width="70vw"
       absolute>
       <v-card max-width="70vw">
         <v-img sizes="vw"
           contain
-          :src="onCheck.url" />
+          :src="menuElement.url" />
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="deleteFlag"
+      absolute>
+      <v-card>
+        <v-card-title>警告</v-card-title>
+        <v-card-text>确定要删除该图片么</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="delectcancel()"
+            depressed>取消</v-btn>
+          <v-btn @click="delectsumbit()"
+            depressed>确认</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <v-card width="1000px"
@@ -22,27 +36,28 @@
             <v-col cols="4"
               v-for="element,index in imageList"
               :key="index">
-
+              <v-card @contextmenu="show($event,element)"
+                @click="onCheck=element">
+                <v-img :src="element.url"
+                  :alt="element.describe"
+                  height="150"></v-img>
+              </v-card>
               <v-menu v-model="showMenu"
                 absolute
+                :position-x="menuLocation.x"
+                :position-y="menuLocation.y"
                 offset-y
                 style="max-width: 600px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-card
-                    v-bind="attrs"
-                    v-on="on"
-                    @dblclick.stop="overlayFlag=true">
-                    <v-img :src="element.url"
-                      :alt="element.describe"
-                      height="150"></v-img>
-                  </v-card>
-                </template>
                 <v-list>
-                  <v-list-item  @click="imgChange(element)">
-                    <v-list-item-title>查看详细</v-list-item-title>
+                  <v-list-item @click.stop="zoomFlag=true">
+                    <v-list-item-title>
+                      <v-icon color="blue">mdi-magnify-plus-outline</v-icon> 放大
+                    </v-list-item-title>
                   </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title>删除</v-list-item-title>
+                  <v-list-item @click.stop="deleteFlag=true">
+                    <v-list-item-title>
+                      <v-icon color="red">mdi-delete</v-icon> 删除
+                    </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -97,9 +112,9 @@ export default {
       {
         id: 2,
         path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/6.4237b083.jpg",
+        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
         type: "image/jpeg",
-        size: 902178,
+        size: 1,
         date: "2022-03-13 01:03:31",
         modified: "2022-03-13 01:03:31",
         except: "",
@@ -109,7 +124,7 @@ export default {
         path: "D:/vue/image/164710667903117.jpg",
         url: "http://senkaryouran.top/img/6.4237b083.jpg",
         type: "image/jpeg",
-        size: 902178,
+        size: 2,
         date: "2022-03-13 01:03:31",
         modified: "2022-03-13 01:03:31",
         except: "",
@@ -117,9 +132,9 @@ export default {
       {
         id: 2,
         path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/6.4237b083.jpg",
+        url: "http://senkaryouran.top/img/10.c0d78c8c.jpg",
         type: "image/jpeg",
-        size: 902178,
+        size: 3,
         date: "2022-03-13 01:03:31",
         modified: "2022-03-13 01:03:31",
         except: "",
@@ -137,13 +152,34 @@ export default {
       except: "",
     },
     //照片放大遮罩开关
-    overlayFlag: false,
+    zoomFlag: false,
+    //删除确认开关
+    deleteFlag: false,
     //上传图片数据
     imgFile: "",
+    // 图片管理选项
+    showMenu: false,
+    //被选中的选项
+    menuElement: "",
+    //选项菜单坐标
+    menuLocation: { x: 0, y: 0 },
   }),
   methods: {
     openFileSelector() {
       document.querySelector("#imgFile").click();
+    },
+    onCheckChange() {
+      this.onCheck = this.menuElement;
+    },
+    show(e, element) {
+      e.preventDefault();
+      this.menuElement = element;
+      this.showMenu = false;
+      this.menuLocation.x = e.clientX;
+      this.menuLocation.y = e.clientY;
+      this.$nextTick(() => {
+        this.showMenu = true;
+      });
     },
     imgChange(item) {
       this.onCheck = item;
@@ -179,6 +215,13 @@ export default {
       for (var i = 0; i !== dt.files.length; i++) {
         this.uploadFile(dt.files[i]);
       }
+    },
+    delectsumbit() {
+      let deleteIndex = this.imageList.indexOf(this.menuElement);
+      this.imageList.splice(deleteIndex, 1);
+      this.deleteFlag = false;
+      this.onCheck = {};
+      this.menuElement={};
     },
   },
   mounted() {
