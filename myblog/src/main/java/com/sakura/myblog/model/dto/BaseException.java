@@ -39,6 +39,9 @@ public class BaseException extends RuntimeException {
         this.errorMsg = errorMsg;
     }
 
+    public BaseException(int i, String 上传失败) {
+    }
+
 
     public String getErrorCode() {
         return errorCode;

@@ -4,7 +4,6 @@ import com.sakura.myblog.mapper.MediaMapper;
 import com.sakura.myblog.model.dto.BaseException;
 import com.sakura.myblog.model.entity.Media;
 import com.sakura.myblog.service.intf.MediaService;
-import com.sakura.myblog.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -36,6 +36,15 @@ public class MediaServiceImpl implements MediaService {
         if (MediaList.isEmpty()) {
             throw new BaseException("-1", "查询为空");
         }
+        Iterator<Media> m = MediaList.iterator();
+        while (m.hasNext()) {
+            Media item = m.next();
+            File file = new File(item.getPath());
+            if (!file.exists()) {
+                mediaMapper.deleteMedia(item.getId());
+                m.remove();
+            }
+        }
         return MediaList;
     }
 
@@ -49,13 +58,24 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteMedia(int id) {
-
+    public boolean deleteMedia(int id) {
+        Media m = mediaMapper.findMediaById(id);
+        File file = new File(m.getPath());
+        if (file.exists()) {
+            if (file.delete()) {
+                mediaMapper.deleteMedia(id);
+            }
+        }
+        return true;
     }
 
     @Override
     public Media updateMedia(Media media) {
-        return null;
+        media.setModified(new Date());
+        if (mediaMapper.updateMedia(media) == 0) {
+            throw new BaseException("-10001", "更新失败");
+        }
+        return media;
     }
 
     @Override
@@ -86,7 +106,7 @@ public class MediaServiceImpl implements MediaService {
         try {
             file.transferTo(new File(filePath));
         } catch (IOException e) {
-            ResponseUtil.error(-10000, "上传失败");
+            throw new BaseException("-9000", "上传失败");
         }
         int addFlag = 0;
         addFlag = mediaMapper.addMedia(media);

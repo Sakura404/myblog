@@ -10,7 +10,7 @@ public interface MediaService {
 
     Media findMediaById(int id);
 
-    void deleteMedia(int id);
+    boolean deleteMedia(int id);
 
     Media updateMedia(Media media);
 

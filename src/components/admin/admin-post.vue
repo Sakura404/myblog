@@ -1,60 +1,64 @@
 <template>
-<div>
-        <v-dialog max-width="400px" v-model="dialogdelete">
-          <v-card>
-            <v-card-title>警告</v-card-title>
-            <v-card-text>确定要删除该文章么</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn @click="delectcancel()" depressed>取消</v-btn>
-              <v-btn @click="delectsumbit()" depressed>确认</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-card>
-          <v-data-table
-            :headers="headers"
-            :loading="loading"
-            :loading-text="loadingmeg"
-            :items="desserts"
-          >
-            <template v-slot:top>
-              <v-toolbar flat>
-                <v-toolbar-title>文章管理</v-toolbar-title>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <v-spacer></v-spacer>
-                <v-icon @click="updata()">mdi-refresh</v-icon>
-              </v-toolbar>
-            </template>
-            <template v-slot:[`item.opreation`]="{ item }">
-              <v-btn icon :to="`editor/${item.id}`">
-                <v-icon>mdi-pencil-outline</v-icon>
-              </v-btn>
-              <v-btn icon @click="delect(item)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:[`item.status`]="{ item }">
-              <v-menu offset-y bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn depressed v-on="on" v-bind="attrs">{{
+  <div>
+    <v-dialog max-width="400px" v-model="dialogdelete">
+      <v-card >
+        <v-card-title>警告</v-card-title>
+        <v-card-text>确定要删除该文章么</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="deletecancel()"
+            depressed>取消</v-btn>
+          <v-btn @click="deletesumbit()"
+            depressed>确认</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-card>
+      <v-data-table :headers="headers"
+        :loading="loading"
+        :loading-text="loadingmeg"
+        :items="desserts">
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>文章管理</v-toolbar-title>
+            <v-divider class="mx-4"
+              inset
+              vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-icon @click="updata()">mdi-refresh</v-icon>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.opreation`]="{ item }">
+          <v-btn icon
+            :to="`editor/${item.id}`">
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
+          <v-btn icon
+            @click="deletePost(item)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-menu offset-y
+            bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn depressed
+                v-on="on"
+                v-bind="attrs">{{
                     item.status
                   }}</v-btn>
-                </template>
-                <v-list dense>
-                  <v-list-item
-                    v-for="(status, key) in otherstate(item.status)"
-                    @click="changestate(item, status)"
-                    :key="key"
-                    class="text-center"
-                    >{{ status }}</v-list-item
-                  >
-                </v-list>
-              </v-menu>
             </template>
-          </v-data-table>
-        </v-card>
-</div>
+            <v-list dense>
+              <v-list-item v-for="(status, key) in otherstate(item.status)"
+                @click="changestate(item, status)"
+                :key="key"
+                class="text-center">{{ status }}</v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -139,7 +143,6 @@ export default {
   },
   methods: {
     getPosts() {
-        
       this.$http.get("/api/posts/").then((res) => {
         this.desserts = res.data.data;
         this.desserts.forEach((e, n, a) => {
@@ -164,11 +167,11 @@ export default {
       //this.updata()
       this.changeitem = null;
     },
-    delect(item) {
+    deletePost(item) {
       this.deleteitem = this.desserts.indexOf(item);
       this.dialogdelete = true;
     },
-    delectsumbit() {
+    deletesumbit() {
       this.$http
         .delete(`/api/posts/${this.desserts[this.deleteitem].id}`)
         .then((res) => {
@@ -183,7 +186,7 @@ export default {
       //发生删除请求到后端
       //this.updata()
     },
-    delectcancel() {
+    deletecancel() {
       this.dialogdelete = false;
       this.deleteitem = null;
     },
@@ -195,5 +198,4 @@ export default {
 </script>
 
 <style>
-
 </style>

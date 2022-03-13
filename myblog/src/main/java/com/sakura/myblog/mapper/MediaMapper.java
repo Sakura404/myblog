@@ -31,7 +31,6 @@ public interface MediaMapper {
     @Delete(value = "delete from mb_medias where media_id=#{id}")
     public int deleteMedia(int id);
 
-    @Update(value = "update mb_medias set media_path=#{path},media_url=#{url},media_type=#{type},media_size=#{size},media_date=#{date},media_modified=#{modified},media_excerpt=#{excerpt} where media_id=#{id}")
-    @ResultMap(value = "mediaMap")
-    public Media updateMedia(Media media);
+    @Update(value = "update mb_medias set media_modified=#{modified},media_excerpt=#{excerpt} where media_id=#{id}")
+    public int updateMedia(Media media);
 }
