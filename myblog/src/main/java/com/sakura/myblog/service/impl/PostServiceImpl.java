@@ -105,7 +105,8 @@ public class PostServiceImpl implements PostService {
 
         return;
     }
-
+    
+    @CacheEvict(key = "'list'")
     @Override
     public Post updatePost(int id, PostTermVO postTermVO) {
         Post post = postTermVO.getPost();

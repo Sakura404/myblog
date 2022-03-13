@@ -27,8 +27,12 @@
     <v-card class='pa-2'>
       <v-card-title>
         图片管理
+        <v-spacer></v-spacer>
+        <v-icon color="red"
+          large
+          @click="$emit('close')">mdi-close</v-icon>
       </v-card-title>
-      <v-divider></v-divider>
+      <v-divider class='mb-2'></v-divider>
       <v-row class='pa-2'>
         <v-col cols="9">
           <v-row align="end"
@@ -102,7 +106,14 @@
             placeholder="空空如也" />
         </v-col>
       </v-row>
+      <v-divider class='mt-2'></v-divider>
+
+      <v-btn block
+        text
+        @click="submit"
+        color="blue">确定</v-btn>
     </v-card>
+
   </div>
 
 </template>
@@ -302,6 +313,9 @@ export default {
     },
     onCheckChange() {
       this.onCheck = this.menuElement;
+    },
+    submit() {
+      this.$emit("imgSelect", this.onCheck);
     },
     show(e, element) {
       e.preventDefault();
