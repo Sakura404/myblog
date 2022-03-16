@@ -17,7 +17,7 @@ public interface PostMapper {
      * @param id
      * @return Post
      */
-    @Select("select post_id,post_title,post_author,post_date,post_modified,post_content,post_excerpt,post_status from mb_posts where post_id=#{id} ")
+    @Select("select post_id,post_title,post_author,post_date,post_modified,post_content,post_excerpt,post_status,post_attachment from mb_posts where post_id=#{id} ")
     @Results(id = "PostMap", value = {
             @Result(column = "post_id", property = "id"),
             @Result(column = "post_title", property = "title"),
@@ -26,6 +26,7 @@ public interface PostMapper {
             @Result(column = "post_modified", property = "modified"),
             @Result(column = "post_content", property = "content"),
             @Result(column = "post_excerpt", property = "excerpt"),
+            @Result(column = "post_attachment", property = "attachment", one = @One(select = "com.sakura.myblog.mapper.MediaMapper.findMediaById")),
             @Result(column = "post_status", property = "status")
     })
     Post findPostById(int id);
@@ -64,7 +65,7 @@ public interface PostMapper {
      *
      * @return
      */
-    @Select("select post_id,post_title,post_author,post_date,post_modified,post_excerpt,post_status from mb_posts ORDER BY `post_date` DESC")
+    @Select("select post_id,post_title,post_author,post_date,post_modified,post_excerpt,post_status,post_attachment from mb_posts ORDER BY `post_date` DESC")
     @Results(id = "PostListMap", value = {
             @Result(column = "post_id", property = "id"),
             @Result(column = "post_title", property = "title"),
@@ -73,6 +74,7 @@ public interface PostMapper {
             @Result(column = "post_modified", property = "modified"),
             @Result(column = "post_excerpt", property = "excerpt"),
             @Result(column = "post_status", property = "status"),
+            @Result(column = "post_attachment", property = "attachment", one = @One(select = "com.sakura.myblog.mapper.MediaMapper.findMediaById")),
             @Result(column = "post_id", property = "termList", many = @Many(select = "com.sakura.myblog.mapper.TermMapper.findTermByPostId"))
     })
     List<PostListVO> findPostList();
@@ -85,8 +87,8 @@ public interface PostMapper {
      */
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("insert into mb_posts " +
-            "(post_title,post_author,post_date,post_modified,post_content,post_excerpt,post_status) " +
-            "values (#{title},#{author},#{date},#{modified},#{content},#{excerpt},#{status})")
+            "(post_title,post_author,post_date,post_modified,post_content,post_excerpt,post_status,post_attachment) " +
+            "values (#{title},#{author},#{date},#{modified},#{content},#{excerpt},#{status},#{attachment.id})")
     int addPost(Post post);
 
     /**
@@ -95,7 +97,7 @@ public interface PostMapper {
      * @param post
      * @return int
      */
-    @Update(value = "update mb_posts set post_title=#{title}, post_author=#{author},post_date=#{date}, post_modified=#{modified},post_content=#{content},post_excerpt=#{excerpt},post_status=#{status} where post_id =#{id}")
+    @Update(value = "update mb_posts set post_title=#{title}, post_author=#{author},post_date=#{date}, post_modified=#{modified},post_content=#{content},post_excerpt=#{excerpt},post_status=#{status} ,post_attachment=#{attachment.id} where post_id =#{id}")
     int updatePost(Post post);
 
     /**

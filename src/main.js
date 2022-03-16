@@ -9,6 +9,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Prism from 'prismjs';
 import randomImg from './plugins/randomImg.js'
+import snackbar from './plugins/snackbar/snackbar'
 Vue.use(Prism)
 Prism.highlightAll();
 Vue.prototype.$randomImg = randomImg
@@ -18,8 +19,9 @@ Vue.use(VueAxios, axios)
 Vue.prototype.$tinymce = tinymce // 将全局tinymce对象指向给Vue作用域下
 Vue.use(VueTinymce)              // 安装vue的tinymce组件
 
+Vue.use(snackbar);
 Vue.config.productionTip = false
-
+console.log(router)
 new Vue({
     router,
     vuetify,

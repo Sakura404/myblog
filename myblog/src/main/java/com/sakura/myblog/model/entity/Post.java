@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 public class Post implements Serializable {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
     private int id;
     private String title;
     private String author;
@@ -28,6 +28,7 @@ public class Post implements Serializable {
     private String content;
     private String excerpt;
     private String status;
+    private Media attachment;
 
     @Override
     public String toString() {

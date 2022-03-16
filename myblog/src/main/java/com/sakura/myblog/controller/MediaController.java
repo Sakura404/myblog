@@ -41,11 +41,11 @@ public class MediaController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteMedia(@RequestBody int i) {
-        if (mediaService.deleteMedia(i)) {
+    public ResponseDTO deleteMedia(@PathVariable int id) {
+        if (mediaService.deleteMedia(id)) {
             return ResponseUtil.success();
         } else {
-            return ResponseUtil.error(-600, "删除失败");
+            return ResponseUtil.error(-430, "删除失败");
         }
     }
 }

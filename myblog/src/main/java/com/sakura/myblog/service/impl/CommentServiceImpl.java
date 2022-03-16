@@ -7,8 +7,6 @@ import com.sakura.myblog.model.entity.Comment;
 import com.sakura.myblog.model.entity.User;
 import com.sakura.myblog.service.intf.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,7 +16,7 @@ import java.util.Map;
 /**
  * @author Sakura
  */
-@CacheConfig(cacheNames = "comment")
+//@CacheConfig(cacheNames = "comment")
 @Service(value = "CommentService")
 public class CommentServiceImpl implements CommentService {
     @Autowired
@@ -26,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserMapper userMapper;
 
-    @Cacheable(key = "#postId")
+//    @Cacheable(key = "#postId")
     @Override
     public List<Comment> getComments(int postId) {
         List<Comment> commentList = commentMapper.findCommentsByPostId(postId);
@@ -36,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         return commentList;
     }
 
-    @Cacheable(key = "#commentId")
+//    @Cacheable(key = "#commentId")
     @Override
     public Comment findComment(int commentId) {
         Comment comment = commentMapper.findCommentsByCommentId(commentId);

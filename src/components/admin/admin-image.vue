@@ -25,7 +25,7 @@
       </v-card>
     </v-dialog>
     <v-card class='pa-2'>
-      <v-card-title>
+      <v-card-title >
         图片管理
         <v-spacer></v-spacer>
         <v-icon color="red"
@@ -33,58 +33,70 @@
           @click="$emit('close')">mdi-close</v-icon>
       </v-card-title>
       <v-divider class='mb-2'></v-divider>
-      <v-row class='pa-2'>
-        <v-col cols="9">
-          <v-row align="end"
-            class="img_scroll">
-            <v-col cols="4"
-              v-for="element,index in imageList"
-              :key="index">
-              <v-card @contextmenu="show($event,element)"
-                @click="onCheck=element">
-                <v-img :src="element.url"
-                  :alt="element.describe"
-                  height="150"></v-img>
-              </v-card>
+      <v-row no-gutters
+        class='pa-2'>
+        <v-col order="2"
+          cols="12"
+          order-xl="1"
+          xl="9">
+          <v-card class='pa-4'
+            outlined>
+            <v-row align="end"
+              class="img_scroll">
+              <v-col cols="6"
+                xl="4"
+                v-for="element,index in imageList"
+                :key="index">
+                <v-card @contextmenu="show($event,element)"
+                  @click="onCheck=element">
+                  <v-img :src="element.url"
+                    :alt="element.describe"
+                    height="150"></v-img>
+                </v-card>
 
-            </v-col>
-            <v-menu v-model="showMenu"
-              absolute
-              :position-x="menuLocation.x"
-              :position-y="menuLocation.y"
-              offset-y
-              style="max-width: 600px">
-              <v-list>
-                <v-list-item @click.stop="zoomFlag=true">
-                  <v-list-item-title>
-                    <v-icon color="blue">mdi-magnify-plus-outline</v-icon> 放大
-                  </v-list-item-title>
-                </v-list-item>
-                <v-list-item @click.stop="deleteFlag=true">
-                  <v-list-item-title>
-                    <v-icon color="red">mdi-delete</v-icon> 删除
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <v-col cols=4>
-              <v-card outlined
-                class="dropbox d-flex justify-center align-center "
-                height="150">
-                <input v-show="false"
-                  type="file"
-                  id="imgFile"
-                  multiple
-                  @change="getFiles($event)">
-                <span @click="openFileSelector()"
-                  class="img_upload pa-2 font-weight-bold">拖拽图片上传</span>
-              </v-card>
-            </v-col>
-          </v-row>
+              </v-col>
+              <v-menu v-model="showMenu"
+                absolute
+                :position-x="menuLocation.x"
+                :position-y="menuLocation.y"
+                offset-y
+                style="max-width: 600px">
+                <v-list>
+                  <v-list-item @click.stop="zoomFlag=true">
+                    <v-list-item-title>
+                      <v-icon color="blue">mdi-magnify-plus-outline</v-icon> 放大
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click.stop="deleteFlag=true">
+                    <v-list-item-title>
+                      <v-icon color="red">mdi-delete</v-icon> 删除
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-col xl=4
+                cols=6>
+                <v-card outlined
+                  class="dropbox d-flex justify-center align-center "
+                  height="150">
+                  <input v-show="false"
+                    type="file"
+                    id="imgFile"
+                    multiple
+                    @change="getFiles($event)">
+                  <span @click="openFileSelector()"
+                    class="img_upload pa-2 font-weight-bold">拖拽图片上传</span>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
         </v-col>
-        <v-divider vertical
-          inset></v-divider>
-        <v-col cols="3">
+
+        <v-col order="1"
+          order-xl="2"
+          cols="12"
+          xl="3"
+          class="pl-4">
 
           <v-img absolute
             min-height="150"
@@ -101,13 +113,21 @@
           <v-textarea filled
             id="img-describe"
             no-resize
+            dense
+            auto-grow
+            row-height=16
+            loader-height="1"
             v-model="onCheck.excerpt"
             @change="exceptChange"
             placeholder="空空如也" />
         </v-col>
       </v-row>
-      <v-divider class='mt-2'></v-divider>
 
+      <v-divider class='mt-2'></v-divider>
+      <v-progress-linear :buffer-value="uploadProgress"
+        color="success"
+        :active="uploadProgress>0"
+        stream></v-progress-linear>
       <v-btn block
         text
         @click="submit"
@@ -298,6 +318,8 @@ export default {
     menuElement: "",
     //选项菜单坐标
     menuLocation: { x: 0, y: 0 },
+    //上传进度开关
+    uploadProgress: 0,
   }),
   methods: {
     exceptChange() {
@@ -337,12 +359,18 @@ export default {
       }
     },
     uploadFile(file) {
+      const cofig = {
+        onUploadProgress: (progress) =>
+          (this.uploadProgress = Math.floor(
+            (progress.loaded / progress.total) * 100
+          )),
+      };
       let data = new FormData();
       data.append("file", file);
       data.append("Content-Type", "multipart/form-data");
       console.log(data);
       this.$http
-        .post("/api/medias/", data)
+        .post("/api/medias/", data, cofig)
         .then((res) => {
           if (res.data.code == 10000) this.imageList.push(res.data.data);
         })
@@ -364,8 +392,16 @@ export default {
     },
     deleteSumbit() {
       let deleteIndex = this.imageList.indexOf(this.menuElement);
-      this.imageList.splice(deleteIndex, 1);
-      this.deleteFlag = false;
+      this.$http
+        .delete("/api/medias/" + this.menuElement.id)
+        .then((res) => {
+          console.log(res);
+          this.imageList.splice(deleteIndex, 1);
+          this.deleteFlag = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this.onCheck = {};
       this.menuElement = {};
     },

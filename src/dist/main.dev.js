@@ -22,6 +22,8 @@ var _prismjs = _interopRequireDefault(require("prismjs"));
 
 var _randomImg = _interopRequireDefault(require("./plugins/randomImg.js"));
 
+var _snackbar = _interopRequireDefault(require("./plugins/snackbar/snackbar"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_prismjs["default"]);
@@ -37,7 +39,10 @@ _vue["default"].prototype.$tinymce = _tinymce["default"]; // 将全局tinymce对
 _vue["default"].use(_vueTinymce["default"]); // 安装vue的tinymce组件
 
 
+_vue["default"].use(_snackbar["default"]);
+
 _vue["default"].config.productionTip = false;
+console.log(_index["default"]);
 new _vue["default"]({
   router: _index["default"],
   vuetify: _vuetify["default"],

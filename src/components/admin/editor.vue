@@ -97,6 +97,20 @@
               </v-row>
             </v-expansion-panel-content>
           </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header>特色图片</v-expansion-panel-header>
+            <v-divider></v-divider>
+            <v-expansion-panel-content>
+              <v-img min-height="300"
+                max-height="700"
+                contain
+                :src="form.post.attachment.url||null"></v-img>
+              <v-btn block
+                @click="imageManager=true;editorImgCheck=false;">
+                添加
+              </v-btn>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
     </v-row>
@@ -118,9 +132,10 @@
     <v-dialog absolute
       class="dialog-overflow"
       content-class="dialog-overflow"
-      max-width="1000px"
+      max-width="1100px"
       v-model="imageManager">
-      <admin-image @close="imageManager=false" @imgSelect=addEditorImg></admin-image>
+      <admin-image @close="imageManager=false"
+        @imgSelect="imageSelect"></admin-image>
     </v-dialog>
   </v-form>
 </template>
@@ -166,7 +181,7 @@ export default {
     },
 
     mainPanels: [0, 1],
-    supPanels: [0, 1, 2],
+    supPanels: [0, 1, 2, 3],
     date: Moment(new Date()).format("yyyy-MM-DD"),
     time: Moment(new Date()).format("hh:mm:ss"),
     form: {
@@ -176,9 +191,11 @@ export default {
         content: "",
         date: "",
         status: "公开",
+        attachment: "",
       },
       terms: [],
     },
+    editorImgCheck: true,
     imageManager: false,
     terms: [],
     users: ["orag", "senkaryouran", "Sakura"],
@@ -235,6 +252,7 @@ export default {
       editor.ui.registry.addButton("imgList", {
         icon: "Image",
         onAction: function () {
+          _this.editorImgCheck = true;
           _this.imageManager = true;
           //   editor.execCommand(
           //     "mceInsertContent",
@@ -249,9 +267,21 @@ export default {
       this._editor.execCommand(
         "mceInsertContent",
         false,
-        `<img  alt="${onCheck.excerpt||''}"  src="${onCheck.url}" width="90%"/>`
+        `<img  alt="${onCheck.excerpt || ""}"  src="${
+          onCheck.url
+        }" width="90%"/>`
       );
-      this.imageManager=false;
+      this.imageManager = false;
+    },
+    addAttachment(onCheck) {
+      console.log(onCheck);
+      this.form.post.attachment = onCheck;
+      this.imageManager = false;
+    },
+    imageSelect(onCheck) {
+      if (this.editorImgCheck) {
+        this.addEditorImg(onCheck);
+      } else this.addAttachment(onCheck);
     },
   },
   created() {
@@ -281,7 +311,7 @@ export default {
 };
 </script>
 <style>
-.dialog-overflow {
+/* .dialog-overflow {
   overflow: hidden !important;
-}
+} */
 </style>

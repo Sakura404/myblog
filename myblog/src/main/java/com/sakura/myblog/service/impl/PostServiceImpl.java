@@ -11,9 +11,6 @@ import com.sakura.myblog.model.entity.Post;
 import com.sakura.myblog.model.entity.Term;
 import com.sakura.myblog.service.intf.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +21,7 @@ import java.util.List;
 /**
  * @author Sakura
  */
-@CacheConfig(cacheNames = "post")
+//@CacheConfig(cacheNames = "post")
 @Service(value = "postService")
 public class PostServiceImpl implements PostService {
     private TermMapper termMapper;
@@ -46,7 +43,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private CommentMapper commentMapper;
 
-    @Cacheable(key = "'list'")
+//    @Cacheable(key = "'list'")
     @Override
     public List<PostListVO> getPost() {
         List<PostListVO> postList = postMapper.findPostList();
@@ -66,7 +63,7 @@ public class PostServiceImpl implements PostService {
         return postList;
     }
 
-    @Cacheable(key = "#id")
+//    @Cacheable(key = "#id")
     @Override
     public Post findPost(int id) {
         Post post = postMapper.findPostById(id);
@@ -76,7 +73,7 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-    @CacheEvict(key = "'list'")
+//    @CacheEvict(key = "'list'")
     @Override
     public Post addPost(PostTermVO postTermVO) {
         Post post = postTermVO.getPost();
@@ -94,7 +91,7 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-    @CacheEvict(key = "'list'")
+//    @CacheEvict(key = "'list'")
     @Override
     public void deletePost(int id) {
         postMapper.deleteTermRelationShipsByPostId(id);
@@ -105,14 +102,14 @@ public class PostServiceImpl implements PostService {
 
         return;
     }
-    
-    @CacheEvict(key = "'list'")
+
+//    @CacheEvict(key = "'list'")
     @Override
     public Post updatePost(int id, PostTermVO postTermVO) {
         Post post = postTermVO.getPost();
         post.setId(id);
         post.setModified(new Date(System.currentTimeMillis()));
-        System.out.println(post.getDate());
+        System.out.println(postTermVO);
         int updateFlag = postMapper.updatePost(post);
         if (updateFlag != 1) {
             throw new BaseException("-1", "更新失败");
