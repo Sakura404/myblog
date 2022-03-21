@@ -52,7 +52,7 @@ export default {
     },
     headStyle() {
       return `opacity: ${
-        this.headOpactiy.toFixed(2) > 0.5
+        this.headOpactiy.toFixed(2) > 0.8
           ? 1
           : this.headOpactiy.toFixed(2) > 0.1
           ? this.headOpactiy.toFixed(2) * 2

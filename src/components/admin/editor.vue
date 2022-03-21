@@ -104,7 +104,9 @@
               <v-img min-height="300"
                 max-height="700"
                 contain
-                :src="form.post.attachment.url||null"></v-img>
+                :src="form.post.attachment.url||null">
+
+              </v-img>
               <v-btn block
                 @click="imageManager=true;editorImgCheck=false;">
                 添加
@@ -210,37 +212,43 @@ export default {
       });
     },
     addPost() {
-      this.form.terms.forEach((e, i, a) => {
-        a[i] = { id: e };
+      let termList = [];
+      this.form.terms.forEach((e) => {
+        termList.push({ id: e.id });
       });
       this.$set(
         this.form.post,
         "date",
         Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
       );
+      let Data = { post: this.form.post, terms: termList };
       this.$http
-        .post("/api/posts/", this.form)
+        .post("/api/posts/", Data)
         .then((res) => {
-          console.log(res);
+          this.$snackbar(res.data.message);
         })
         .catch((err) => {
           console.error(err);
         });
     },
     updataPost() {
-      this.form.terms.forEach((e, i, a) => {
-        a[i] = { id: e };
+      let termList = [];
+      this.form.terms.forEach((e) => {
+        termList.push({ id: e });
       });
       this.$set(
         this.form.post,
         "date",
         Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
       );
-      let Data = this.form;
+      let Data = new FormData();
+      Data = { post: this.form.post, terms: termList };
+      console.log(Data);
+
       this.$http
         .put(`/api/posts/${this.$route.params.id}`, Data)
         .then((res) => {
-          console.log(res);
+          this.$snackbar(res.data.message);
         })
         .catch((err) => {
           console.error(err);
@@ -263,7 +271,6 @@ export default {
       });
     },
     addEditorImg(onCheck) {
-      console.log(onCheck);
       this._editor.execCommand(
         "mceInsertContent",
         false,
@@ -274,7 +281,6 @@ export default {
       this.imageManager = false;
     },
     addAttachment(onCheck) {
-      console.log(onCheck);
       this.form.post.attachment = onCheck;
       this.imageManager = false;
     },

@@ -12,6 +12,7 @@ import login from '../views/login.vue'
 import game from '../views/game.vue'
 import adminComment from '../components/admin/admin-comment.vue'
 import adminImage from '../components/admin/admin-image.vue'
+import timelines from '../views/timelines.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -37,7 +38,7 @@ const routes = [
         },
         {
             path: 'post',
-            name: 'post',
+            name: 'adminpost',
             component: adminpost
         },
         {
@@ -79,9 +80,13 @@ const routes = [
             name: 'game',
             component: game
         }, {
+            path: '/timelines',
+            name: 'timelines',
+            component: timelines
+        }, {
             path: '/*',
             redirect: '/'
-        }]
+        },]
     }, {
         path: '/*',
         redirect: '/'

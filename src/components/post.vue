@@ -1,5 +1,6 @@
 <template>
-  <v-row v-if="post" style="position: relative"
+  <v-row v-if="post"
+    style="position: relative"
     justify="center"
     class="serif no-gutters">
     <v-img class="white--text align-end"
@@ -161,7 +162,6 @@
         ></v-pagination> -->
       </v-card>
     </v-col>
-
     <v-col :style="navstyle"
       :class="navStatu"
       style=""

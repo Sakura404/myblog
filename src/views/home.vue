@@ -1,5 +1,5 @@
 <template>
-  <v-app class="serif chinese-font">
+  <div>
     <v-navigation-drawer clipped
       temporary
       v-model="drawer"
@@ -77,7 +77,7 @@
         </div>
       </v-container>
     </v-main>
-  </v-app>
+  </div>
 </template>
 <script>
 import headinfo from "../components/headinfo.vue";
@@ -93,7 +93,7 @@ export default {
     one: "我们难过时，总是悲观地以为，我们这辈子都不会再变好了，后来才发现，总有一天，难过会消失的，人生会变好的。真的是有那么一天的。",
     links: [
       ["mdi-home", "首页", "/home"],
-      ["mdi-sort-bool-descending", "时间轴", "/post"],
+      ["mdi-sort-bool-descending", "时间轴", "/timelines"],
       ["mdi-heart", "爱好", "/work"],
       ["mdi-gamepad-variant", "游戏", "/game"],
       ["mdi-link", "友情链接"],
@@ -130,7 +130,6 @@ export default {
     // },
 
     onToolfixed() {
-      console.log(1);
       window.pageYOffset;
     },
     onIntersect(entries) {
@@ -152,6 +151,7 @@ export default {
       (name) => {
         if (name != "home") {
           this.toolcolor = true;
+          this.toolflat = false;
         }
       }
     );

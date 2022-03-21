@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire"
+  <div id="inspire"
     class="serif">
     <v-main>
       <v-system-bar app>
@@ -45,10 +45,11 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
+
 export default {
   name: "navm",
   data: () => ({
@@ -64,6 +65,6 @@ export default {
       //["mdi-account-details", "媒体管理"],
       ["mdi-alert-octagon", "关于"],
     ],
-  }),
+  })
 };
 </script>

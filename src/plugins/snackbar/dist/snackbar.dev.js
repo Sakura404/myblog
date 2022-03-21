@@ -19,14 +19,23 @@ var _default = {
 
     instance.$mount(document.createElement('div')); // 将这个实例挂载在新创建的div上，并加入到body中
 
-    document.body.appendChild(instance.$el); // 通过Vue的原型注册一个方法$toast，有两个参数（msg为提示的文字，duration为延时关闭）
+    document.querySelector("#app").appendChild(instance.$el);
+    var $snackbar = {
+      success: function success(mes) {
+        instance.messageList.push({
+          message: mes,
+          visible: true,
+          type: 'success'
+        });
+      }
+    }; // 通过Vue的原型注册一个方法$toast，有两个参数（msg为提示的文字，duration为延时关闭）
+    // Vue.prototype.$snackbar = (msg) => {
+    //     if (instance.visible) return;    // visible是toast.vue组件的一个变量，用来控制提示框的显示
+    //     instance.message = msg;
+    //     instance.visible = true;
+    // }
 
-    Vue.prototype.$snackbar = function (msg) {
-      if (instance.visible) return; // visible是toast.vue组件的一个变量，用来控制提示框的显示
-
-      instance.message = msg;
-      instance.visible = true;
-    };
+    Vue.prototype.$snackbar = $snackbar;
   }
 };
 exports["default"] = _default;

@@ -1,7 +1,8 @@
 <template>
   <div>
-    <v-dialog max-width="400px" v-model="dialogdelete">
-      <v-card >
+    <v-dialog max-width="400px"
+      v-model="dialogdelete">
+      <v-card>
         <v-card-title>警告</v-card-title>
         <v-card-text>确定要删除该文章么</v-card-text>
         <v-card-actions>
@@ -190,6 +191,7 @@ export default {
       this.dialogdelete = false;
       this.deleteitem = null;
     },
+
     updata() {
       this.getPosts();
     },

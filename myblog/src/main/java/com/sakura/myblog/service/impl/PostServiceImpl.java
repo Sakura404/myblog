@@ -109,7 +109,6 @@ public class PostServiceImpl implements PostService {
         Post post = postTermVO.getPost();
         post.setId(id);
         post.setModified(new Date(System.currentTimeMillis()));
-        System.out.println(postTermVO);
         int updateFlag = postMapper.updatePost(post);
         if (updateFlag != 1) {
             throw new BaseException("-1", "更新失败");
@@ -127,7 +126,6 @@ public class PostServiceImpl implements PostService {
         while (iNew.hasNext()) {
             postMapper.setTermRelationships(iNew.next().getId(), post.getId());
         }
-
         return post;
     }
 }

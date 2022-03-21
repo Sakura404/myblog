@@ -33,6 +33,8 @@ var _adminComment = _interopRequireDefault(require("../components/admin/admin-co
 
 var _adminImage = _interopRequireDefault(require("../components/admin/admin-image.vue"));
 
+var _timelines = _interopRequireDefault(require("../views/timelines.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
@@ -57,7 +59,7 @@ var routes = [{
     component: _working["default"]
   }, {
     path: 'post',
-    name: 'post',
+    name: 'adminpost',
     component: _adminPost["default"]
   }, {
     path: 'editor/:id',
@@ -94,6 +96,10 @@ var routes = [{
     path: '/game',
     name: 'game',
     component: _game["default"]
+  }, {
+    path: '/timelines',
+    name: 'timelines',
+    component: _timelines["default"]
   }, {
     path: '/*',
     redirect: '/'

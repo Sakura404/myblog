@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app class="serif chinese-font">
     <router-view></router-view>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -10,6 +10,8 @@ export default {
   data: () => ({
     //
   }),
+  mounted() {
+  },
 };
 </script>
 <style>
