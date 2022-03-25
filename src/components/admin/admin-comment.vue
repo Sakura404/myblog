@@ -50,12 +50,12 @@
                     item.status
                   }}</v-btn>
             </template>
-            <v-list dense>
+            <!-- <v-list dense>
               <v-list-item v-for="(status, key) in otherstate(item.status)"
                 @click="changestate(item, status)"
                 :key="key"
                 class="text-center">{{ status }}</v-list-item>
-            </v-list>
+            </v-list> -->
           </v-menu>
         </template>
       </v-data-table>
@@ -77,15 +77,44 @@ export default {
       headers: [
         { text: "评论编号", value: "id" },
         { text: "文章编号", value: "postId" },
-        { text: "文章名字", value: "postName" },
         { text: "作者", value: "author" },
         { text: "发表时间", value: "date", align: "center" },
-        { text: "最后修改时间", value: "modified", align: "center" },
         { text: "状态", value: "status", align: "center" },
         { text: "操作", value: "opreation", align: "center", sortable: false },
       ],
       desserts: [],
     };
+  },
+  methods: {
+    otherstate(name) {
+      var statearr = this.allstate.slice(0);
+      if (statearr.indexOf(name) != -1) {
+        statearr.splice(statearr.indexOf(name), 1);
+        return statearr;
+      } else {
+        return this.allstate;
+      }
+    },
+    changestate(item, status) {
+      this.changeitem = this.desserts.indexOf(item);
+      this.desserts[this.changeitem].status = status;
+      //发送改变状态请求到后端
+      //this.updata()
+      this.changeitem = null;
+    },
+    deletecancel() {
+      this.dialogdelete = false;
+      this.deleteitem = null;
+    },
+    deletePost(item) {
+      this.deleteitem = this.desserts.indexOf(item);
+      this.dialogdelete = true;
+    },
+  },
+  mounted() {
+    this.$http.get("/api/comments/").then((res) => {
+      if (res.data.code == 10000) this.desserts = res.data.data;
+    });
   },
 };
 </script>

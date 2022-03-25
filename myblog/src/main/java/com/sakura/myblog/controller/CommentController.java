@@ -30,7 +30,13 @@ public class CommentController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getComments(@PathVariable int id) {
+    public ResponseDTO getCommentsByPostId(@PathVariable int id) {
         return ResponseUtil.success(commentService.getComments(id));
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getComments() {
+        return ResponseUtil.success(commentService.getComments());
     }
 }

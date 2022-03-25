@@ -25,7 +25,7 @@
       </v-card>
     </v-dialog>
     <v-card class='pa-2'>
-      <v-card-title >
+      <v-card-title>
         图片管理
         <v-spacer></v-spacer>
         <v-icon color="red"
@@ -368,14 +368,17 @@ export default {
       let data = new FormData();
       data.append("file", file);
       data.append("Content-Type", "multipart/form-data");
-      console.log(data);
+      // console.log(data);
       this.$http
         .post("/api/medias/", data, cofig)
         .then((res) => {
-          if (res.data.code == 10000) this.imageList.push(res.data.data);
+          if (res.data.code == 10000) {
+            this.imageList.push(res.data.data);
+            this.$snackbar.success("图片上传成功");
+          }
         })
         .catch((e) => {
-          console.log(e);
+          this.$snackbar.error("图片上传失败,原因:" + e);
         });
     },
     onDrag(e) {
@@ -395,12 +398,15 @@ export default {
       this.$http
         .delete("/api/medias/" + this.menuElement.id)
         .then((res) => {
-          console.log(res);
-          this.imageList.splice(deleteIndex, 1);
-          this.deleteFlag = false;
+          // console.log(res);
+          if (res.data.code == 10000) {
+            this.imageList.splice(deleteIndex, 1);
+            this.deleteFlag = false;
+            this.$snackbar.success("图片删除成功");
+          }
         })
         .catch((err) => {
-          console.log(err);
+          this.$snackbar.error("图片失败成功," + err);
         });
       this.onCheck = {};
       this.menuElement = {};

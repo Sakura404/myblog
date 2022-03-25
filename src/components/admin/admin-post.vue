@@ -181,6 +181,7 @@ export default {
             this.dialogdelete = false;
             this.deleteitem = null;
             this.$forceUpdate();
+            this.$snackbar.success("删除成功");
           }
         });
 

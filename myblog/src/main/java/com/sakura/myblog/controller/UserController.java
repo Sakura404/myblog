@@ -8,6 +8,8 @@ import com.sakura.myblog.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author Sakura
  */
@@ -23,7 +25,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO userLogin(@RequestBody User user) {
-        return ResponseUtil.success(userservice.userLogin(user));
+    public ResponseDTO userLogin(@RequestBody User user, HttpServletResponse response) {
+        return ResponseUtil.success(userservice.userLogin(user,response));
     }
 }

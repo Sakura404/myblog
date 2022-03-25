@@ -240,7 +240,7 @@ export default {
   },
   methods: {
     reply(replyId, replyName) {
-      console.log(replyName, replyId);
+      //console.log(replyName, replyId);
       this.commentForm.replyName = replyName;
       this.commentForm.replyId = replyId;
     },
@@ -251,7 +251,10 @@ export default {
     replysubmit() {
       if (this.$refs.comment.validate()) {
         this.$http.post("/api/comments/", this.commentForm).then((res) => {
-          if (res.data.code == 10000) this.getComments();
+          if (res.data.code == 10000) {
+            this.getComments();
+            this.$snacbar.success("评论成功");
+          }
         });
       }
     },
@@ -358,19 +361,12 @@ export default {
 <style>
 .underlink {
   position: relative;
+  padding-bottom: 2px;
   text-decoration: none;
   transition: color 0.2s ease-out, border 0.2s ease-out, opacity 0.2s ease-out;
 }
 .underlink:hover {
-  color: orange;
-}
-.postguide .v-image__image {
-  transition: all 0.4s ease-in-out;
-  filter: brightness(20%);
-}
-.postguide:hover .v-image__image {
-  transition: all 0.4s ease-in-out;
-  filter: brightness(40%);
+  color: #104b86;
 }
 .underlink:after {
   content: "";
@@ -380,13 +376,21 @@ export default {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: orange;
+  background-color: #104b86;
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }
 .underlink:hover:after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+.postguide .v-image__image {
+  transition: all 0.4s ease-in-out;
+  filter: brightness(20%);
+}
+.postguide:hover .v-image__image {
+  transition: all 0.4s ease-in-out;
+  filter: brightness(40%);
 }
 .mce-toc {
   display: none;

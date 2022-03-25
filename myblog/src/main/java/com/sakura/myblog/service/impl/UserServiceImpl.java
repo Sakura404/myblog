@@ -11,6 +11,8 @@ import com.sakura.myblog.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, String> userLogin(User user) {
+    public Map<String, String> userLogin(User user, HttpServletResponse response) {
         User userByAccount = userMapper.findUserByAccount(user.getAccount());
         if (userByAccount == null) {
             throw new LoginException(LoginResponseEnum.USER_IS_NULL.getCode(), LoginResponseEnum.USER_IS_NULL.getMsg());
@@ -61,6 +63,9 @@ public class UserServiceImpl implements UserService {
             Map<String, String> map = new HashMap<String, String>(1);
             String token = TokenUtil.createJWT(60 * 60 * 1000, user.getAccount());
             map.put("LOGIN_TOKEN", token);
+            Cookie cookie = new Cookie("LOGIN_TOKEN", token);
+            cookie.setMaxAge(3*24*3600);
+    //        response.addCookie(cookie);
             return map;
         } else {
             throw new LoginException(LoginResponseEnum.PASSWORD_IS_ERROR.getCode(), LoginResponseEnum.PASSWORD_IS_ERROR.getMsg());

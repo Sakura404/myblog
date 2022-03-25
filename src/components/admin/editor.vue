@@ -225,10 +225,10 @@ export default {
       this.$http
         .post("/api/posts/", Data)
         .then((res) => {
-          this.$snackbar(res.data.message);
+          this.$snackbar.success("文章添加成功:" + res.data.mes);
         })
         .catch((err) => {
-          console.error(err);
+          this.$snackbar.error(err);
         });
     },
     updataPost() {
@@ -243,15 +243,15 @@ export default {
       );
       let Data = new FormData();
       Data = { post: this.form.post, terms: termList };
-      console.log(Data);
+      // console.log(Data);
 
       this.$http
         .put(`/api/posts/${this.$route.params.id}`, Data)
         .then((res) => {
-          this.$snackbar(res.data.message);
+          this.$snackbar.success("文章更新成功:" + res.data.message);
         })
         .catch((err) => {
-          console.error(err);
+          this.$snackbar.error(err);
         });
     },
     setup(editor) {

@@ -1,22 +1,34 @@
-import SnackbarComponent from './snackbar.vue'    //引入toast.vue组件
+import SnackbarComponent from './snackbar.vue'   
 export default {    // 导出一个对象，里面包含vue注册插件所调用的方法install
     install: function (Vue) {
-        const SnackbarConstructor = Vue.extend(SnackbarComponent)    // 将toast.vue组件生成为Vue的子类
+        const SnackbarConstructor = Vue.extend(SnackbarComponent)    
         const instance = new SnackbarConstructor();    // 生成一个该子类的实例
 
-        instance.$mount(document.createElement('div'))    // 将这个实例挂载在新创建的div上，并加入到body中
-        document.querySelector("#app").appendChild(instance.$el)
+        instance.$mount()    // 将这个实例挂载在新创建的div上，并加入到body中
+        document.querySelector("#blogSncakbar").appendChild(instance.$el)
         const $snackbar = {
             success: ((mes) => {
-                instance.messageList.push({ message: mes, visible: true, type: 'success' });
+                if (instance.visible) return;
+                instance.message = mes
+                instance.type = "success"
+                instance.visible = true
+            }), error: ((mes) => {
+                if (instance.visible) return;
+                instance.message = mes
+                instance.type = "error"
+                instance.visible = true
+            }), info: ((mes) => {
+                if (instance.visible) return;
+                instance.message = mes
+                instance.type = "info"
+                instance.visible = true
+            }), warning: ((mes) => {
+                if (instance.visible) return;
+                instance.message = mes
+                instance.type = "warning"
+                instance.visible = true
             })
         }
-        // 通过Vue的原型注册一个方法$toast，有两个参数（msg为提示的文字，duration为延时关闭）
-        // Vue.prototype.$snackbar = (msg) => {
-        //     if (instance.visible) return;    // visible是toast.vue组件的一个变量，用来控制提示框的显示
-        //     instance.message = msg;
-        //     instance.visible = true;
-        // }
         Vue.prototype.$snackbar = $snackbar
     }
 }

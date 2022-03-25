@@ -1,16 +1,28 @@
 <template>
-  <v-app class="serif chinese-font">
+  <v-app 
+    class="serif chinese-font">
+    <div id="blogSncakbar">
+      <!-- <v-snackbar app
+        color="success"
+        timeout="150000"
+        value="true">123</v-snackbar> -->
+    </div>
+
     <router-view></router-view>
   </v-app>
 </template>
 
 <script>
+import snackbar from "./plugins/snackbar/snackbar.js";
+import Vue from "vue";
 export default {
   name: "App",
   data: () => ({
     //
   }),
   mounted() {
+    Vue.use(snackbar);
+    this.$snackbar.success("123s");
   },
 };
 </script>

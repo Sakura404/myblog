@@ -11,6 +11,8 @@ import java.util.Map;
 public interface CommentService {
     List<Comment> getComments(int postId);
 
+    List<Comment> getComments();
+
     Comment findComment(int commentId);
 
     Comment addComment(Map<String, Object> comment);

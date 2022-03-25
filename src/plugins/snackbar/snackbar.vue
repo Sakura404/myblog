@@ -1,13 +1,10 @@
 <template>
-  <div class="snackbar_list">
-    <v-scroll-x-transition :key=i
-      v-for="e,i in messageList">
-      <div v-if="e.visible"
-        :class="e.type"
-        class="snackbar_item ma-2 pa-4 dark white--text">{{e.message}}
-
-      </div>
-    </v-scroll-x-transition>
+  <div>
+    <v-snackbar :color="type"
+      timeout="1500"
+      v-model="visible">
+      <h3 > {{message}}</h3>
+    </v-snackbar>
   </div>
 </template>
 
@@ -16,30 +13,10 @@ export default {
   data() {
     return {
       visible: true,
-      message: "123",
-      messageList: [{ visible: true, message: "1", type: "green" }],
+      message: "修改成功",
+      type: "success",
     };
   },
-  methods: {
-    deleteMessage(e) {
-      let _this = this;
-      setTimeout(() => {
-        if (!e.visible) {
-          const index = _this.messageList.indexOf(e);
-          _this.messageList.splice(index, 1);
-        }
-      }, 100);
-    },
-    toast(i) {
-      setTimeout(() => {
-        this.messageList[i].visible = true;
-        setTimeout(() => {
-          this.messageList[i].visible = false;
-        }, 1000);
-      }, 1000);
-    },
-  },
-  mounted() {},
 };
 </script>
 

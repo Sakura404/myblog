@@ -2,6 +2,7 @@ package com.sakura.myblog.service.intf;
 
 import com.sakura.myblog.model.entity.User;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -10,9 +11,10 @@ import java.util.Map;
 public interface UserService {
     public User addUser(User user);
 
-    public User addtourist(String name,String email);
+    public User addtourist(String name, String email);
 
     public User updateUser(User user);
 
-    public Map<String, String> userLogin(User user);
+
+    Map<String, String> userLogin(User user, HttpServletResponse response);
 }

@@ -34,7 +34,16 @@ public class CommentServiceImpl implements CommentService {
         return commentList;
     }
 
-//    @Cacheable(key = "#commentId")
+    @Override
+    public List<Comment> getComments() {
+        List<Comment> commentList = commentMapper.getComments();
+        if (commentList.isEmpty()) {
+            throw new BaseException("-1", "查询为空");
+        }
+        return commentList;
+    }
+
+    //    @Cacheable(key = "#commentId")
     @Override
     public Comment findComment(int commentId) {
         Comment comment = commentMapper.findCommentsByCommentId(commentId);

@@ -1,12 +1,15 @@
 package com.sakura.myblog.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
  * @author Sakura
  */
+@WebFilter(urlPatterns = "/api/*", filterName = "userFilter")
 public class UserFilter implements Filter {
 
     @Override
@@ -16,11 +19,18 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        System.out.println(1);
         if ("GET".equals(((HttpServletRequest) servletRequest).getMethod())) {
+            for (Cookie cookie:
+                 ((HttpServletRequest) servletRequest).getCookies()){
+                System.out.println(cookie.getValue());
+            }
+
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            filterChain.doFilter(servletRequest, servletResponse);
             String token = ((HttpServletRequest) servletRequest).getHeader("LOGIN_TOKEN");
+            System.out.println(token);
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
