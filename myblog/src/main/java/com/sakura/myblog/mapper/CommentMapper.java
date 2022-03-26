@@ -42,4 +42,6 @@ public interface CommentMapper {
     List<Comment> getComments();
 
 
+    @Select(value = "select count(*) from mb_comments where post_id=#{id}")
+    int getCommentCountByPostId(int id);
 }

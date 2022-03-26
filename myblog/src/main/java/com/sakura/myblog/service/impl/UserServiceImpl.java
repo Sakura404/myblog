@@ -64,8 +64,9 @@ public class UserServiceImpl implements UserService {
             String token = TokenUtil.createJWT(60 * 60 * 1000, user.getAccount());
             map.put("LOGIN_TOKEN", token);
             Cookie cookie = new Cookie("LOGIN_TOKEN", token);
-            cookie.setMaxAge(3*24*3600);
-    //        response.addCookie(cookie);
+            cookie.setMaxAge(60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
             return map;
         } else {
             throw new LoginException(LoginResponseEnum.PASSWORD_IS_ERROR.getCode(), LoginResponseEnum.PASSWORD_IS_ERROR.getMsg());

@@ -12,9 +12,9 @@
 export default {
   data() {
     return {
-      visible: true,
-      message: "修改成功",
-      type: "success",
+      visible: false,
+      message: "",
+      type: "",
     };
   },
 };

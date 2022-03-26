@@ -104,10 +104,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆
-        var id = window.sessionStorage.getItem('token');
+        var token = getCookie('LOGIN_TOKEN');
 
-        if (id) { // 查询本地存储信息是否已经登陆 
-            console.log(id)
+        if (token) { // 查询本地存储信息是否已经登陆 
+            console.log(token)
             next();
         } else {
             next({
@@ -121,5 +121,13 @@ router.beforeEach((to, from, next) => {
         next();
     }
 })
-
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 export default router

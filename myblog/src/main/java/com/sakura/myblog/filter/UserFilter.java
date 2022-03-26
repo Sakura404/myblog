@@ -1,15 +1,19 @@
 package com.sakura.myblog.filter;
 
+import com.sakura.myblog.constant.enums.LoginResponseEnum;
+import com.sakura.myblog.model.dto.LoginException;
+import com.sakura.myblog.utils.TokenUtil;
+import io.jsonwebtoken.Claims;
+
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * @author Sakura
  */
-@WebFilter(urlPatterns = "/api/*", filterName = "userFilter")
 public class UserFilter implements Filter {
 
     @Override
@@ -19,23 +23,39 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println(1);
-        if ("GET".equals(((HttpServletRequest) servletRequest).getMethod())) {
-            for (Cookie cookie:
-                 ((HttpServletRequest) servletRequest).getCookies()){
-                System.out.println(cookie.getValue());
+        if (!"/api/users/login".equals(((HttpServletRequest) servletRequest).getRequestURI())) {
+            if (!"GET".equals(((HttpServletRequest) servletRequest).getMethod())) {
+                Cookie cookie = getCookie(((HttpServletRequest) servletRequest), "LOGIN_TOKEN");
+                if (cookie == null) {
+                    throw new LoginException(LoginResponseEnum.NOT_LOGIN.getCode(), LoginResponseEnum.NOT_LOGIN.getMsg());
+                }
+                try {
+                    String token = cookie.getValue();
+                    Claims claims = TokenUtil.parseJWT(token);
+                } catch (Exception e) {
+                    cookie.setMaxAge(20);
+                    ((HttpServletResponse) servletResponse).addCookie(cookie);
+                    throw new LoginException(LoginResponseEnum.NOT_LOGIN.getCode(), LoginResponseEnum.NOT_LOGIN.getMsg());
+                }
             }
-
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            String token = ((HttpServletRequest) servletRequest).getHeader("LOGIN_TOKEN");
-            System.out.println(token);
-            filterChain.doFilter(servletRequest, servletResponse);
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
     public void destroy() {
         Filter.super.destroy();
+    }
+
+    public Cookie getCookie(HttpServletRequest request, String key) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(key)) {
+                    return cookie;
+                }
+            }
+        }
+        return null;
     }
 }

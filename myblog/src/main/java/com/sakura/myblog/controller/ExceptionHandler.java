@@ -31,6 +31,6 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
     @ResponseBody
     public ResponseDTO exceptionHandler(SQLIntegrityConstraintViolationException e) {
-        return ResponseUtil.error(-2, "关键数据为空");
+        return ResponseUtil.error(-100, "关键数据为空");
     }
 }

@@ -73,8 +73,19 @@
           class=""></headinfo>
         <div :style="mainimg"
           class="biyin">
-          <router-view @onIntersect="onIntersect"></router-view>
+          <router-view @onIntersect="onIntersect">
+            <v-footer slot="foot"
+              color='rgba(0,0,0,0.0)'>
+              <v-col class='text-center '
+                cols="12">
+                <strong><a class="black--text"
+                    href="https://beian.miit.gov.cn/"
+                    target="_blank">粤ICP备2021170811号</a></strong>
+              </v-col>
+            </v-footer>
+          </router-view>
         </div>
+
       </v-container>
     </v-main>
   </div>

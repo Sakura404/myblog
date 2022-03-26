@@ -22,7 +22,6 @@ export default {
   }),
   mounted() {
     Vue.use(snackbar);
-    this.$snackbar.success("123s");
   },
 };
 </script>

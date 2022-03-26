@@ -124,11 +124,11 @@ router.beforeEach(function (to, from, next) {
     return res.meta.requireAuth;
   })) {
     // 验证是否需要登陆
-    var id = window.sessionStorage.getItem('token');
+    var token = getCookie('LOGIN_TOKEN');
 
-    if (id) {
+    if (token) {
       // 查询本地存储信息是否已经登陆 
-      console.log(id);
+      console.log(token);
       next();
     } else {
       next({
@@ -144,5 +144,18 @@ router.beforeEach(function (to, from, next) {
     next();
   }
 });
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+
+  return "";
+}
+
 var _default = router;
 exports["default"] = _default;

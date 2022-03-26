@@ -53,6 +53,7 @@
           :dateTime="commentItem.date"
           :author="commentItem.user ? commentItem.user.name : null"
           :toUser="commentItem.reply ? commentItem.reply.user.name : null"
+          :replyId="commentItem.reply ? commentItem.reply.id : null"
           :content="commentItem.content"
           :id="commentItem.id"
           :key="index"
@@ -133,7 +134,7 @@
                 </p>
               </v-img>
             </a></v-col>
-
+          <slot name="foot"></slot>
           <!-- <v-col cols="12" md="6"
             ><a style="text-decoration: none" href="">
               <v-img
@@ -172,6 +173,7 @@
         <postnav v-if="nav.length > 0"
           :navlist="nav"></postnav>
       </div>
+
     </v-col>
   </v-row>
 </template>

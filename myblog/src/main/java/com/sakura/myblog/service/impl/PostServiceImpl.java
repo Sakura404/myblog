@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private CommentMapper commentMapper;
 
-//    @Cacheable(key = "'list'")
+    //    @Cacheable(key = "'list'")
     @Override
     public List<PostListVO> getPost() {
         List<PostListVO> postList = postMapper.findPostList();
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
         while (i.hasNext()) {
             PostListVO item = i.next();
             int postId = item.getId();
-            int count = commentMapper.findCommentsByPostId(postId).size();
+            int count = commentMapper.getCommentCountByPostId(postId);
             int index = postList.indexOf(item);
             PostListVO newItem = postList.get(index);
             newItem.setCommentCount(count);
@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
         return postList;
     }
 
-//    @Cacheable(key = "#id")
+    //    @Cacheable(key = "#id")
     @Override
     public Post findPost(int id) {
         Post post = postMapper.findPostById(id);
@@ -73,13 +73,15 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-//    @CacheEvict(key = "'list'")
+    //    @CacheEvict(key = "'list'")
     @Override
     public Post addPost(PostTermVO postTermVO) {
         Post post = postTermVO.getPost();
         List<Term> termList = postTermVO.getTerms();
-        post.setModified(new Date(System.currentTimeMillis()));
-
+        post.setModified(new Date());
+        if (post.getAttachment() == null) {
+            post.getAttachment().setId(-1);
+        }
         int addFlag = postMapper.addPost(post);
         if (addFlag != 1) {
             throw new BaseException("-1", "添加失败");
@@ -91,7 +93,7 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-//    @CacheEvict(key = "'list'")
+    //    @CacheEvict(key = "'list'")
     @Override
     public void deletePost(int id) {
         postMapper.deleteTermRelationShipsByPostId(id);
@@ -103,7 +105,7 @@ public class PostServiceImpl implements PostService {
         return;
     }
 
-//    @CacheEvict(key = "'list'")
+    //    @CacheEvict(key = "'list'")
     @Override
     public Post updatePost(int id, PostTermVO postTermVO) {
         Post post = postTermVO.getPost();

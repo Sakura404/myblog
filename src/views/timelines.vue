@@ -27,7 +27,9 @@
 
     </v-timeline>
     <div class="text-center text-h6">本站已运行{{runningTime}}小时</div>
+    <slot name="foot"></slot>
   </home-template>
+
 </template>
 <script>
 import homeTemplate from "./home-template.vue";

@@ -1,5 +1,4 @@
 <template>
-
   <v-row style="margin-top: 56px;min-height: 100vh"
     justify="center"
     no-gutters>

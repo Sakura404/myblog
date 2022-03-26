@@ -15,14 +15,16 @@
               min-width="170%"
               position="top"
               src="../assets/奥尔加·伊兹卡.png"></v-img>
+
             <h2 style="user-select: none">{{ this.author[0] }}</h2>
+
           </v-avatar>
         </v-col>
         <v-col cols="10"
           align-self="center">
           <v-row no-gutters
             style="color: #3daee9"
-            class="font-weight-bold comment-author">{{ author }}</v-row>
+            class="font-weight-bold comment-author"> <a :name="`comment${id}`">{{ author }} </a></v-row>
           <v-row no-gutters>
             <v-col class="grey--text comment-datetime">发布于 {{ lagtime }}</v-col>
             <v-spacer></v-spacer>
@@ -46,7 +48,7 @@
             <span v-if="toUser">
               回复
               <a class="comment-toUser underlink"
-                href="">@{{ toUser }} </a>:</span>
+                :href="`#comment${replyId}`">@{{ toUser }} </a>:</span>
             {{ content }}
           </p>
         </v-col>
@@ -73,6 +75,10 @@ export default {
     content: {
       type: String,
       default: "空白评论",
+    },
+    replyId: {
+      type: Number,
+      default: null,
     },
     toUser: {
       type: String,

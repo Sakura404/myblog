@@ -31,6 +31,18 @@ public interface PostMapper {
     })
     Post findPostById(int id);
 
+    @Select("SELECT\n" +
+            "\t* \n" +
+            "FROM\n" +
+            "\tmb_posts\n" +
+            "\tleft JOIN mb_term_relationships \n" +
+            "ON\n" +
+            "\tmb_posts.post_id = mb_term_relationships.post_id \n" +
+            "WHERE\n" +
+            "\tmb_term_relationships.term_id =1")
+    @ResultMap(value = "PostListMap")
+    List<PostListVO> findPostListByTermId(int id);
+
     /**
      * deleteTermRelationShipsByPostId
      *

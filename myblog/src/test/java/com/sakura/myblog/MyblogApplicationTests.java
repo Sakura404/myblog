@@ -84,4 +84,8 @@ class MyBlogApplicationTests {
         }
     }
 
+    @Test
+    void findPostListByTermId() {
+        System.out.println(postMapper.findPostListByTermId(1));
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="post">
     <v-row>
       <v-col lg="9"
         cols="12">
@@ -10,6 +10,7 @@
             <v-divider></v-divider>
             <v-expansion-panel-content>
               <v-text-field label=""
+                :rules="rules.title"
                 v-model="form.post.title"></v-text-field>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -46,6 +47,7 @@
             <v-divider></v-divider>
             <v-expansion-panel-content>
               <v-overflow-btn editable
+                :rules="rules.author"
                 label="Author"
                 v-model="form.post.author"
                 :items="users"
@@ -104,7 +106,7 @@
               <v-img min-height="300"
                 max-height="700"
                 contain
-                :src="form.post.attachment.url||null">
+                :src="form.post.attachment.url||$randomImg.cdnRandomImg()">
 
               </v-img>
               <v-btn block
@@ -185,21 +187,26 @@ export default {
     mainPanels: [0, 1],
     supPanels: [0, 1, 2, 3],
     date: Moment(new Date()).format("yyyy-MM-DD"),
-    time: Moment(new Date()).format("hh:mm:ss"),
+    time: Moment(new Date()).format("HH:mm:ss"),
     form: {
       post: {
         title: "",
         excerpt: "",
         content: "",
         date: "",
-        status: "公开",
-        attachment: "",
+        status: "public",
+        attachment: { id: -1 },
       },
       terms: [],
     },
     editorImgCheck: true,
     imageManager: false,
     terms: [],
+    rules: {
+      title: [(v) => !!v || "标题不能为空"],
+      content: [(v) => !!v || "内容不能为空"],
+      author: [(v) => !!v || "作者不能为空"],
+    },
     users: ["orag", "senkaryouran", "Sakura"],
     status: ["public", "draft", "hidden"],
   }),
@@ -207,52 +214,57 @@ export default {
   methods: {
     getterms() {
       this.$http.get("/api/terms/").then((res) => {
-        console.log(res);
         if (res.data.code == 10000) this.terms = res.data.data;
       });
     },
     addPost() {
-      let termList = [];
-      this.form.terms.forEach((e) => {
-        termList.push({ id: e.id });
-      });
-      this.$set(
-        this.form.post,
-        "date",
-        Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
-      );
-      let Data = { post: this.form.post, terms: termList };
-      this.$http
-        .post("/api/posts/", Data)
-        .then((res) => {
-          this.$snackbar.success("文章添加成功:" + res.data.mes);
-        })
-        .catch((err) => {
-          this.$snackbar.error(err);
+      if (this.$refs.post.validate()) {
+        let termList = [];
+        this.form.terms.forEach((e) => {
+          termList.push({ id: e });
         });
+        this.$set(
+          this.form.post,
+          "date",
+          Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
+        );
+        let Data = new FormData();
+        Data = { post: this.form.post, terms: termList };
+        this.$http
+          .post("/api/posts/", Data)
+          .then((res) => {
+            this.$snackbar.success("文章添加成功:" + res.data.mes);
+            this.$route.push(`/admin/editor/${res.data.data.id}`);
+          })
+          .catch((err) => {
+            this.$snackbar.error(err);
+          });
+      }
     },
     updataPost() {
-      let termList = [];
-      this.form.terms.forEach((e) => {
-        termList.push({ id: e });
-      });
-      this.$set(
-        this.form.post,
-        "date",
-        Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
-      );
-      let Data = new FormData();
-      Data = { post: this.form.post, terms: termList };
-      // console.log(Data);
-
-      this.$http
-        .put(`/api/posts/${this.$route.params.id}`, Data)
-        .then((res) => {
-          this.$snackbar.success("文章更新成功:" + res.data.message);
-        })
-        .catch((err) => {
-          this.$snackbar.error(err);
+      if (this.$refs.post.validate()) {
+        let termList = [];
+        this.form.terms.forEach((e) => {
+          termList.push({ id: e });
         });
+        this.$set(
+          this.form.post,
+          "date",
+          Moment(`${this.date} ${this.time}`).format("yyyy-MM-DD hh:mm:ss")
+        );
+        let Data = new FormData();
+        Data = { post: this.form.post, terms: termList };
+        // console.log(Data);
+
+        this.$http
+          .put(`/api/posts/${this.$route.params.id}`, Data)
+          .then((res) => {
+            this.$snackbar.success("文章更新成功:" + res.data.message);
+          })
+          .catch((err) => {
+            this.$snackbar.error(err);
+          });
+      }
     },
     setup(editor) {
       this._editor = editor;
@@ -297,16 +309,15 @@ export default {
         if (res.data.code == 10000) {
           this.form.post = res.data.data;
           this.date = Moment(res.data.data.date).format("yyyy-MM-DD");
-          this.time = Moment(res.data.data.time).format("hh:mm");
+          this.time = Moment(res.data.data.time).format("HH:mm:ss");
           this.newPost = false;
         } else {
-          this.$router.push("/admin/editor");
+          this.$route.push("/admin/editor");
         }
       });
-
       this.$http.get(`/api/terms/post/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) {
-          console.log(res);
+          //  console.log(res);
           res.data.data.forEach((e) => {
             this.form.terms.push(e.id);
           });

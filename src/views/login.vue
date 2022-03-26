@@ -4,7 +4,7 @@
         background-position: top center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: 1920px 1080px;
+        background-size: 100% 100%;
       "
       :style="loginBackgroundSrc"
       app>
@@ -100,7 +100,7 @@ export default {
                 type: "success",
                 show: true,
               };
-              document.cookie = `LOGIN_TOKEN=${res.data.data.LOGIN_TOKEN}`;
+            //   document.cookie = `LOGIN_TOKEN=${res.data.data.LOGIN_TOKEN}`;
               sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
               if (this.$route.query.redirect) {
                 this.$router.push(this.$route.query.redirect);
