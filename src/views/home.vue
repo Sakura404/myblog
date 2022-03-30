@@ -73,7 +73,7 @@
           class=""></headinfo>
         <div :style="mainimg"
           class="biyin">
-          <router-view @onIntersect="onIntersect">
+          <router-view>
             <v-footer slot="foot"
               color='rgba(0,0,0,0.0)'>
               <v-col class='text-center '
@@ -105,6 +105,7 @@ export default {
     links: [
       ["mdi-home", "首页", "/home"],
       ["mdi-sort-bool-descending", "时间轴", "/timelines"],
+      ["mdi-file", "归档", "/archive"],
       ["mdi-heart", "爱好", "/work"],
       ["mdi-gamepad-variant", "游戏", "/game"],
       ["mdi-link", "友情链接"],
@@ -144,7 +145,7 @@ export default {
       window.pageYOffset;
     },
     onIntersect(entries) {
-      this.toolcolor = !entries[0].isIntersecting;
+      // this.toolcolor = !entries[0].isIntersecting;
       this.toolflat = entries[0].isIntersecting;
     },
   },

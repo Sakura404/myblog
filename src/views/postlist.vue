@@ -40,6 +40,7 @@
                   link
                   class="mr-1 mb-1"
                   color="primary"
+                  @click="getPostByTermId(term.id)"
                   :key="term.id">{{ term.name }}</v-chip>
               </v-col>
               <v-spacer></v-spacer>
@@ -50,7 +51,18 @@
           </v-card-actions>
         </v-card>
         <slot name="foot"></slot>
+
       </v-col>
+      <v-fab-transition>
+        <v-btn style="bottom: 20vw;"
+          right
+          fixed
+          fab
+          v-if=termBtn
+          @click="getPosts()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-fab-transition>
       <v-spacer></v-spacer>
     </v-row>
   </div>
@@ -61,6 +73,7 @@ import Moment from "moment";
 export default {
   data: () => ({
     postList: null,
+    termBtn: true,
   }),
   computed: {},
   methods: {
@@ -76,13 +89,26 @@ export default {
         .then((res) => {
           if (res.data.code == 10000) {
             this.postList = res.data.data;
+            this.termBtn = false;
           }
         })
         .catch((err) => {
           console.error(err);
         });
     },
-
+    getPostByTermId(id) {
+      this.$http
+        .get(`/api/posts/term/${id}`)
+        .then((res) => {
+          if (res.data.code == 10000) {
+            this.postList = res.data.data;
+            this.termBtn = true;
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     lagtime(dateTime) {
       let pasttime = new Date(dateTime);
       let nowtime = new Date();

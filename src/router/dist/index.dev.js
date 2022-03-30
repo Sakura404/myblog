@@ -35,6 +35,8 @@ var _adminImage = _interopRequireDefault(require("../components/admin/admin-imag
 
 var _timelines = _interopRequireDefault(require("../views/timelines.vue"));
 
+var _archive = _interopRequireDefault(require("../views/archive.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
@@ -100,6 +102,10 @@ var routes = [{
     path: '/timelines',
     name: 'timelines',
     component: _timelines["default"]
+  }, {
+    path: '/archive',
+    name: 'archive',
+    component: _archive["default"]
   }, {
     path: '/*',
     redirect: '/'

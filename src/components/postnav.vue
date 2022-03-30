@@ -127,7 +127,7 @@ export default {
       this.navItemActiveHeight = s.offsetHeight;
       this.navItemHoverHeight = s.offsetHeight;
     }
-    window.addEventListener("scroll", this.scrollFollow, true);
+    window.addEventListener("scroll", this.scrollFollow);
   },
   destroyed() {
     // 离开该页面需要移除这个监听的事件，不然会报错

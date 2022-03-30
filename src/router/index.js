@@ -13,6 +13,7 @@ import game from '../views/game.vue'
 import adminComment from '../components/admin/admin-comment.vue'
 import adminImage from '../components/admin/admin-image.vue'
 import timelines from '../views/timelines.vue'
+import archive from '../views/archive.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -83,7 +84,12 @@ const routes = [
             path: '/timelines',
             name: 'timelines',
             component: timelines
-        }, {
+        },
+        {
+            path: '/archive',
+            name: 'archive',
+            component: archive
+        },{
             path: '/*',
             redirect: '/'
         },]

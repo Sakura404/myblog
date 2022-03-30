@@ -1,5 +1,6 @@
 package com.sakura.myblog.service.intf;
 
+import com.github.pagehelper.PageInfo;
 import com.sakura.myblog.model.VO.PostListVO;
 import com.sakura.myblog.model.VO.PostTermVO;
 import com.sakura.myblog.model.entity.Post;
@@ -19,6 +20,10 @@ public interface PostService {
 
 
     List<PostListVO> getPost();
+
+    List<PostListVO> getPostByTermId(int id);
+
+    PageInfo getPost(int pageNum, int pageSize);
 
     /**
      * findPost

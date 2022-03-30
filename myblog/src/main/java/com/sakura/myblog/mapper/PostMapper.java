@@ -39,7 +39,7 @@ public interface PostMapper {
             "ON\n" +
             "\tmb_posts.post_id = mb_term_relationships.post_id \n" +
             "WHERE\n" +
-            "\tmb_term_relationships.term_id =1")
+            "\tmb_term_relationships.term_id =#{id}")
     @ResultMap(value = "PostListMap")
     List<PostListVO> findPostListByTermId(int id);
 
@@ -77,7 +77,23 @@ public interface PostMapper {
      *
      * @return
      */
-    @Select("select post_id,post_title,post_author,post_date,post_modified,post_excerpt,post_status,post_attachment from mb_posts ORDER BY `post_date` DESC")
+    @Select("SELECT\n" +
+            "\tmb_posts.post_id AS post_id,\n" +
+            "\tpost_title,\n" +
+            "\tpost_author,\n" +
+            "\tpost_date,\n" +
+            "\tpost_modified,\n" +
+            "\tpost_excerpt,\n" +
+            "\tCOUNT( mb_comments.post_id ) AS post_commentCount,\n" +
+            "\tpost_status,\n" +
+            "\tpost_attachment \n" +
+            "FROM\n" +
+            "\tmb_posts\n" +
+            "\tLEFT JOIN mb_comments ON mb_posts.post_id = mb_comments.post_id \n" +
+            "GROUP BY\n" +
+            "\tmb_posts.post_id \n" +
+            "ORDER BY\n" +
+            "\t`post_date` DESC")
     @Results(id = "PostListMap", value = {
             @Result(column = "post_id", property = "id"),
             @Result(column = "post_title", property = "title"),
@@ -86,6 +102,7 @@ public interface PostMapper {
             @Result(column = "post_modified", property = "modified"),
             @Result(column = "post_excerpt", property = "excerpt"),
             @Result(column = "post_status", property = "status"),
+            @Result(column = "post_commentCount",property="commentCount"),
             @Result(column = "post_attachment", property = "attachment", one = @One(select = "com.sakura.myblog.mapper.MediaMapper.findMediaById")),
             @Result(column = "post_id", property = "termList", many = @Many(select = "com.sakura.myblog.mapper.TermMapper.findTermByPostId"))
     })

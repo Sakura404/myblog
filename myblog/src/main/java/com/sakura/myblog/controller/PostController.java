@@ -44,9 +44,9 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    public ResponseDTO updatePost(@PathVariable int id, @RequestBody  PostTermVO postTermVO) {
+    public ResponseDTO updatePost(@PathVariable int id, @RequestBody PostTermVO postTermVO) {
 
-        return ResponseUtil.success(postService.updatePost(id,postTermVO));
+        return ResponseUtil.success(postService.updatePost(id, postTermVO));
     }
 
 
@@ -55,6 +55,18 @@ public class PostController {
     public ResponseDTO<List<PostListVO>> getPost() {
         return ResponseUtil.success(postService.getPost());
     }
+//
+//    @RequestMapping(value = "/{pageNum}/{pageSize}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
+//    public ResponseDTO<List<PostListVO>> getPostPages(@PathVariable int pageNum, @PathVariable int pageSize) {
+//        return ResponseUtil.success(postService.getPost(pageNum,pageSize));
+//    }
 
+
+    @RequestMapping(value = "/term/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO<List<PostListVO>> getPost(@PathVariable int id) {
+        return ResponseUtil.success(postService.getPostByTermId(id));
+    }
 
 }

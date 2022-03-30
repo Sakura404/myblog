@@ -1,6 +1,8 @@
 package com.sakura.myblog.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sakura.myblog.mapper.CommentMapper;
 import com.sakura.myblog.mapper.PostMapper;
 import com.sakura.myblog.mapper.TermMapper;
@@ -50,17 +52,28 @@ public class PostServiceImpl implements PostService {
         if (postList.isEmpty()) {
             throw new BaseException("-1", "空查询");
         }
-        Iterator<PostListVO> i = postList.iterator();
-        while (i.hasNext()) {
-            PostListVO item = i.next();
-            int postId = item.getId();
-            int count = commentMapper.getCommentCountByPostId(postId);
-            int index = postList.indexOf(item);
-            PostListVO newItem = postList.get(index);
-            newItem.setCommentCount(count);
-            postList.set(index, newItem);
+        return postList;
+    }
+
+    @Override
+    public List<PostListVO> getPostByTermId(int id) {
+        List<PostListVO> postList = postMapper.findPostListByTermId(id);
+        if (postList.isEmpty()) {
+            throw new BaseException("-1", "空查询");
         }
         return postList;
+    }
+
+    @Override
+    public PageInfo getPost(int pageNum, int pageSize) {
+        PageInfo<PostListVO> pageInfo;
+        pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> postMapper.findPostList());
+
+//        if (pageInfo.getList().isEmpty()) {
+//            throw new BaseException("-1", "空查询");
+//        }
+
+        return pageInfo;
     }
 
     //    @Cacheable(key = "#id")
@@ -72,6 +85,7 @@ public class PostServiceImpl implements PostService {
         }
         return post;
     }
+
 
     //    @CacheEvict(key = "'list'")
     @Override
