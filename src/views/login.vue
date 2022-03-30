@@ -100,7 +100,7 @@ export default {
                 type: "success",
                 show: true,
               };
-            //   document.cookie = `LOGIN_TOKEN=${res.data.data.LOGIN_TOKEN}`;
+              //   document.cookie = `LOGIN_TOKEN=${res.data.data.LOGIN_TOKEN}`;
               sessionStorage.setItem("token", res.data.data.LOGIN_TOKEN);
               if (this.$route.query.redirect) {
                 this.$router.push(this.$route.query.redirect);
