@@ -1,25 +1,33 @@
 <template>
   <v-card class="py-3 px-3">
-    <h2 path="contents"
-      class="text--primary">目录
-    </h2>
-    <v-divider class="mb-2"></v-divider>
-    <div style="overflow: auto; max-height: 60vh"
-      class="nav-content">
+    <h2 path="contents" class="text--primary">目录</h2>
+    <v-divider class="mb-4"></v-divider>
+    <div style="overflow: auto; max-height: 60vh" class="nav-content">
       <ul class="postnav pl-1 ml-3 mb-6">
-        <li :style="navActive"
-          style="overflow:visible ;"
-          class="nav-item-active"></li>
-        <li style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
+        <li
+          :style="navActive"
+          style="overflow: visible"
+          class="nav-item-active"
+        ></li>
+        <li
+          style="
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          "
           v-for="(item, index) in navlist"
           :key="index"
-          class="d-block nav-li"
-          :class="`pl-${(item.deep - 3) * 2}`">
-          <a :id="item.href.substring(8)"
+          class="d-block nav-li pa-2 mr-2"
+          :class="`pl-${(item.deep - 3) * 2}`"
+          @click="scrollTo(item.offsetTop)"
+        >
+          <a
+            :id="item.href.substring(8)"
             :style="getFont(item.deep)"
             class="nav-link"
-            @click="scrollTo(item.offsetTop)">
-            {{ item.text }}</a>
+          >
+            {{ item.text }}</a
+          >
         </li>
       </ul>
     </div>
@@ -100,8 +108,7 @@ export default {
             let dom = document.getElementById(
               this.navlist[i - 1].href.substring(8)
             );
-            if(dom)
-            this.observer(dom);
+            if (dom) this.observer(dom);
             break;
           }
           if (
@@ -135,7 +142,7 @@ export default {
   },
 };
 </script>
-<style>
+<style >
 .postnav {
   border-left: 2px rgba(0, 0, 0, 0.3) solid;
   position: relative;
@@ -156,17 +163,16 @@ export default {
   scrollbar-width: 12px;
 }
 .nav-content::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .nav-content::-webkit-scrollbar-track {
-  background-color: #e4e4e4;
+  background-color: white;
   border-radius: 20px;
 }
 
 .nav-content::-webkit-scrollbar-thumb {
-  background-color: orange;
-
+  background-color: #e4e4e4;
   border-radius: 20px;
 }
 html {
@@ -185,7 +191,10 @@ html {
 .nav-link-active {
   color: #1976d2 !important;
 }
-
+.nav-li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
 mce-toc {
   display: none;
 }

@@ -3,7 +3,6 @@
     <div
       id="headinfo"
       :style="loginBackgroundSrc"
-      v-resize="onResize"
       style="height: 100vh"
     >
       <div
@@ -80,7 +79,7 @@ export default {
     let options = {
       threshold: [],
     };
-    for (let i = 0; i <= 1.0; i += 0.01) {
+    for (let i = 0; i <= 1.0; i += 0.1) {
       options.threshold.push(i);
     }
     let headObserver = new IntersectionObserver(this.headeEntries, options);

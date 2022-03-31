@@ -64,7 +64,6 @@
         <headinfo
           v-if="$route.path == '/'"
           @observe="headobserve"
-          class=""
         ></headinfo>
         <div :style="biyinapi ? mainimg : null" class="biyin">
           <router-view>
@@ -136,35 +135,31 @@ export default {
     //       ? true
     //       : false;
     // },
-
-    onToolfixed() {
-      window.pageYOffset;
-    },
     onIntersect(entries) {
       // this.toolcolor = !entries[0].isIntersecting;
       this.toolflat = entries[0].isIntersecting;
     },
   },
-    mounted: function () {
-      this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
-        let imgSrc = `https://bing.com${res.data.images[0].url}`;
-        const primise = new Promise((resolve, reject) => {
-          let img = new Image();
-          img.src = imgSrc;
-          img.onload = () => {
-            resolve(img);
-          };
-          img.onerror = () => {
-            reject(new Error("图片加载失败"));
-          };
-        });
-        primise.then((res) => {
-          this.biyinapi = res.src;
-        });
+  mounted: function () {
+    this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
+      let imgSrc = `https://bing.com${res.data.images[0].url}`;
+      const primise = new Promise((resolve, reject) => {
+        let img = new Image();
+        img.src = imgSrc;
+        img.onload = () => {
+          resolve(img);
+        };
+        img.onerror = () => {
+          reject(new Error("图片加载失败"));
+        };
       });
+      primise.then((res) => {
+        this.biyinapi = res.src;
+      });
+    });
 
-      //  window.addEventListener("scroll", this.handleScroll, true);
-    },
+    //  window.addEventListener("scroll", this.handleScroll, true);
+  },
   created() {
     this.$watch(
       () => this.$route.name,
@@ -192,7 +187,7 @@ export default {
   background-image: url("../assets/dcbg.jpg");
 }
 .biyin {
-  background-image:url('../assets/food.png');
+  background-image: url("../assets/food.png");
   background-attachment: fixed;
   background-repeat: repeat;
   background-size: 100 100%;

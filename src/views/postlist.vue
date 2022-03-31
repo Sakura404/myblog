@@ -13,7 +13,7 @@
           hover
           class="scaleImg my-6"
           :key="post.id">
-          <v-img class="white--text csfsdgf align-end"
+          <v-img class="white--text  align-end"
             height="300px"
             gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
             lazy-src
