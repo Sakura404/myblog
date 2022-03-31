@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
     public List<PostListVO> getPost() {
         List<PostListVO> postList = postMapper.findPostList();
         if (postList.isEmpty()) {
-            throw new BaseException("-1", "空查询");
+            throw new BaseException("404", "空查询");
         }
         return postList;
     }
@@ -59,7 +59,16 @@ public class PostServiceImpl implements PostService {
     public List<PostListVO> getPostByTermId(int id) {
         List<PostListVO> postList = postMapper.findPostListByTermId(id);
         if (postList.isEmpty()) {
-            throw new BaseException("-1", "空查询");
+            throw new BaseException("404", "空查询");
+        }
+        return postList;
+    }
+
+    @Override
+    public List<PostListVO> getPostWithoutTerm() {
+        List<PostListVO> postList = postMapper.findPostListwithTerm();
+        if (postList.isEmpty()) {
+            throw new BaseException("404", "空查询");
         }
         return postList;
     }
@@ -81,7 +90,7 @@ public class PostServiceImpl implements PostService {
     public Post findPost(int id) {
         Post post = postMapper.findPostById(id);
         if (post == null) {
-            throw new BaseException("-1", "空查询2");
+            throw new BaseException("404", "空查询2");
         }
         return post;
     }
@@ -98,7 +107,7 @@ public class PostServiceImpl implements PostService {
         }
         int addFlag = postMapper.addPost(post);
         if (addFlag != 1) {
-            throw new BaseException("-1", "添加失败");
+            throw new BaseException("500", "添加失败");
         }
         Iterator<Term> i = termList.iterator();
         while (i.hasNext()) {
@@ -113,7 +122,7 @@ public class PostServiceImpl implements PostService {
         postMapper.deleteTermRelationShipsByPostId(id);
         int deleteFlag = postMapper.deletePostById(id);
         if (deleteFlag != 1) {
-            throw new BaseException("-1", "删除失败");
+            throw new BaseException("500", "删除失败");
         }
 
         return;
@@ -127,7 +136,7 @@ public class PostServiceImpl implements PostService {
         post.setModified(new Date(System.currentTimeMillis()));
         int updateFlag = postMapper.updatePost(post);
         if (updateFlag != 1) {
-            throw new BaseException("-1", "更新失败");
+            throw new BaseException("500", "更新失败");
         }
         List<Term> termListNew = postTermVO.getTerms();
         List<Term> termList = postTermVO.getTerms();

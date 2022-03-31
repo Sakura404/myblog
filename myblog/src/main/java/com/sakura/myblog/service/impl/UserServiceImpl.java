@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         user.setName(name);
         int addFlag = userMapper.addUser(user);
         if (addFlag != 1) {
-            throw new BaseException("-1", "添加失败");
+            throw new BaseException("500", "添加失败");
         }
         return user;
     }

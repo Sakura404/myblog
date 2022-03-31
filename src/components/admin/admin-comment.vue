@@ -1,54 +1,45 @@
 <template>
-
   <div>
-    <v-dialog max-width="400px"
-      v-model="dialogdelete">
+    <v-dialog max-width="400px" v-model="dialogdelete">
       <v-card>
         <v-card-title>警告</v-card-title>
         <v-card-text>确定要删除该评论么</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="delectcancel()"
-            depressed>取消</v-btn>
-          <v-btn @click="delectsumbit()"
-            depressed>确认</v-btn>
+          <v-btn @click="delectcancel()" depressed>取消</v-btn>
+          <v-btn @click="delectsumbit()" depressed>确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-card>
-      <v-data-table :headers="headers"
+      <v-data-table
+        :headers="headers"
         :loading="loading"
         :loading-text="loadingmeg"
-        :items="desserts">
+        :items="desserts"
+      >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>评论管理</v-toolbar-title>
-            <v-divider class="mx-4"
-              inset
-              vertical></v-divider>
+            <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-icon @click="updata()">mdi-refresh</v-icon>
           </v-toolbar>
         </template>
         <template v-slot:[`item.opreation`]="{ item }">
-          <v-btn icon
-            :to="`editor/${item.id}`">
+          <v-btn icon :to="`editor/${item.id}`">
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
-          <v-btn icon
-            @click="delect(item)">
+          <v-btn icon @click="delect(item)">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <v-menu offset-y
-            bottom>
+          <v-menu offset-y bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn depressed
-                v-on="on"
-                v-bind="attrs">{{
-                    item.status
-                  }}</v-btn>
+              <v-btn depressed v-on="on" v-bind="attrs">{{
+                item.status
+              }}</v-btn>
             </template>
             <!-- <v-list dense>
               <v-list-item v-for="(status, key) in otherstate(item.status)"

@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getComments(int postId) {
         List<Comment> commentList = commentMapper.findCommentsByPostId(postId);
         if (commentList.isEmpty()) {
-            throw new BaseException("-1", "查询为空");
+            throw new BaseException("404", "查询为空");
         }
         return commentList;
     }
@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getComments() {
         List<Comment> commentList = commentMapper.getComments();
         if (commentList.isEmpty()) {
-            throw new BaseException("-1", "查询为空");
+            throw new BaseException("404", "查询为空");
         }
         return commentList;
     }
@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment findComment(int commentId) {
         Comment comment = commentMapper.findCommentsByCommentId(commentId);
         if (comment == null) {
-            throw new BaseException("-1", "查询为空");
+            throw new BaseException("404", "查询为空");
         }
         return comment;
     }
@@ -65,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
             user.setModified(new Date());
             int addUserFlag = userMapper.addUser(user);
             if (addUserFlag != 1) {
-                throw new BaseException("-1", "添加失败");
+                throw new BaseException("500", "添加失败");
             }
         }
         System.out.println(user);
@@ -84,7 +84,7 @@ public class CommentServiceImpl implements CommentService {
 
         int addFlag = commentMapper.addComment(comment);
         if (addFlag != 1) {
-            throw new BaseException("-1", "添加失败");
+            throw new BaseException("500", "添加失败");
         }
         return comment;
     }

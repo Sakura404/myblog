@@ -23,6 +23,8 @@ public interface PostService {
 
     List<PostListVO> getPostByTermId(int id);
 
+    List<PostListVO> getPostWithoutTerm();
+
     PageInfo getPost(int pageNum, int pageSize);
 
     /**
@@ -56,5 +58,5 @@ public interface PostService {
      * @param postTermVO
      * @return
      */
-    Post updatePost(int id,PostTermVO postTermVO);
+    Post updatePost(int id, PostTermVO postTermVO);
 }

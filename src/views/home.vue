@@ -1,24 +1,23 @@
 <template>
   <div>
-    <v-navigation-drawer clipped
-      temporary
-      v-model="drawer"
-      app>
+    <v-navigation-drawer clipped temporary v-model="drawer" app>
       <v-img :src="$randomImg.cdnRandomImg()">
         <v-card-title></v-card-title>
-        <v-avatar class="mb-4"
-          color="grey darken-1"
-          size="64"><img src="../assets/mk.jpg" /></v-avatar>
+        <v-avatar class="mb-4" color="grey darken-1" size="64"
+          ><img src="../assets/mk.jpg"
+        /></v-avatar>
       </v-img>
 
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item color="blue"
+        <v-list-item
+          color="blue"
           v-for="[icon, text, link] in links"
           :to="link"
           :key="icon"
-          link>
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
@@ -30,14 +29,16 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar clipped-left
+    <v-app-bar
+      clipped-left
       style="transition: background-color 0s"
       :color="toolcolor ? 'white' : 'rgba(0, 0, 0, 0)'"
       :dark="!toolcolor"
       :flat="toolflat"
       short
       fixed
-      class="toolwhite">
+      class="toolwhite"
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
       <v-app-bar-title>散の華</v-app-bar-title>
       <v-spacer></v-spacer>
@@ -46,46 +47,41 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-menu offset-y
-        fixed
-        bottom>
+      <v-menu offset-y fixed bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="mr-1"
-            v-bind="attrs"
-            v-on="on"
-            icon>
+          <v-btn class="mr-1" v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list dense
-          flat>
+        <v-list dense flat>
           <v-list-item to="/admin"> 登录 </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
 
     <v-main>
-      <v-container id="main-container"
-        fluid
-        class="pa-0">
-        <headinfo v-if="$route.path == '/'"
+      <v-container id="main-container" fluid class="pa-0">
+        <headinfo
+          v-if="$route.path == '/'"
           @observe="headobserve"
-          class=""></headinfo>
-        <div :style="mainimg"
-          class="biyin">
+          class=""
+        ></headinfo>
+        <div :style="biyinapi ? mainimg : null" class="biyin">
           <router-view>
-            <v-footer slot="foot"
-              color='rgba(0,0,0,0.0)'>
-              <v-col class='text-center '
-                cols="12">
-                <strong><a class="black--text"
+            <v-footer slot="foot" color="rgba(0,0,0,0.0)">
+              <v-col class="text-center" cols="12">
+                <strong
+                  ><a
+                    class="black--text"
                     href="https://beian.miit.gov.cn/"
-                    target="_blank">粤ICP备2021170811号</a></strong>
+                    target="_blank"
+                    >粤ICP备2021170811号</a
+                  ></strong
+                >
               </v-col>
             </v-footer>
           </router-view>
         </div>
-
       </v-container>
     </v-main>
   </div>
@@ -111,12 +107,12 @@ export default {
       ["mdi-link", "友情链接"],
       ["mdi-alert-octagon", "关于"],
     ],
-    biyinapi: [],
+    biyinapi: null,
   }),
   computed: {
     mainimg() {
       let url = this.biyinapi;
-      const style = `background-image:url(https://bing.com${url})`;
+      const style = `background-image:url(${url})`;
       return style;
     },
   },
@@ -149,14 +145,26 @@ export default {
       this.toolflat = entries[0].isIntersecting;
     },
   },
-  mounted: function () {
-    this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
-      this.biyinapi = res.data.images[0].url;
-      console.log(res.data.images[0].url);
-    });
+    mounted: function () {
+      this.$http.get("http://112.74.125.3:8888/bing").then((res) => {
+        let imgSrc = `https://bing.com${res.data.images[0].url}`;
+        const primise = new Promise((resolve, reject) => {
+          let img = new Image();
+          img.src = imgSrc;
+          img.onload = () => {
+            resolve(img);
+          };
+          img.onerror = () => {
+            reject(new Error("图片加载失败"));
+          };
+        });
+        primise.then((res) => {
+          this.biyinapi = res.src;
+        });
+      });
 
-    //  window.addEventListener("scroll", this.handleScroll, true);
-  },
+      //  window.addEventListener("scroll", this.handleScroll, true);
+    },
   created() {
     this.$watch(
       () => this.$route.name,
@@ -184,9 +192,10 @@ export default {
   background-image: url("../assets/dcbg.jpg");
 }
 .biyin {
+  background-image:url('../assets/food.png');
   background-attachment: fixed;
   background-repeat: repeat;
-  background-size:100 100% ;
+  background-size: 100 100%;
 }
 
 code {

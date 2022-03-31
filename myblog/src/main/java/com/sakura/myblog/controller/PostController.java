@@ -65,8 +65,13 @@ public class PostController {
 
     @RequestMapping(value = "/term/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO<List<PostListVO>> getPost(@PathVariable int id) {
+    public ResponseDTO<List<PostListVO>> getPostByTermId(@PathVariable int id) {
         return ResponseUtil.success(postService.getPostByTermId(id));
     }
 
+    @RequestMapping(value = "/term/", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO<List<PostListVO>> getPostWithoutTerm() {
+        return ResponseUtil.success(postService.getPostWithoutTerm());
+    }
 }

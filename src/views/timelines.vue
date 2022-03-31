@@ -1,35 +1,40 @@
 <template>
   <home-template>
     <v-timeline>
-      <v-timeline-item v-for="(item,index) in postList"
+      <v-timeline-item
+        v-for="(item, index) in postList"
         :key="index"
         fill-dot
-        color="blue">
+        color="blue"
+      >
         <template slot="opposite">
-          <span class="headline font-weight-bold"> {{`${new Date(item.date).getMonth()+1} 月 ${new Date(item.date).getUTCDate()+1} 日`}}</span>
+          <span class="headline font-weight-bold">
+            {{
+              `${new Date(item.date).getMonth() + 1} 月 ${
+                new Date(item.date).getUTCDate() + 1
+              } 日`
+            }}</span
+          >
         </template>
 
-        <div :class="index%2==0?'text-start':'text-end'"
-          class="pa-4 ">
-          <h2 class="headline font-weight-light mb-4 ">
-            <a class=underlink
-              :href="`post/${item.id}`">
-              {{item.title}}
+        <div :class="index % 2 == 0 ? 'text-start' : 'text-end'" class="pa-4">
+          <h2 class="headline font-weight-light mb-4">
+            <a class="underlink" :href="`post/${item.id}`">
+              {{ item.title }}
             </a>
           </h2>
-          <div>{{item.excerpt||"空空如也"}}</div>
+          <div>{{ item.excerpt || "空空如也" }}</div>
         </div>
         <template v-slot:icon>
-          <span class="text--white">{{new Date(item.date).getFullYear()}}</span>
+          <span class="text--white">{{
+            new Date(item.date).getFullYear()
+          }}</span>
         </template>
-
       </v-timeline-item>
-
     </v-timeline>
-    <div class="text-center text-h6">本站已运行{{runningTime}}小时</div>
+    <div class="text-center text-h6">本站已运行{{ runningTime }}小时</div>
     <slot name="foot"></slot>
   </home-template>
-
 </template>
 <script>
 import homeTemplate from "./home-template.vue";

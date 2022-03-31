@@ -31,17 +31,22 @@ public interface PostMapper {
     })
     Post findPostById(int id);
 
-    @Select("SELECT\n" +
-            "\t* \n" +
-            "FROM\n" +
-            "\tmb_posts\n" +
-            "\tleft JOIN mb_term_relationships \n" +
-            "ON\n" +
-            "\tmb_posts.post_id = mb_term_relationships.post_id \n" +
-            "WHERE\n" +
-            "\tmb_term_relationships.term_id =#{id}")
+    @Select("SELECT " +
+            "* " +
+            "FROM " +
+            "mb_posts " +
+            "left JOIN mb_term_relationships " +
+            "ON " +
+            "mb_posts.post_id = mb_term_relationships.post_id " +
+            "WHERE " +
+            "mb_term_relationships.term_id =#{id} ")
     @ResultMap(value = "PostListMap")
     List<PostListVO> findPostListByTermId(int id);
+
+
+    @Select("SELECT * FROM `mb_posts` WHERE post_id not IN (SELECT post_id FROM mb_term_relationships)")
+    @ResultMap(value = "PostListMap")
+    List<PostListVO> findPostListwithTerm();
 
     /**
      * deleteTermRelationShipsByPostId
@@ -102,7 +107,7 @@ public interface PostMapper {
             @Result(column = "post_modified", property = "modified"),
             @Result(column = "post_excerpt", property = "excerpt"),
             @Result(column = "post_status", property = "status"),
-            @Result(column = "post_commentCount",property="commentCount"),
+            @Result(column = "post_commentCount", property = "commentCount"),
             @Result(column = "post_attachment", property = "attachment", one = @One(select = "com.sakura.myblog.mapper.MediaMapper.findMediaById")),
             @Result(column = "post_id", property = "termList", many = @Many(select = "com.sakura.myblog.mapper.TermMapper.findTermByPostId"))
     })

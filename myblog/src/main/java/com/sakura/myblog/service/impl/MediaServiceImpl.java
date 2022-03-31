@@ -34,7 +34,7 @@ public class MediaServiceImpl implements MediaService {
     public List<Media> getMedia() {
         List<Media> MediaList = mediaMapper.findAll();
         if (MediaList.isEmpty()) {
-            throw new BaseException("-1", "查询为空");
+            throw new BaseException("404", "查询为空");
         }
         Iterator<Media> m = MediaList.iterator();
         while (m.hasNext()) {
@@ -52,7 +52,7 @@ public class MediaServiceImpl implements MediaService {
     public Media findMediaById(int id) {
         Media Media = mediaMapper.findMediaById(id);
         if (Media == null) {
-            throw new BaseException("-1", "id为" + id + "的媒体不存在");
+            throw new BaseException("404", "id为" + id + "的媒体不存在");
         }
         return Media;
     }
@@ -73,7 +73,7 @@ public class MediaServiceImpl implements MediaService {
     public Media updateMedia(Media media) {
         media.setModified(new Date());
         if (mediaMapper.updateMedia(media) == 0) {
-            throw new BaseException("-10001", "更新失败");
+            throw new BaseException("500", "更新失败");
         }
         return media;
     }
@@ -106,12 +106,12 @@ public class MediaServiceImpl implements MediaService {
         try {
             file.transferTo(new File(filePath));
         } catch (IOException e) {
-            throw new BaseException("-9000", "上传失败");
+            throw new BaseException("500", "上传失败");
         }
         int addFlag = 0;
         addFlag = mediaMapper.addMedia(media);
         if (addFlag == 0) {
-            throw new BaseException("-1", "添加失败");
+            throw new BaseException("500", "添加失败");
         }
         return media;
     }
