@@ -2,6 +2,7 @@ const end = 16
     , start = 1;
 const randomImg = {
     cdnRandomImg: (() => {
+
         return require(`../assets/docsmall/${Math.floor(Math.random() * end) + start}.jpg`);
     }),
     RandomImg: ((indexd) => {

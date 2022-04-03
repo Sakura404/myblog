@@ -1,17 +1,17 @@
 <template>
   <v-form ref="post">
     <v-row>
-      <v-col lg="9"
-        cols="12">
-        <v-expansion-panels v-model="mainPanels"
-          multiple>
+      <v-col lg="9" cols="12">
+        <v-expansion-panels v-model="mainPanels" multiple>
           <v-expansion-panel class="mt-5">
             <v-expansion-panel-header>标题</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-text-field label=""
+              <v-text-field
+                label=""
                 :rules="rules.title"
-                v-model="form.post.title"></v-text-field>
+                v-model="form.post.title"
+              ></v-text-field>
             </v-expansion-panel-content>
           </v-expansion-panel>
 
@@ -19,39 +19,42 @@
             <v-expansion-panel-header>摘要</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-textarea class="mt-2"
+              <v-textarea
+                class="mt-2"
                 dense
                 row-height="14px"
                 flat
                 outlined
                 counter
                 auto-grow
-                v-model="form.post.excerpt"></v-textarea>
+                v-model="form.post.excerpt"
+              ></v-textarea>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
 
         <v-card rounded="lg">
-          <vue-tinymce v-model="form.post.content"
+          <vue-tinymce
+            v-model="form.post.content"
             :setting="setting"
-            :setup="setup" />
+            :setup="setup"
+          />
         </v-card>
       </v-col>
-      <v-col lg="3"
-        cols="12">
-        <v-expansion-panels v-model="supPanels"
-          multiple
-          class="my-5">
+      <v-col lg="3" cols="12">
+        <v-expansion-panels v-model="supPanels" multiple class="my-5">
           <v-expansion-panel>
             <v-expansion-panel-header>作者</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-overflow-btn editable
+              <v-overflow-btn
+                editable
                 :rules="rules.author"
                 label="Author"
                 v-model="form.post.author"
                 :items="users"
-                class="mt-3"></v-overflow-btn>
+                class="mt-3"
+              ></v-overflow-btn>
             </v-expansion-panel-content>
           </v-expansion-panel>
 
@@ -59,14 +62,15 @@
             <v-expansion-panel-header>标签分类</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-chip-group multiple
-                column
-                v-model="form.terms">
-                <v-chip filter
+              <v-chip-group multiple column v-model="form.terms">
+                <v-chip
+                  filter
                   v-for="(term, index) in terms"
                   :key="index"
-                  :value="term.id">
-                  {{ term.name }}</v-chip>
+                  :value="term.id"
+                >
+                  {{ term.name }}</v-chip
+                >
               </v-chip-group>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -77,24 +81,23 @@
               <v-row>
                 <v-col align-self="center"> 状态:</v-col>
                 <v-col cols="8">
-                  <v-select :items="status"
+                  <v-select
+                    :items="status"
                     v-model="form.post.status"
-                    menu-props="{ fixed:true,bottom: true, overflowY: true }"></v-select>
+                    menu-props="{ fixed:true,bottom: true, overflowY: true }"
+                  ></v-select>
                 </v-col>
               </v-row>
-              <v-row no-gutters
-                align="center">
+              <v-row no-gutters align="center">
                 <v-col>发布日期:</v-col>
                 <v-col>
-                  <v-text-field v-model="date"
-                    type="date"></v-text-field>
+                  <v-text-field v-model="date" type="date"></v-text-field>
                 </v-col>
               </v-row>
               <v-row align="center">
                 <v-col>发布时间:</v-col>
                 <v-col>
-                  <v-text-field v-model="time"
-                    type="time"></v-text-field>
+                  <v-text-field v-model="time" type="time"></v-text-field>
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -103,14 +106,24 @@
             <v-expansion-panel-header>特色图片</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-img min-height="300"
+              <v-img
+                min-height="300"
                 max-height="700"
                 contain
-                :src="form.post.attachment.url||$randomImg.cdnRandomImg()">
-
+                :src="
+                  form.post.attachment.url
+                    ? form.post.attachment.url
+                    : defaultImgUrl
+                "
+              >
               </v-img>
-              <v-btn block
-                @click="imageManager=true;editorImgCheck=false;">
+              <v-btn
+                block
+                @click="
+                  imageManager = true;
+                  editorImgCheck = false;
+                "
+              >
                 添加
               </v-btn>
             </v-expansion-panel-content>
@@ -120,26 +133,24 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn v-if="newPost"
-          @click="addPost()"
-          block
-          outlined>
+        <v-btn v-if="newPost" @click="addPost()" block outlined>
           提交文章
         </v-btn>
-        <v-btn v-else
-          @click="updataPost()"
-          block
-          outlined>更新文章</v-btn>
+        <v-btn v-else @click="updataPost()" block outlined>更新文章</v-btn>
       </v-col>
     </v-row>
 
-    <v-dialog absolute
+    <v-dialog
+      absolute
       class="dialog-overflow"
       content-class="dialog-overflow"
       max-width="1100px"
-      v-model="imageManager">
-      <admin-image @close="imageManager=false"
-        @imgSelect="imageSelect"></admin-image>
+      v-model="imageManager"
+    >
+      <admin-image
+        @close="imageManager = false"
+        @imgSelect="imageSelect"
+      ></admin-image>
     </v-dialog>
   </v-form>
 </template>
@@ -152,6 +163,7 @@ export default {
     content: undefined,
     newPost: true,
     _editor: 0,
+    defaultImgUrl: null,
     setting: {
       //   images_upload_handler: function imgUpLoad(blobInfo, success, failure) {
       //     let file = blobInfo.blob();
@@ -172,8 +184,7 @@ export default {
       toolbar:
         " undo redo | fullscreen | formatselect alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | imgList media table | fontselect fontsizeselect lineheight forecolor backcolor | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat | codesample | restoredraft toc |code|hr",
       toolbar_drawer: "sliding",
-      font_formats:
-        "serif= Noto Serif SC,Noto Serif SC, Source Han Serif SC, Source Han Serif, source-han-serif-sc, PT Serif, SongTi SC, MicroSoft Yahei, Georgia, serif ",
+      font_formats: "serif=Noto Serif SC, Source Han Serif SC;",
       quickbars_selection_toolbar:
         "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor ",
       plugins:
@@ -269,6 +280,9 @@ export default {
     setup(editor) {
       this._editor = editor;
       let _this = this;
+      editor.on("init", function () {
+        this.getBody().style.fontFamily = "Noto Serif SC";
+      });
       editor.ui.registry.addButton("imgList", {
         icon: "Image",
         onAction: function () {
@@ -303,6 +317,7 @@ export default {
     },
   },
   created() {
+    this.defaultImgUrl = this.$randomImg.cdnRandomImg();
     this.getterms();
     if (this.$route.params.id) {
       this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {

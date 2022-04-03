@@ -37,6 +37,8 @@ var _timelines = _interopRequireDefault(require("../views/timelines.vue"));
 
 var _archive = _interopRequireDefault(require("../views/archive.vue"));
 
+var _about = _interopRequireDefault(require("../views/about.vue"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].use(_vueRouter["default"]);
@@ -106,6 +108,10 @@ var routes = [{
     path: '/archive',
     name: 'archive',
     component: _archive["default"]
+  }, {
+    path: '/about',
+    name: 'about',
+    component: _about["default"]
   }, {
     path: '/*',
     redirect: '/'

@@ -1,12 +1,14 @@
 <template>
   <div>
     <v-navigation-drawer clipped temporary v-model="drawer" app>
-      <v-img :src="$randomImg.cdnRandomImg()">
+      <v-sheet color="grey"  class="white--text pa-2">
         <v-card-title></v-card-title>
         <v-avatar class="mb-4" color="grey darken-1" size="64"
           ><img src="../assets/mk.jpg"
         /></v-avatar>
-      </v-img>
+        <p>个人邮箱:</p>
+        <p>380487608@qq.com</p>
+      </v-sheet>
 
       <v-divider></v-divider>
 
@@ -61,10 +63,7 @@
 
     <v-main>
       <v-container id="main-container" fluid class="pa-0">
-        <headinfo
-          v-if="$route.path == '/'"
-          @observe="headobserve"
-        ></headinfo>
+        <headinfo v-if="$route.path == '/'" @observe="headobserve"></headinfo>
         <div :style="biyinapi ? mainimg : null" class="biyin">
           <router-view>
             <v-footer slot="foot" color="rgba(0,0,0,0.0)">
@@ -101,10 +100,9 @@ export default {
       ["mdi-home", "首页", "/home"],
       ["mdi-sort-bool-descending", "时间轴", "/timelines"],
       ["mdi-file", "归档", "/archive"],
-      ["mdi-heart", "爱好", "/work"],
       ["mdi-gamepad-variant", "游戏", "/game"],
       ["mdi-link", "友情链接"],
-      ["mdi-alert-octagon", "关于"],
+      ["mdi-alert-octagon", "关于", "/about"],
     ],
     biyinapi: null,
   }),
@@ -191,6 +189,7 @@ export default {
   background-attachment: fixed;
   background-repeat: repeat;
   background-size: 100 100%;
+  transition: 0.3s ease-in-out;
 }
 
 code {

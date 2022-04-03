@@ -1,141 +1,129 @@
 <template>
   <div>
-    <v-dialog v-model="zoomFlag"
-      max-width="70vw"
-      absolute>
+    <v-dialog v-model="zoomFlag" max-width="70vw" absolute>
       <v-card max-width="70vw">
-        <v-img sizes="vw"
-          contain
-          :src="menuElement.url" />
+        <v-img sizes="vw" contain :src="menuElement.url" />
       </v-card>
     </v-dialog>
-    <v-dialog max-width="50vw"
-      v-model="deleteFlag"
-      absolute>
+    <v-dialog max-width="50vw" v-model="deleteFlag" absolute>
       <v-card>
         <v-card-title>警告</v-card-title>
         <v-card-text>确定要删除该图片么</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="deleteCancel()"
-            depressed>取消</v-btn>
-          <v-btn @click="deleteSumbit()"
-            depressed>确认</v-btn>
+          <v-btn @click="deleteCancel()" depressed>取消</v-btn>
+          <v-btn @click="deleteSumbit()" depressed>确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-card class='pa-2'>
+    <v-card class="pa-2">
       <v-card-title>
         图片管理
         <v-spacer></v-spacer>
-        <v-icon color="red"
-          large
-          @click="$emit('close')">mdi-close</v-icon>
+        <v-icon color="red" large @click="$emit('close')">mdi-close</v-icon>
       </v-card-title>
-      <v-divider class='mb-2'></v-divider>
-      <v-row no-gutters
-        class='pa-2'>
-        <v-col order="2"
-          cols="12"
-          order-xl="1"
-          xl="9">
-          <v-card class='pa-4'
-            outlined>
-            <v-row align="end"
-              class="img_scroll">
-              <v-col cols="6"
-                xl="4"
-                v-for="element,index in imageList"
-                :key="index">
-                <v-card @contextmenu="show($event,element)"
-                  @click="onCheck=element">
-                  <v-img :src="element.url"
+      <v-divider class="mb-2"></v-divider>
+      <v-row no-gutters class="pa-2">
+        <v-col order="2" cols="12" order-lg="1" lg="9">
+          <v-card class="pa-4" outlined>
+            <v-row align="end" class="img_scroll">
+              <v-col
+                cols="6"
+                lg="4"
+                v-for="(element, index) in imageList"
+                :key="index"
+              >
+                <v-card
+                  @contextmenu="show($event, element)"
+                  @click="onCheck = element"
+                >
+                  <v-img
+                    :src="element.url"
                     :alt="element.describe"
-                    height="150"></v-img>
+                    height="150"
+                  ></v-img>
                 </v-card>
-
               </v-col>
-              <v-menu v-model="showMenu"
+              <v-menu
+                v-model="showMenu"
                 absolute
                 :position-x="menuLocation.x"
                 :position-y="menuLocation.y"
                 offset-y
-                style="max-width: 600px">
+                style="max-width: 600px"
+              >
                 <v-list>
-                  <v-list-item @click.stop="zoomFlag=true">
+                  <v-list-item @click.stop="zoomFlag = true">
                     <v-list-item-title>
-                      <v-icon color="blue">mdi-magnify-plus-outline</v-icon> 放大
+                      <v-icon color="blue">mdi-magnify-plus-outline</v-icon>
+                      放大
                     </v-list-item-title>
                   </v-list-item>
-                  <v-list-item @click.stop="deleteFlag=true">
+                  <v-list-item @click.stop="deleteFlag = true">
                     <v-list-item-title>
                       <v-icon color="red">mdi-delete</v-icon> 删除
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-col xl=4
-                cols=6>
-                <v-card outlined
-                  class="dropbox d-flex justify-center align-center "
-                  height="150">
-                  <input v-show="false"
+              <v-col lg="4" cols="6">
+                <v-card
+                  outlined
+                  class="dropbox d-flex justify-center align-center"
+                  height="150"
+                >
+                  <input
+                    v-show="false"
                     type="file"
                     id="imgFile"
                     multiple
-                    @change="getFiles($event)">
-                  <span @click="openFileSelector()"
-                    class="img_upload pa-2 font-weight-bold">拖拽图片上传</span>
+                    @change="getFiles($event)"
+                  />
+                  <span
+                    @click="openFileSelector()"
+                    class="img_upload pa-2 font-weight-bold"
+                    >拖拽图片上传</span
+                  >
                 </v-card>
               </v-col>
             </v-row>
           </v-card>
         </v-col>
 
-        <v-col order="1"
-          order-xl="2"
-          cols="12"
-          xl="3"
-          class="pl-4">
-
-          <v-img absolute
-            min-height="150"
-            :src="onCheck.url"></v-img>
-          <p>实际路径:
-            {{onCheck.path}}</p>
-          <p>使用链接:
-            {{onCheck.url}}</p>
-          <p>大小:{{(onCheck.size/(1024*1024)).toFixed(2)}}MB</p>
-          <p>格式:{{onCheck.type}}</p>
-          <p>上传日期:{{onCheck.date}}</p>
-          <p>更新日期:{{onCheck.modified}}</p>
+        <v-col order="1" order-lg="2" cols="12" lg="3" class="pl-4">
+          <v-img absolute min-height="150" :src="onCheck.url"></v-img>
+          <p>实际路径: {{ onCheck.path }}</p>
+          <p>使用链接: {{ onCheck.url }}</p>
+          <p>大小:{{ (onCheck.size / (1024 * 1024)).toFixed(2) }}MB</p>
+          <p>格式:{{ onCheck.type }}</p>
+          <p>上传日期:{{ onCheck.date }}</p>
+          <p>更新日期:{{ onCheck.modified }}</p>
           <p>描述：</p>
-          <v-textarea filled
+          <v-textarea
+            filled
             id="img-describe"
             no-resize
             dense
             auto-grow
-            row-height=16
+            row-height="16"
             loader-height="1"
             v-model="onCheck.excerpt"
             @change="exceptChange"
-            placeholder="空空如也" />
+            placeholder="空空如也"
+          />
         </v-col>
       </v-row>
 
-      <v-divider class='mt-2'></v-divider>
-      <v-progress-linear :buffer-value="uploadProgress"
+      <v-divider class="mt-2"></v-divider>
+      <v-progress-linear
+        :buffer-value="uploadProgress"
         color="success"
-        :active="uploadProgress>0"
-        stream></v-progress-linear>
-      <v-btn block
-        text
-        @click="submit"
-        color="blue">确定</v-btn>
+        :active="uploadProgress > 0"
+        stream
+      ></v-progress-linear>
+      <v-btn block text @click="submit" color="blue">确定</v-btn>
     </v-card>
-
   </div>
-
 </template>
 
 <script>
@@ -144,167 +132,27 @@ export default {
     as: "123",
     //图片列表
     imageList: [
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/7.dd2ba4f9.jpg",
-        type: "image/jpeg",
-        size: 1,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/6.4237b083.jpg",
-        type: "image/jpeg",
-        size: 2,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
-      {
-        id: 2,
-        path: "D:/vue/image/164710667903117.jpg",
-        url: "http://senkaryouran.top/img/10.c0d78c8c.jpg",
-        type: "image/jpeg",
-        size: 3,
-        date: "2022-03-13 01:03:31",
-        modified: "2022-03-13 01:03:31",
-        except: "",
-      },
+      //   {
+      //     id: 2,
+      //     path: "D:/vue/image/164710667903117.jpg",
+      //     url: "http://senkaryouran.top/img/10.c0d78c8c.jpg",
+      //     type: "image/jpeg",
+      //     size: 3,
+      //     date: "2022-03-13 01:03:31",
+      //     modified: "2022-03-13 01:03:31",
+      //     except: "",
+      //   },
     ],
     //被选中的图片列表项
     onCheck: {
-      id: 2,
-      path: "D:/vue/image/164710667903117.jpg",
-      url: "http://senkaryouran.top/img/6.4237b083.jpg",
-      type: "image/jpeg",
-      size: 902178,
-      date: "2022-03-13 01:03:31",
-      modified: "2022-03-13 01:03:31",
-      excerpt: "",
+      //   id: 2,
+      //   path: "D:/vue/image/164710667903117.jpg",
+      //   url: "http://senkaryouran.top/img/6.4237b083.jpg",
+      //   type: "image/jpeg",
+      //   size: 902178,
+      //   date: "2022-03-13 01:03:31",
+      //   modified: "2022-03-13 01:03:31",
+      //   excerpt: "",
     },
     //照片放大遮罩开关
     zoomFlag: false,

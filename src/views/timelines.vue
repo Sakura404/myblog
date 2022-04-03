@@ -37,7 +37,7 @@
   </home-template>
 </template>
 <script>
-import homeTemplate from "./home-template.vue";
+import homeTemplate from "../components/home-template.vue";
 export default {
   components: { homeTemplate },
   data() {

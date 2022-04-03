@@ -17,6 +17,7 @@ var randomImg = {
       random = Math.floor(Math.random() * end) + start;
       if (random) break;
     }
+
     return "https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/docsmall/".concat(random, ".jpg");
   }
 };
