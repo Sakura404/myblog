@@ -1,8 +1,19 @@
 <template>
   <div>
     <v-dialog v-model="zoomFlag" max-width="70vw" absolute>
-      <v-card max-width="70vw">
-        <v-img sizes="vw" contain :src="menuElement.url" />
+      <v-card
+        class="full-screen"
+        max-width="70vw"
+        max-height="70vh"
+        style="overflow: hidden"
+      >
+        <v-img
+          id="full-img"
+          @mousedown="dragImg"
+          :position="`${fullPosition.x}px ${fullPosition.y}px`"
+          contain
+          :src="menuElement.url"
+        />
       </v-card>
     </v-dialog>
     <v-dialog max-width="50vw" v-model="deleteFlag" absolute>
@@ -53,7 +64,9 @@
                 style="max-width: 600px"
               >
                 <v-list>
-                  <v-list-item @click.stop="zoomFlag = true">
+                  <v-list-item
+                    @click.stop="zoomFlag = true ;  fullPosition= { x: 0, y: 0 }"
+                  >
                     <v-list-item-title>
                       <v-icon color="blue">mdi-magnify-plus-outline</v-icon>
                       放大
@@ -75,6 +88,7 @@
                   <input
                     v-show="false"
                     type="file"
+                    accept="image/*"
                     id="imgFile"
                     multiple
                     @change="getFiles($event)"
@@ -168,6 +182,8 @@ export default {
     menuLocation: { x: 0, y: 0 },
     //上传进度开关
     uploadProgress: 0,
+    fullScreenScale: 50,
+    fullPosition: { x: 0, y: 0 },
   }),
   methods: {
     exceptChange() {
@@ -183,6 +199,45 @@ export default {
     },
     onCheckChange() {
       this.onCheck = this.menuElement;
+    },
+    ImgWheel(e) {
+      const [originX, originY] = [e.clientX, e.clientY];
+      e.target.onmousemove = (event) => {
+        let [changeX, changeY] = [
+          event.clientX - originX,
+          event.clientY - originY,
+        ];
+        console.log(changeX, this.fullPosition.x);
+        console.log(changeY);
+        this.fullPosition.x = changeX;
+        this.fullPosition.y = changeY;
+      };
+    },
+    moveCancel(e) {
+      e.target.onmousemove = null;
+    },
+    dragImg(e) {
+      let box = e.target;
+      let changeX;
+      let changeY;
+      document.onmousedown = (e) => {
+        let down = false;
+        if (e.target === box) {
+          down = true;
+          changeX = this.fullPosition.x - e.clientX;
+          changeY = this.fullPosition.y - e.clientY;
+        }
+        document.onmousemove = (e) => {
+          if (!down) return;
+          if (this.time && Date.now() - this.time < 16) return;
+          this.time = Date.now();
+          this.fullPosition.x = changeX + e.clientX;
+          this.fullPosition.y = changeY + e.clientY;
+        };
+        document.onmouseup = () => {
+          document.onmouseup = document.onmousemove = null;
+        };
+      };
     },
     submit() {
       this.$emit("imgSelect", this.onCheck);

@@ -28,7 +28,7 @@ file:
   upload:
     path: D:/vue/image/
   coming:
-    path: http://localhost:80/image/
+    path: http://localhost:1145/image/
 logging:
   level:
     com:

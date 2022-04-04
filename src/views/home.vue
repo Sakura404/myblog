@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer clipped temporary v-model="drawer" app>
-      <v-sheet color="grey"  class="white--text pa-2">
+      <v-sheet color="grey" class="white--text pa-2">
         <v-card-title></v-card-title>
         <v-avatar class="mb-4" color="grey darken-1" size="64"
           ><img src="../assets/mk.jpg"
@@ -188,8 +188,8 @@ export default {
   background-image: url("../assets/food.png");
   background-attachment: fixed;
   background-repeat: repeat;
-  background-size: 100 100%;
-  transition: 0.3s ease-in-out;
+  background-size: auto 100%;
+  transition: background-image 1s;
 }
 
 code {
