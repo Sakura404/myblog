@@ -27,5 +27,5 @@ public class PostListVO implements Serializable {
     private List<Term> termList;
     private String status;
     private Integer commentCount;
-    private Media attachment;
+    private Media attachment = new Media();
 }

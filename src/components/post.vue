@@ -8,7 +8,7 @@
     <v-img
       class="white--text align-end"
       height="300"
-      :src="imgSrc"
+      :src="post.attachment ? post.attachment.url : $randomImg.cdnRandomImg()"
       min-width="100%"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
     >

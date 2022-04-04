@@ -22,7 +22,9 @@
             height="300px"
             gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
             lazy-src
-            :src="$randomImg.cdnRandomImg()"
+            :src="
+              post.attachment ? post.attachment.url : $randomImg.cdnRandomImg()
+            "
           >
             <v-card-title> {{ post.title }} </v-card-title>
             <v-card-subtitle class="white--text">

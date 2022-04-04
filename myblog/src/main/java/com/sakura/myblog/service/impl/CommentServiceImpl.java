@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
                 throw new BaseException("500", "添加失败");
             }
         }
-        System.out.println(user);
+       // System.out.println(user);
         Comment comment = new Comment();
         comment.setContent(commentVO.get("content").toString());
         comment.setUser(user);

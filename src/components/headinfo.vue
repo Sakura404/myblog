@@ -79,7 +79,7 @@ export default {
     let options = {
       threshold: [],
     };
-    for (let i = 0; i <= 1.0; i += 0.1) {
+    for (let i = 0; i <= 1.0; i += 0.02) {
       options.threshold.push(i);
     }
     let headObserver = new IntersectionObserver(this.headeEntries, options);

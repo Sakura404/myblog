@@ -28,7 +28,8 @@ public class Post implements Serializable {
     private String content;
     private String excerpt;
     private String status;
-    private Media attachment;
+    private Media attachment = new Media();
+
 
     @Override
     public String toString() {

@@ -18,4 +18,5 @@ public class Media {
     private Date date;
     private Date modified;
     private String excerpt;
+    private String md5;
 }

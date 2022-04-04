@@ -188,7 +188,7 @@ export default {
   background-image: url("../assets/food.png");
   background-attachment: fixed;
   background-repeat: repeat;
-  background-size: auto 100%;
+  background-size: 100% 100%;
   transition: background-image 1s;
 }
 

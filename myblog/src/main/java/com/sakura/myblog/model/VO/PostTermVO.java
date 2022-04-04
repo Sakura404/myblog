@@ -15,5 +15,4 @@ public class PostTermVO {
     public List<Term> terms;
     public Post post;
     public Media media;
-
 }

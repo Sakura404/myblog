@@ -82,7 +82,16 @@ public class MediaServiceImpl implements MediaService {
     public Media addMedia(MultipartFile file) {
         String filePath = "";
         String fileUrl = "";
-        String originalFilename = file.getOriginalFilename();
+        String md5 = null;
+        try {
+            md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (mediaMapper.findMediaByMd5(md5) != null) {
+            throw new BaseException("500", "文件已存在");
+        }
+
         File fileSrc = new File(fileSavePath);
         if (!fileSrc.exists() && !fileSrc.isDirectory()) {
             fileSrc.mkdirs();
@@ -90,11 +99,9 @@ public class MediaServiceImpl implements MediaService {
         long time = System.currentTimeMillis();
         filePath = new StringBuilder(fileSavePath)
                 .append(time)
-                .append(originalFilename)
                 .toString();
         fileUrl = new StringBuilder(fileSaveUrl)
                 .append(time)
-                .append(originalFilename)
                 .toString();
         Media media = new Media();
         media.setPath(filePath);
@@ -103,6 +110,7 @@ public class MediaServiceImpl implements MediaService {
         media.setModified(new Date());
         media.setDate(new Date());
         media.setUrl(fileUrl);
+        media.setMd5(md5);
         try {
             file.transferTo(new File(filePath));
         } catch (IOException e) {

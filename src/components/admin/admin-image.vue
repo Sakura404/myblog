@@ -1,16 +1,20 @@
 <template>
   <div>
-    <v-dialog v-model="zoomFlag" max-width="70vw" absolute>
+    <v-dialog v-model="zoomFlag" internal-activator max-width="70vw" absolute>
       <v-card
         class="full-screen"
-        max-width="70vw"
-        max-height="70vh"
         style="overflow: hidden"
+        max-width="70vw"
+        height="70vh"
       >
         <v-img
           id="full-img"
+          height="100%"
           @mousedown="dragImg"
-          :position="`${fullPosition.x}px ${fullPosition.y}px`"
+          @mousewheel="ImgWheel"
+          style=""
+          :style="`transform: scale(${fullScreenScale});;left: ${fullPosition.x}px;top:  ${fullPosition.y}px;`"
+          position="center center"
           contain
           :src="menuElement.url"
         />
@@ -36,7 +40,7 @@
       <v-divider class="mb-2"></v-divider>
       <v-row no-gutters class="pa-2">
         <v-col order="2" cols="12" order-lg="1" lg="9">
-          <v-card class="pa-4" outlined>
+          <v-card class="pa-4" min-width="600px" outlined>
             <v-row align="end" class="img_scroll">
               <v-col
                 cols="6"
@@ -65,7 +69,11 @@
               >
                 <v-list>
                   <v-list-item
-                    @click.stop="zoomFlag = true ;  fullPosition= { x: 0, y: 0 }"
+                    @click.stop="
+                      zoomFlag = true;
+                      fullPosition = { x: 0, y: 0 };
+                      fullScreenScale = 1;
+                    "
                   >
                     <v-list-item-title>
                       <v-icon color="blue">mdi-magnify-plus-outline</v-icon>
@@ -113,6 +121,7 @@
           <p>上传日期:{{ onCheck.date }}</p>
           <p>更新日期:{{ onCheck.modified }}</p>
           <p>描述：</p>
+
           <v-textarea
             filled
             id="img-describe"
@@ -182,7 +191,7 @@ export default {
     menuLocation: { x: 0, y: 0 },
     //上传进度开关
     uploadProgress: 0,
-    fullScreenScale: 50,
+    fullScreenScale: 1,
     fullPosition: { x: 0, y: 0 },
   }),
   methods: {
@@ -201,40 +210,35 @@ export default {
       this.onCheck = this.menuElement;
     },
     ImgWheel(e) {
-      const [originX, originY] = [e.clientX, e.clientY];
-      e.target.onmousemove = (event) => {
-        let [changeX, changeY] = [
-          event.clientX - originX,
-          event.clientY - originY,
-        ];
-        console.log(changeX, this.fullPosition.x);
-        console.log(changeY);
-        this.fullPosition.x = changeX;
-        this.fullPosition.y = changeY;
-      };
+      if (this.time && Date.now() - this.time < 16) return;
+      this.time = Date.now();
+      if (e.deltaY > 0)
+        this.fullScreenScale -= this.fullScreenScale - 0.2 > 0 ? 0.1 : 0;
+      else this.fullScreenScale += this.fullScreenScale + 0.2 < 3.0 ? 0.1 : 0;
     },
     moveCancel(e) {
       e.target.onmousemove = null;
     },
     dragImg(e) {
       let box = e.target;
+      let _this = this;
       let changeX;
       let changeY;
-      document.onmousedown = (e) => {
+      document.onmousedown = function (e) {
         let down = false;
         if (e.target === box) {
           down = true;
-          changeX = this.fullPosition.x - e.clientX;
-          changeY = this.fullPosition.y - e.clientY;
+          changeX = _this.fullPosition.x - e.clientX;
+          changeY = _this.fullPosition.y - e.clientY;
         }
-        document.onmousemove = (e) => {
+        document.onmousemove = function (e) {
           if (!down) return;
           if (this.time && Date.now() - this.time < 16) return;
           this.time = Date.now();
-          this.fullPosition.x = changeX + e.clientX;
-          this.fullPosition.y = changeY + e.clientY;
+          _this.fullPosition.x = changeX + e.clientX;
+          _this.fullPosition.y = changeY + e.clientY;
         };
-        document.onmouseup = () => {
+        document.onmouseup = function () {
           document.onmouseup = document.onmousemove = null;
         };
       };
@@ -278,11 +282,14 @@ export default {
           if (res.data.code == 10000) {
             this.imageList.push(res.data.data);
             this.$snackbar.success("图片上传成功");
+          } else {
+           throw new Error(res.data.message);
           }
         })
         .catch((e) => {
           this.$snackbar.error("图片上传失败,原因:" + e);
         });
+
     },
     onDrag(e) {
       e.stopPropagation();
