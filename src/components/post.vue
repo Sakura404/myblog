@@ -7,7 +7,7 @@
   >
     <v-img
       class="white--text align-end"
-      height="300"
+      height="400"
       :src="post.attachment ? post.attachment.url : $randomImg.cdnRandomImg()"
       min-width="100%"
       gradient="rgba(0,0,0,0.2),rgba(0,0,0,0.2)"
@@ -23,6 +23,7 @@
               threshold: [0, 0.8],
             },
           }"
+          style="line-height:40px"
         >
           {{ post.title }}
         </h1>
@@ -340,7 +341,7 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      if (scrollTop >= 300 - 56) {
+      if (scrollTop >= 400 - 56) {
         this.navStatu = "nav-fixed";
       } else {
         this.navStatu = "nav-absolute";
@@ -422,12 +423,12 @@ export default {
 }
 .nav-absolute {
   position: absolute;
-  top: 300px;
+  top: 450px;
   left: 80vw;
 }
 .nav-fixed {
   position: fixed;
-  top: 57px;
+  top: 107px;
   left: 80vw;
 }
 </style>
