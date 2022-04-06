@@ -3,6 +3,7 @@ package com.sakura.myblog.model.entity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @author Sakura
@@ -19,4 +20,13 @@ public class Media {
     private Date modified;
     private String excerpt;
     private String md5;
+
+    public Media() {
+        this.url = " https://cdn.jsdelivr.net/gh/Sakura404/myblog/src/assets/docsmall/" + (new Random().nextInt(15) + 1) + ".jpg";
+    }
+
+
+    public Media(String url) {
+        this.url = url;
+    }
 }

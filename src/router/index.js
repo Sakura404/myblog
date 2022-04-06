@@ -4,7 +4,7 @@ import work from '../components/working.vue'
 import adminpost from '../components/admin/admin-post.vue'
 import dashboard from '../components/dashboard.vue'
 import admin from '../components/admin/admin.vue'
-import home from '../views/home.vue'
+const home = () => import(/* webpackChunkName: "home" */ '../views/home');
 import editor from '../components/admin/editor.vue'
 import article from '../components/post.vue'
 import postlist from '../views/postlist.vue'

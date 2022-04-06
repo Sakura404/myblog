@@ -71,6 +71,17 @@
                 >
                   {{ term.name }}</v-chip
                 >
+                <v-chip @click="addTermFlag = true">
+                  <span v-if="!addTermFlag"> + </span>
+                  <v-row justify="end" v-else>
+                    <v-col
+                      ><v-text-field v-model="newTerm"></v-text-field
+                    ></v-col>
+                    <v-col cols="5" align-self="center">
+                      <v-btn small @click="addTerm(newTerm)">添加</v-btn></v-col
+                    >
+                  </v-row> </v-chip
+                >{{ addTermFlag }}
               </v-chip-group>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -155,6 +166,11 @@
   </v-form>
 </template>
 <script>
+import tinymce from "tinymce";
+import Vue from "vue";
+import VueTinymce from "@packy-tang/vue-tinymce";
+Vue.prototype.$tinymce = tinymce; // 将全局tinymce对象指向给Vue作用域下
+Vue.use(VueTinymce); // 安装vue的tinymce组件
 import Moment from "moment";
 import adminImage from "./admin-image.vue";
 export default {
@@ -213,6 +229,8 @@ export default {
     editorImgCheck: true,
     imageManager: false,
     terms: [],
+    newTerm: null,
+    addTermFlag: false,
     rules: {
       title: [(v) => !!v || "标题不能为空"],
       content: [(v) => !!v || "内容不能为空"],
@@ -314,6 +332,17 @@ export default {
       if (this.editorImgCheck) {
         this.addEditorImg(onCheck);
       } else this.addAttachment(onCheck);
+    },
+    addTerm(name) {
+      this.addTermFlag = false;
+      if (name && name.length <= 4) {
+        this.terms.push({ name: name, id: 65 });
+        this.addTermFlag = false;
+        this.newTerm = null;
+      } else {
+        if (!name) this.$snackbar.warning("标签名不能为空");
+        else this.$snackbar.warning("标签名不能大于4位");
+      }
     },
   },
   created() {

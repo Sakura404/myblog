@@ -30,12 +30,11 @@
     <div class="sweeperline" v-for="(y, i) of gamearr" :key="i">
       <span
         class="sweeperblock sweeperblock-hidden"
-        :style="blocksize"
         v-for="(x, n) of y"
         :key="n"
         @click.once="initGame(i, n)"
         @click="dig(i, n, 'center'), setAnimation(i, n), victory()"
-        ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
+        ><v-icon style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
         }}</v-icon
         >&nbsp;</span

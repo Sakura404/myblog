@@ -10,11 +10,11 @@
             <v-timeline-item v-for="(post, i) in term.children" :key="i" small>
               <v-row>
                 <v-col>
-                  <a class="underlink" :herf="`/post/${post.id}`">
+                  <a class="underlink" :href="`/post/${post.id}`">
                     {{ post.title }}
                   </a>
                 </v-col>
-                <v-col>
+                <v-col class="text-end">
                   {{ $Moment(post.date).format(`yyyy-MM-DD`) }}
                 </v-col>
               </v-row>

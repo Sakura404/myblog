@@ -40,7 +40,7 @@
       <v-divider class="mb-2"></v-divider>
       <v-row no-gutters class="pa-2">
         <v-col order="2" cols="12" order-lg="1" lg="9">
-          <v-card class="pa-4" min-width="600px" outlined>
+          <v-card class="pa-4" outlined>
             <v-row align="end" class="img_scroll">
               <v-col
                 cols="6"
@@ -50,6 +50,7 @@
               >
                 <v-card
                   @contextmenu="show($event, element)"
+                  @dblclick="show($event, element)"
                   @click="onCheck = element"
                 >
                   <v-img
@@ -283,13 +284,12 @@ export default {
             this.imageList.push(res.data.data);
             this.$snackbar.success("图片上传成功");
           } else {
-           throw new Error(res.data.message);
+            throw new Error(res.data.message);
           }
         })
         .catch((e) => {
           this.$snackbar.error("图片上传失败,原因:" + e);
         });
-
     },
     onDrag(e) {
       e.stopPropagation();
