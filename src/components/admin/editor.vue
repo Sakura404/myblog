@@ -65,23 +65,34 @@
               <v-chip-group multiple column v-model="form.terms">
                 <v-chip
                   filter
+                  close
+                  @click:close="deleteTerm(term)"
                   v-for="(term, index) in terms"
                   :key="index"
                   :value="term.id"
                 >
                   {{ term.name }}</v-chip
                 >
-                <v-chip @click="addTermFlag = true">
-                  <span v-if="!addTermFlag"> + </span>
-                  <v-row justify="end" v-else>
-                    <v-col
-                      ><v-text-field v-model="newTerm"></v-text-field
-                    ></v-col>
-                    <v-col cols="5" align-self="center">
-                      <v-btn small @click="addTerm(newTerm)">添加</v-btn></v-col
-                    >
-                  </v-row> </v-chip
-                >{{ addTermFlag }}
+                <v-chip @click="addTermFlag = true" v-if="!addTermFlag">
+                  +
+                </v-chip>
+                <v-chip v-else>
+                  <span class="term-form">
+                    <v-text-field v-model="newTerm"></v-text-field>
+                    <v-btn small icon @click="addTerm(newTerm)">添加</v-btn>
+                  </span>
+                </v-chip>
+                <v-dialog max-width="50vw" :value="deleteTermItem" absolute>
+                  <v-card>
+                    <v-card-title>警告</v-card-title>
+                    <v-card-text>确定要删除该标签么</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn @click="deleteTermCancel()" depressed>取消</v-btn>
+                      <v-btn @click="deleteTermSumbit()" depressed>确认</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </v-chip-group>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -231,6 +242,7 @@ export default {
     terms: [],
     newTerm: null,
     addTermFlag: false,
+    deleteTermItem: null,
     rules: {
       title: [(v) => !!v || "标题不能为空"],
       content: [(v) => !!v || "内容不能为空"],
@@ -344,10 +356,27 @@ export default {
         else this.$snackbar.warning("标签名不能大于4位");
       }
     },
+    deleteTerm(item) {
+      console.log(item.id);
+      this.deleteTermItem = item;
+    },
+    deleteTermSumbit() {
+      this.terms.splice(this.terms.indexOf(this.deleteTermItem), 1);
+        this.deleteTermItem = null;
+    },
+    deleteTermCancel() {
+      this.deleteTermItem = null;
+    },
   },
   created() {
     this.defaultImgUrl = this.$randomImg.cdnRandomImg();
     this.getterms();
+    this.$watch(
+      () => this.addTermFlag,
+      (name) => {
+        console.log(name);
+      }
+    );
     if (this.$route.params.id) {
       this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) {
@@ -375,4 +404,8 @@ export default {
 /* .dialog-overflow {
   overflow: hidden !important;
 } */
+.term-form {
+  display: flex;
+  align-items: center;
+}
 </style>
