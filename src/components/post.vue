@@ -320,7 +320,7 @@ export default {
     },
     tonavlist() {
       let list = new Array();
-      console.log("1");
+     // console.log("1");
       document.querySelectorAll(".mce-toc a").forEach((e) => {
         let text = e.innerText;
         let href = e.getAttribute("href");
@@ -357,7 +357,7 @@ export default {
       this.$http.get(`/api/comments/${this.$route.params.id}`).then((res) => {
         if (res.data.code == 10000) {
           this.comments = res.data.data;
-          console.log(res.data.data);
+         // console.log(res.data.data);
         }
       });
     },

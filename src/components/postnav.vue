@@ -10,11 +10,7 @@
           class="nav-item-active"
         ></li>
         <li
-          style="
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
           v-for="(item, index) in navlist"
           :key="index"
           class="d-block nav-li pa-2 mr-2"
@@ -94,6 +90,23 @@ export default {
     scrollTo(offsetTop) {
       document.documentElement.scrollTop = offsetTop;
     },
+    scrollThrottle(fn, delay) {
+      let lastTime = 0;
+      return function () {
+        let nowTime = new Date().getTime();
+        if (nowTime - lastTime > delay) {
+          fn.call(this);
+          lastTime = nowTime;
+        }
+      };
+    },
+    scrolldebounce(fn, delay) {
+      let timer = null;
+      return function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.call(this), delay);
+      };
+    },
     scrollFollow() {
       const scrollTop =
         document.documentElement.scrollTop ||
@@ -134,11 +147,14 @@ export default {
       this.navItemActiveHeight = s.offsetHeight;
       this.navItemHoverHeight = s.offsetHeight;
     }
-    window.addEventListener("scroll", this.scrollFollow);
+    window.addEventListener(
+      "scroll",
+      this.scrolldebounce(this.scrollFollow, 1600)
+    );
   },
   destroyed() {
     // 离开该页面需要移除这个监听的事件，不然会报错
-    window.removeEventListener("scroll", this.scrollFollow);
+    window.removeEventListener("scroll", this.scrolldebounce);
   },
 };
 </script>

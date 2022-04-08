@@ -15,6 +15,7 @@ import adminImage from '../components/admin/admin-image.vue'
 import timelines from '../views/timelines.vue'
 import archive from '../views/archive.vue'
 import about from '../views/about.vue'
+import axios from 'axios'
 Vue.use(VueRouter)
 
 const routes = [
@@ -115,10 +116,21 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆
         var token = getCookie('LOGIN_TOKEN');
-
         if (token) { // 查询本地存储信息是否已经登陆 
-            console.log(token)
-            next();
+            //  console.log(token)
+            axios.post('/api/users/isLogin/', token).then(res => {
+                if (res.data.code === 10000) {
+                    next()
+                } else throw new Error('未登录')
+            }).catch(err => {
+                console.log(err)
+                next({
+                    path: '/login', // 未登录则跳转至login页面
+                    query: {
+                        redirect: (to.fullPath)// 登陆成功后回到当前页面，这里传值给login页面，to.fullPath为当前点击的页面
+                    }
+                });
+            })
         } else {
             next({
                 path: '/login', // 未登录则跳转至login页面
@@ -140,4 +152,6 @@ function getCookie(cname) {
     }
     return "";
 }
+
+
 export default router

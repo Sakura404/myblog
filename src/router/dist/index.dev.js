@@ -37,6 +37,8 @@ var _archive = _interopRequireDefault(require("../views/archive.vue"));
 
 var _about = _interopRequireDefault(require("../views/about.vue"));
 
+var _axios = _interopRequireDefault(require("axios"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -150,8 +152,22 @@ router.beforeEach(function (to, from, next) {
 
     if (token) {
       // 查询本地存储信息是否已经登陆 
-      console.log(token);
-      next();
+      //  console.log(token)
+      _axios["default"].post('/api/users/isLogin/', token).then(function (res) {
+        if (res.data.code === 10000) {
+          next();
+        } else throw new Error('未登录');
+      })["catch"](function (err) {
+        console.log(err);
+        next({
+          path: '/login',
+          // 未登录则跳转至login页面
+          query: {
+            redirect: to.fullPath // 登陆成功后回到当前页面，这里传值给login页面，to.fullPath为当前点击的页面
+
+          }
+        });
+      });
     } else {
       next({
         path: '/login',

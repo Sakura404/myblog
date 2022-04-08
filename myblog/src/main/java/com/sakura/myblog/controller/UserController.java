@@ -26,6 +26,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO userLogin(@RequestBody User user, HttpServletResponse response) {
-        return ResponseUtil.success(userservice.userLogin(user,response));
+        return ResponseUtil.success(userservice.userLogin(user, response));
+    }
+
+    @RequestMapping(value = "/isLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO isLogin(@RequestBody String token) {
+        return ResponseUtil.success();
     }
 }

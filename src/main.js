@@ -17,6 +17,7 @@ Vue.prototype.$Moment = Moment
 Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
+
 new Vue({
     router,
     vuetify,
