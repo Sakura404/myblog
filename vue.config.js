@@ -31,7 +31,7 @@ module.exports = {
         if (!DEV) {
             config.plugin('compressionPlugin')
                 .use(new CompressionPlugin({
-                    filename: "[path][base].gz[query]",
+                    filename: "[path][base].gz",
                     algorithm: "gzip",
                     test: productionGzipExtensions,  //所有匹配此{RegExp}的资产都会被处理
                     threshold: 512,   // 只处理大于此大小的资产。以字节为单位

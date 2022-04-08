@@ -22,7 +22,7 @@ public class UserController {
     public void setUserService(UserService userService) {
         this.userservice = userService;
     }
-
+ 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO userLogin(@RequestBody User user, HttpServletResponse response) {

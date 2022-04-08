@@ -54,7 +54,9 @@ export default {
       this.navLastItem = e.currentTarget;
     },
     observer(dom) {
+      // if (!dom) return;
       let offsetTop = dom.offsetTop;
+
       document.querySelector(".nav-content").scrollTop = offsetTop - 50;
       this.navItemActiveTop = dom.offsetTop;
       this.navItemActiveHeight = dom.offsetHeight;
@@ -90,12 +92,13 @@ export default {
     scrollTo(offsetTop) {
       document.documentElement.scrollTop = offsetTop;
     },
-    scrollThrottle(fn, delay) {
+    scrollThrottle() {
       let lastTime = 0;
+      let fn = this.scrollFollow();
       return function () {
         let nowTime = new Date().getTime();
-        if (nowTime - lastTime > delay) {
-          fn.call(this);
+        fn.call(this);
+        if (nowTime - lastTime > 0) {
           lastTime = nowTime;
         }
       };
@@ -147,14 +150,12 @@ export default {
       this.navItemActiveHeight = s.offsetHeight;
       this.navItemHoverHeight = s.offsetHeight;
     }
-    window.addEventListener(
-      "scroll",
-      this.scrolldebounce(this.scrollFollow, 1600)
-    );
+    window.addEventListener("scroll", this.scrollThrottle);
   },
   destroyed() {
     // 离开该页面需要移除这个监听的事件，不然会报错
-    window.removeEventListener("scroll", this.scrolldebounce);
+    console.log("destroy");
+    window.removeEventListener("scroll", this.scrollThrottle);
   },
 };
 </script>
