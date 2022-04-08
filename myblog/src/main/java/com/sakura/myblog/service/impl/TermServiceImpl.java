@@ -43,6 +43,7 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Term addTerm(Term term) {
+        term.setStatus("public");
         int addFlag = termMapper.addTerm(term);
         if (addFlag != 1) {
             throw new BaseException("500", "添加失败");

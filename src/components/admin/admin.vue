@@ -1,24 +1,19 @@
 <template>
-  <div id="inspire"
-    class="serif">
+  <div id="inspire" class="serif">
     <v-main>
       <v-system-bar app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-spacer></v-spacer>
-        <v-icon>mdi-square</v-icon>
-
-        <v-icon>mdi-circle</v-icon>
-
-        <v-icon>mdi-triangle</v-icon>
+        <v-btn icon to="/"> <v-icon>mdi-square</v-icon></v-btn>
+        <v-btn icon to="/"> <v-icon>mdi-circle</v-icon></v-btn>
+        <v-btn icon to="/"> <v-icon>mdi-triangle</v-icon></v-btn>
       </v-system-bar>
 
-      <v-navigation-drawer v-model="drawer"
-        app>
-        <v-sheet color="grey lighten-4"
-          class="pa-4">
-          <v-avatar class="mb-4"
-            color="grey darken-1"
-            size="64"><img src="../../assets/bg/1.jpg" /></v-avatar>
+      <v-navigation-drawer v-model="drawer" app>
+        <v-sheet color="grey lighten-4" class="pa-4">
+          <v-avatar class="mb-4" color="grey darken-1" size="64"
+            ><img src="../../assets/bg/1.jpg"
+          /></v-avatar>
 
           <div>博客管理</div>
         </v-sheet>
@@ -26,10 +21,12 @@
         <v-divider></v-divider>
 
         <v-list>
-          <v-list-item v-for="[icon, text, link] in links"
+          <v-list-item
+            v-for="[icon, text, link] in links"
             :to="link"
             :key="icon"
-            link>
+            link
+          >
             <v-list-item-icon>
               <v-icon>{{ icon }}</v-icon>
             </v-list-item-icon>
@@ -49,7 +46,6 @@
 </template>
 
 <script>
-
 export default {
   name: "navm",
   data: () => ({
@@ -65,6 +61,6 @@ export default {
       //["mdi-account-details", "媒体管理"],
       ["mdi-alert-octagon", "关于"],
     ],
-  })
+  }),
 };
 </script>

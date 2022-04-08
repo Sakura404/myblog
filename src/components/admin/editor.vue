@@ -47,17 +47,18 @@
             <v-expansion-panel-header>作者</v-expansion-panel-header>
             <v-divider></v-divider>
             <v-expansion-panel-content>
-              <v-overflow-btn
+              <v-combobox
                 editable
                 :rules="rules.author"
                 label="Author"
                 v-model="form.post.author"
                 :items="users"
                 class="mt-3"
-              ></v-overflow-btn>
+              ></v-combobox>
             </v-expansion-panel-content>
           </v-expansion-panel>
 
+          <!-- 标签 -->
           <v-expansion-panel>
             <v-expansion-panel-header>标签分类</v-expansion-panel-header>
             <v-divider></v-divider>
@@ -76,7 +77,7 @@
                 <v-chip @click="addTermFlag = true" v-if="!addTermFlag">
                   +
                 </v-chip>
-                <v-chip v-else>
+                <v-chip close @click:close="addTermFlag = false" v-else>
                   <span class="term-form">
                     <v-text-field v-model="newTerm"></v-text-field>
                     <v-btn small icon @click="addTerm(newTerm)">添加</v-btn>
@@ -96,6 +97,7 @@
               </v-chip-group>
             </v-expansion-panel-content>
           </v-expansion-panel>
+
           <v-expansion-panel>
             <v-expansion-panel-header>信息</v-expansion-panel-header>
             <v-divider></v-divider>
@@ -348,21 +350,36 @@ export default {
     addTerm(name) {
       this.addTermFlag = false;
       if (name && name.length <= 4) {
-        this.terms.push({ name: name, id: 65 });
-        this.addTermFlag = false;
-        this.newTerm = null;
+        this.$http
+          .post("/api/terms/", { name: name })
+          .then((res) => {
+            if (res.data.code == 10000) {
+              this.terms.push(res.data.data);
+              this.$snackbar.success("添加成功");
+              this.addTermFlag = false;
+              this.newTerm = null;
+            }
+          })
+          .catch(() => {
+            this.$snackbar.error("添加失败");
+          });
       } else {
         if (!name) this.$snackbar.warning("标签名不能为空");
         else this.$snackbar.warning("标签名不能大于4位");
       }
     },
     deleteTerm(item) {
-      console.log(item.id);
       this.deleteTermItem = item;
     },
     deleteTermSumbit() {
-      this.terms.splice(this.terms.indexOf(this.deleteTermItem), 1);
-        this.deleteTermItem = null;
+      this.$http
+        .delete(`/api/terms/${this.deleteTermItem.id}`)
+        .then((res) => {
+          if (res.data.code == 10000) {
+            this.terms.splice(this.terms.indexOf(this.deleteTermItem), 1);
+            this.deleteTermItem = null;
+          }
+        });
     },
     deleteTermCancel() {
       this.deleteTermItem = null;

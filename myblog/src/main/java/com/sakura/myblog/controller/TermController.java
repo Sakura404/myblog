@@ -28,9 +28,10 @@ public class TermController {
 
     @GetMapping(value = "/post/{id}")
     @ResponseBody
-    public  ResponseDTO findTermByPostId(@PathVariable int id) {
+    public ResponseDTO findTermByPostId(@PathVariable int id) {
         return ResponseUtil.success(termService.findTermByPostId(id));
     }
+
     @GetMapping(value = "/{id}")
     @ResponseBody
     public ResponseDTO findTerm(@PathVariable int id) {

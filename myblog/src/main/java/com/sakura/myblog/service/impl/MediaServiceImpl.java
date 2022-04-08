@@ -83,6 +83,11 @@ public class MediaServiceImpl implements MediaService {
         String filePath = "";
         String fileUrl = "";
         String md5 = null;
+        String originalFilename = file.getOriginalFilename();
+        int lastIndexOf = originalFilename.lastIndexOf(".");
+        //获取文件的后缀名 .jpg
+        String suffix = originalFilename.substring(lastIndexOf);
+
         try {
             md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
         } catch (IOException e) {
@@ -99,9 +104,11 @@ public class MediaServiceImpl implements MediaService {
         long time = System.currentTimeMillis();
         filePath = new StringBuilder(fileSavePath)
                 .append(time)
+                .append(suffix)
                 .toString();
         fileUrl = new StringBuilder(fileSaveUrl)
                 .append(time)
+                .append(suffix)
                 .toString();
         Media media = new Media();
         media.setPath(filePath);
