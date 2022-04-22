@@ -23,7 +23,8 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        if (!"/api/users/login".equals(((HttpServletRequest) servletRequest).getRequestURI())) {
+        String url = ((HttpServletRequest) servletRequest).getRequestURI();
+        if (!"/api/users/login".equals(url) && !"/api/comments/".equals(url)) {
             if (!"GET".equals(((HttpServletRequest) servletRequest).getMethod())) {
                 Cookie cookie = getCookie(((HttpServletRequest) servletRequest), "LOGIN_TOKEN");
                 if (cookie == null) {

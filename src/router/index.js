@@ -1,104 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import work from '../components/working.vue'
-import adminpost from '../components/admin/admin-post.vue'
-import dashboard from '../components/dashboard.vue'
-import admin from '../components/admin/admin.vue'
-const home = () => import(/* webpackChunkName: "home" */ '../views/home');
-import editor from '../components/admin/editor.vue'
-import article from '../components/post.vue'
-import postlist from '../views/postlist.vue'
-import login from '../views/login.vue'
-import game from '../views/game.vue'
-import adminComment from '../components/admin/admin-comment.vue'
-import adminImage from '../components/admin/admin-image.vue'
-import timelines from '../views/timelines.vue'
-import archive from '../views/archive.vue'
-import about from '../views/about.vue'
 import axios from 'axios'
+import login from '../views/login.vue'
+import homePage from './homePage.js'
+import adminPage from './adminPage.js'
 Vue.use(VueRouter)
+const loginPage = {
+    path: '/login',
+    name: 'login',
+    component: login
+}
 
 const routes = [
-    {
-        path: '/admin',
-        component: admin,
-        meta: {
-            requireAuth: true
-        },
-        children: [{
-            path: 'dashboard',
-            name: 'dashboard',
-            component: dashboard
-        }, {
-            path: 'image',
-            name: 'adminImage',
-            component: adminImage
-        },
-        {
-            path: 'work',
-            name: 'work',
-            component: work
-        },
-        {
-            path: 'post',
-            name: 'adminpost',
-            component: adminpost
-        },
-        {
-            path: 'editor/:id',
-            name: 'editorwithid',
-            component: editor
-        },
-        {
-            path: 'editor',
-            name: 'editor',
-            component: editor
-        },
-        {
-            path: 'comment',
-            name: 'adminComment',
-            component: adminComment
-        },
-        {
-            path: '/',
-            redirect: 'post'
-        }]
-    }, {
-        path: '/login',
-        name: 'login',
-        component: login
-    }, {
-        path: '/',
-        component: home,
-        children: [{
-            path: '/',
-            name: 'home',
-            component: postlist,
-        }, {
-            path: '/post/:id',
-            name: 'post',
-            component: article
-        }, {
-            path: '/game',
-            name: 'game',
-            component: game
-        }, {
-            path: '/timelines',
-            name: 'timelines',
-            component: timelines
-        }, {
-            path: '/archive',
-            name: 'archive',
-            component: archive
-        }, {
-            path: '/about',
-            name: 'about',
-            component: about
-        }, {
-            path: '/*',
-            redirect: '/'
-        },]
-    }, {
+    adminPage, loginPage, homePage, {
         path: '/*',
         redirect: '/'
     }

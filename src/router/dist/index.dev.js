@@ -9,126 +9,24 @@ var _vue = _interopRequireDefault(require("vue"));
 
 var _vueRouter = _interopRequireDefault(require("vue-router"));
 
-var _working = _interopRequireDefault(require("../components/working.vue"));
-
-var _adminPost = _interopRequireDefault(require("../components/admin/admin-post.vue"));
-
-var _dashboard = _interopRequireDefault(require("../components/dashboard.vue"));
-
-var _admin = _interopRequireDefault(require("../components/admin/admin.vue"));
-
-var _editor = _interopRequireDefault(require("../components/admin/editor.vue"));
-
-var _post = _interopRequireDefault(require("../components/post.vue"));
-
-var _postlist = _interopRequireDefault(require("../views/postlist.vue"));
+var _axios = _interopRequireDefault(require("axios"));
 
 var _login = _interopRequireDefault(require("../views/login.vue"));
 
-var _game = _interopRequireDefault(require("../views/game.vue"));
+var _homePage = _interopRequireDefault(require("./homePage.js"));
 
-var _adminComment = _interopRequireDefault(require("../components/admin/admin-comment.vue"));
-
-var _adminImage = _interopRequireDefault(require("../components/admin/admin-image.vue"));
-
-var _timelines = _interopRequireDefault(require("../views/timelines.vue"));
-
-var _archive = _interopRequireDefault(require("../views/archive.vue"));
-
-var _about = _interopRequireDefault(require("../views/about.vue"));
-
-var _axios = _interopRequireDefault(require("axios"));
+var _adminPage = _interopRequireDefault(require("./adminPage.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-var home = function home() {
-  return Promise.resolve().then(function () {
-    return _interopRequireWildcard(require('../views/home'));
-  });
-};
-
 _vue["default"].use(_vueRouter["default"]);
 
-var routes = [{
-  path: '/admin',
-  component: _admin["default"],
-  meta: {
-    requireAuth: true
-  },
-  children: [{
-    path: 'dashboard',
-    name: 'dashboard',
-    component: _dashboard["default"]
-  }, {
-    path: 'image',
-    name: 'adminImage',
-    component: _adminImage["default"]
-  }, {
-    path: 'work',
-    name: 'work',
-    component: _working["default"]
-  }, {
-    path: 'post',
-    name: 'adminpost',
-    component: _adminPost["default"]
-  }, {
-    path: 'editor/:id',
-    name: 'editorwithid',
-    component: _editor["default"]
-  }, {
-    path: 'editor',
-    name: 'editor',
-    component: _editor["default"]
-  }, {
-    path: 'comment',
-    name: 'adminComment',
-    component: _adminComment["default"]
-  }, {
-    path: '/',
-    redirect: 'post'
-  }]
-}, {
+var loginPage = {
   path: '/login',
   name: 'login',
   component: _login["default"]
-}, {
-  path: '/',
-  component: home,
-  children: [{
-    path: '/',
-    name: 'home',
-    component: _postlist["default"]
-  }, {
-    path: '/post/:id',
-    name: 'post',
-    component: _post["default"]
-  }, {
-    path: '/game',
-    name: 'game',
-    component: _game["default"]
-  }, {
-    path: '/timelines',
-    name: 'timelines',
-    component: _timelines["default"]
-  }, {
-    path: '/archive',
-    name: 'archive',
-    component: _archive["default"]
-  }, {
-    path: '/about',
-    name: 'about',
-    component: _about["default"]
-  }, {
-    path: '/*',
-    redirect: '/'
-  }]
-}, {
+};
+var routes = [_adminPage["default"], loginPage, _homePage["default"], {
   path: '/*',
   redirect: '/'
 }];

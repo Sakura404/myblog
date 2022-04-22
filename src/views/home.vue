@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer clipped temporary v-model="drawer" app>
-      <v-sheet color="grey" class="white--text pa-2">
+      <v-sheet class="sheet-linear white--text pa-2">
         <v-card-title></v-card-title>
         <v-avatar class="mb-4" color="grey darken-1" size="64"
           ><img src="../assets/mk.jpg"
@@ -212,5 +212,18 @@ code {
   100% {
     transform: translateX(-100vw);
   }
+}
+.sheet-linear {
+  background: #ef32d9; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    rgb(239, 50, 217),
+    rgb(137, 255, 253)
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgb(239, 50, 217),
+    rgb(137, 255, 253)
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>
