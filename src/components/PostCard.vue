@@ -1,5 +1,11 @@
 <template>
-  <v-card hover class="scaleImg my-6" :dark=dark :color="color">
+  <v-card
+    hover
+    class="scaleImg my-6"
+    :dark="dark"
+    :light="!dark"
+    :color="color"
+  >
     <div v-if="type == 'post'">
       <v-img
         class="white--text align-end"

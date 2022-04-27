@@ -18,13 +18,13 @@ import java.util.List;
 @Service
 public class MediaServiceImpl implements MediaService {
 
-    MediaMapper mediaMapper;
+
     @Value("${file.upload.path}")
     private String fileSavePath;
 
     @Value("${file.coming.path}")
     private String fileSaveUrl;
-
+    MediaMapper mediaMapper;
     @Autowired
     public void setMediaMapper(MediaMapper mediaMapper) {
         this.mediaMapper = mediaMapper;

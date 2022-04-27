@@ -58,7 +58,7 @@
             </v-row>
           </v-card-actions>
         </v-card> -->
-        <v-card color="#bb6688"  hover class="my-6">
+        <v-card color="#bb6688" hover class="my-6">
           <v-card-title>短句</v-card-title>
           <v-card-subtitle>{{ this.$Moment().fromNow() }}</v-card-subtitle>
           <v-card-text>
@@ -69,16 +69,19 @@
           </v-card-text>
         </v-card>
         <post-card
-          v-for="post in postList"
-          :key="post.id"
-          type="post"
-          :id="post.id"
-          :attachment="post.attachment"
-          :author="post.author"
-          :date="post.date"
-          :excerpt="post.excerpt"
-          :termList="post.termList"
-          :title="post.title"
+          v-for="(item, index) in showAllList"
+          :key="index"
+          :type="item.type"
+          :id="item.id"
+          :attachment="item.attachment"
+          :author="item.author"
+          :date="item.date"
+          :color="item.color"
+          :content="item.content"
+          :dark="item.dark"
+          :excerpt="item.excerpt"
+          :termList="item.termList"
+          :title="item.title"
           @getPostByTermId="getPostByTermId"
         ></post-card>
         <slot name="foot"></slot>
@@ -105,10 +108,27 @@ import PostCard from "../components/PostCard.vue";
 export default {
   components: { PostCard },
   data: () => ({
-    postList: null,
-    termBtn: true,
+    postList: [],
+    phraseList: [],
+    termBtn: false,
   }),
-  computed: {},
+  computed: {
+    showAllList() {
+      let postList = this.postList.map((v) => {
+        v.type = "post";
+        return v;
+      });
+      let phraseList = this.termBtn
+        ? []
+        : this.phraseList.map((v) => {
+            v.type = "phrase";
+            return v;
+          });
+      return [...postList, ...phraseList].sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+    },
+  },
   methods: {
     randomImg() {
       return require(`../assets/bg/${Math.floor(Math.random() * 16) + 1}.jpg`);
@@ -139,7 +159,19 @@ export default {
           }
         })
         .catch((err) => {
-          console.error(err);
+          this.$snackbar.error(err);
+        });
+    },
+    getPhrase() {
+      this.$http
+        .get("/api/phrases/")
+        .then((res) => {
+          if (res.data.code == 10000) {
+            this.phraseList = res.data.data;
+          }
+        })
+        .catch((err) => {
+          this.$snackbar.error(err);
         });
     },
     lagtime(dateTime) {
@@ -162,6 +194,7 @@ export default {
   },
   mounted() {
     this.getPosts();
+    this.getPhrase();
   },
 };
 </script>
