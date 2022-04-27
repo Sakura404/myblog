@@ -12,7 +12,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // const work = () => import(/* webpackChunkName: "admin" */ '../components/working.vue')
-var adminpost = function adminpost() {
+var adminPost = function adminPost() {
   return Promise.resolve().then(function () {
     return _interopRequireWildcard(require('../components/admin/admin-post.vue'));
   });
@@ -43,6 +43,12 @@ var adminImage = function adminImage() {
   });
 };
 
+var adminPhrase = function adminPhrase() {
+  return Promise.resolve().then(function () {
+    return _interopRequireWildcard(require('../components/admin/admin-phrase.vue'));
+  });
+};
+
 var adminPage = {
   path: '/admin',
   component: admin,
@@ -65,8 +71,12 @@ var adminPage = {
   // },
   {
     path: 'post',
-    name: 'adminpost',
-    component: adminpost
+    name: 'adminPost',
+    component: adminPost
+  }, {
+    path: 'phrase',
+    name: 'adminPhrase',
+    component: adminPhrase
   }, {
     path: 'editor/:id',
     name: 'editorwithid',
