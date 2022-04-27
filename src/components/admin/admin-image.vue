@@ -337,6 +337,7 @@ export default {
           res.data.data.forEach((e) => {
             this.imageList.push(e);
           });
+        this.onCheck = res.data.data[0];
       })
       .catch((err) => {
         console.log(err);

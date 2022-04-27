@@ -22,9 +22,13 @@ const router = new VueRouter({
     routes,
     mode: 'history',
     base: process.env.BASE_URL,
-    scrollBehavior() {
-        return { x: 0, y: 0 }
-    }
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { top: 0 }
+        }
+    },
 })
 
 router.beforeEach((to, from, next) => {

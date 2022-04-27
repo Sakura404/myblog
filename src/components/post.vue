@@ -378,7 +378,7 @@ export default {
   updated() {
     Prism.highlightAll();
   },
-  destroyed() {
+  beforeDestroy() {
     // 离开该页面需要移除这个监听的事件，不然会报错
     window.removeEventListener("scroll", this.handleScroll);
   },

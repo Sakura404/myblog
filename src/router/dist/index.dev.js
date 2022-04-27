@@ -34,11 +34,14 @@ var router = new _vueRouter["default"]({
   routes: routes,
   mode: 'history',
   base: process.env.BASE_URL,
-  scrollBehavior: function scrollBehavior() {
-    return {
-      x: 0,
-      y: 0
-    };
+  scrollBehavior: function scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return {
+        top: 0
+      };
+    }
   }
 });
 router.beforeEach(function (to, from, next) {

@@ -152,7 +152,7 @@ export default {
     }
     window.addEventListener("scroll", this.scrollThrottle);
   },
-  destroyed() {
+  beforeDestroy() {
     // 离开该页面需要移除这个监听的事件，不然会报错
     console.log("destroy");
     window.removeEventListener("scroll", this.scrollThrottle);
