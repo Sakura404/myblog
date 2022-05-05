@@ -9,8 +9,11 @@ var _vue = _interopRequireDefault(require("vue"));
 
 var _framework = _interopRequireDefault(require("vuetify/lib/framework"));
 
+require("@mdi/font/css/materialdesignicons.css");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+// Ensure you are using css-loader
 _vue["default"].use(_framework["default"]);
 
 var opts = {};

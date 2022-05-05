@@ -53,10 +53,20 @@
         <p>
           {{ content }}
         </p>
-        <p class="text-end font-weight-bold">—— {{ author }}</p>
+        <p class="text-end font-weight-bold">{{ author }}</p>
       </v-card-text>
     </div>
   </v-card>
+  <!-- <v-card color="#bb6688" hover class="my-6">
+    <v-card-title>短句</v-card-title>
+    <v-card-subtitle>{{ this.$Moment().fromNow() }}</v-card-subtitle>
+    <v-card-text>
+      <p>
+        你有信仰就年轻，疑惑就年老；有自信就年轻，畏惧就年老；有希望就年轻，绝望就年老；岁月使你皮肤起皱，但是失去了热忱，就损伤了灵魂。
+      </p>
+      <p class="text-end font-weight-bold">—— orga</p>
+    </v-card-text>
+  </v-card> -->
 </template>
 <script>
 export default {

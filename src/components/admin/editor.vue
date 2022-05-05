@@ -219,6 +219,7 @@ export default {
       plugins:
         " toc importcss hr code link code codesample autosave image media table lists fullscreen quickbars",
       language: "zh_CN", //本地化设置
+      convert_urls: false,
       content_css:
         "https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Noto+Serif+SC ",
       height: 700,
@@ -372,14 +373,12 @@ export default {
       this.deleteTermItem = item;
     },
     deleteTermSumbit() {
-      this.$http
-        .delete(`/api/terms/${this.deleteTermItem.id}`)
-        .then((res) => {
-          if (res.data.code == 10000) {
-            this.terms.splice(this.terms.indexOf(this.deleteTermItem), 1);
-            this.deleteTermItem = null;
-          }
-        });
+      this.$http.delete(`/api/terms/${this.deleteTermItem.id}`).then((res) => {
+        if (res.data.code == 10000) {
+          this.terms.splice(this.terms.indexOf(this.deleteTermItem), 1);
+          this.deleteTermItem = null;
+        }
+      });
     },
     deleteTermCancel() {
       this.deleteTermItem = null;
