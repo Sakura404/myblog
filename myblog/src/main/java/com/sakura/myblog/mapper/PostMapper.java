@@ -82,23 +82,28 @@ public interface PostMapper {
      *
      * @return
      */
-    @Select("SELECT\n" +
-            "\tmb_posts.post_id AS post_id,\n" +
-            "\tpost_title,\n" +
-            "\tpost_author,\n" +
-            "\tpost_date,\n" +
-            "\tpost_modified,\n" +
-            "\tpost_excerpt,\n" +
-            "\tCOUNT( mb_comments.post_id ) AS post_commentCount,\n" +
-            "\tpost_status,\n" +
-            "\tpost_attachment \n" +
-            "FROM\n" +
-            "\tmb_posts\n" +
-            "\tLEFT JOIN mb_comments ON mb_posts.post_id = mb_comments.post_id \n" +
-            "GROUP BY\n" +
-            "\tmb_posts.post_id \n" +
-            "ORDER BY\n" +
-            "\t`post_date` DESC")
+//    @Select("SELECT\n" +
+//            "\tmb_posts.post_id AS post_id,\n" +
+//            "\tpost_title,\n" +
+//            "\tpost_author,\n" +
+//            "\tpost_date,\n" +
+//            "\tpost_modified,\n" +
+//            "\tpost_excerpt,\n" +
+//            "\tCOUNT( mb_comments.post_id ) AS post_commentCount,\n" +
+//            "\tpost_status,\n" +
+//            "\tpost_attachment \n" +
+//            "FROM\n" +
+//            "\tmb_posts\n" +
+//            "\tLEFT JOIN mb_comments ON mb_posts.post_id = mb_comments.post_id \n" +
+//            "GROUP BY\n" +
+//            "\tmb_posts.post_id \n" +
+//            "ORDER BY\n" +
+//            "\t `post_date` DESC")
+    @Select("select  mb_posts.post_id as post_id,post_title,post_author,post_date,post_modified,post_excerpt," +
+            "COUNT(mb_comments.post_id) as post_commentCount, post_status,post_attachment " +
+            "from mb_posts left join mb_comments on mb_comments.post_id = mb_posts.post_id " +
+            "group by  mb_posts.post_id ,mb_posts.post_date " +
+            "order by mb_posts.post_date desc")
     @Results(id = "PostListMap", value = {
             @Result(column = "post_id", property = "id"),
             @Result(column = "post_title", property = "title"),

@@ -199,11 +199,13 @@ export default {
       this.$http
         .get("/api/phrases/")
         .then((res) => {
+          this.loading = false;
           if (res.data.code == "10000") this.desserts = res.data.data;
         })
         .catch((err) => {
           this.$snackbar.error(err.message);
         });
+      this.loading = true;
     },
     addPhrase() {
       this.$http

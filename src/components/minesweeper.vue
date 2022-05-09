@@ -1,40 +1,39 @@
 <template>
   <div v-resize="onResize" class="minesweeper text-center">
-    <v-dialog v-model="gameStar" max-width="600" hide-overlay>
+    <v-dialog persistent :value="gameState != false" max-width="600" >
       <v-card>
         <v-row align-content="center" no-gutters justify="center">
-          <v-col class="text-center text-h"> 游戏开始</v-col>
+          <v-col class="text-center text-h"> {{ gameState }}</v-col>
         </v-row>
+        <v-card-actions class="d-flex justify-space-around">
+          <v-btn
+            dark
+            class="flex-grow-1"
+            v-for="(grade, index) in gameGrade"
+            :color="grade.color"
+            :key="index"
+            @click="gradeSelect(grade)"
+            >{{ grade.name }}</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog
-      persistent
-      transition="dialog-top-transition"
-      v-model="gameVictory"
-      max-width="600 "
-    >
-      <v-card
-        @click="(gameVictory = false), (initflag = true), initWindow()"
-        class="Matte"
-      >
-        <v-row align-content="center" no-gutters justify="center">
-          <h2 style="user-select: none">游戏胜利</h2></v-row
-        >
-        <v-row justify="center" no-gutters>
-          <p style="user-select: none" class="mb-0 text-colorfull">
-            点击任意地方重新开始游戏
-          </p></v-row
-        >
-      </v-card>
-    </v-dialog>
+
     <div class="sweeperline" v-for="(y, i) of gamearr" :key="i">
       <span
         class="sweeperblock sweeperblock-hidden"
         :style="blocksize"
         v-for="(x, n) of y"
         :key="n"
-        @click.once="initGame(i, n)"
-        @click="dig(i, n, 'center'), setAnimation(i, n), victory()"
+        @click="
+          if (initflag) {
+            initGame(i, n);
+          }
+          dig(i, n, 'center');
+          setAnimation(i, n);
+          victory();
+          defeat(i, n);
+        "
         ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
         }}</v-icon
@@ -50,26 +49,44 @@ export default {
     Horizontal: 20,
     mineTotal: 40,
     gamearr: null,
-    gameStar: false,
-    gamewindow: null,
-    gameVictory: true,
+    gameState: "游戏开始",
+    gameStar: true,
+    gameWindow: window.innerWidth,
+    gameVictory: false,
+    gameDefeat: false,
+    gameGrade: [
+      { name: "初级", width: 8, height: 8, mine: 10, color: "green" },
+      { name: "中级", width: 16, height: 16, mine: 40, color: "blue" },
+      { name: "高级", width: 16, height: 30, mine: 99, color: "red" },
+    ],
     initflag: true,
   }),
   computed: {
     blocksize() {
       let width;
       let height;
-      width = (this.gamewindow - 120) / this.Horizontal;
+      let viewWidth = this.gameWindow;
+      if (viewWidth > 1264) width = 35 / this.Horizontal;
+      else width = 80 / this.Horizontal;
       height = width;
       if (width >= 0) {
         this.onResize();
       }
-      return `width:${width >= 0 ? width : 30}px;height: ${
-        height >= 0 ? height : 30
-      }px;`;
+      return `width:${width >= 0 ? width : 25}vw;height: ${
+        height >= 0 ? height : 25
+      }vw;`;
     },
   },
   methods: {
+    gradeSelect(grade) {
+      this.Vertical = grade.width;
+      this.Horizontal = grade.height;
+      this.mineTotal = grade.mine;
+      this.onResize();
+      this.initWindow();
+      this.gameState = false;
+      this.initflag = true;
+    },
     initWindow() {
       this.gamearr = new Array(this.Vertical);
       for (let i = 0; i < this.Vertical; i++) {
@@ -86,6 +103,7 @@ export default {
         if (!a.classList.contains("sweeperblock-hidden")) {
           a.classList.remove("sweeperblock-active");
           a.classList.add("sweeperblock-hidden");
+          a.style.setProperty("transition-delay", `0s`);
         }
     },
     initGame(row, col) {
@@ -125,7 +143,7 @@ export default {
           minelocations.push(t);
         }
 
-        console.log(minelocations);
+        //console.log(minelocations);
         let around = [-1, 0, 1];
         for (let i = 0; i < this.mineTotal; i++) {
           this.gamearr[minelocations[i][1]][minelocations[i][0]] = "mdi-mine";
@@ -206,8 +224,7 @@ export default {
         }
     },
     onResize() {
-      this.gamewindow =
-        document.getElementsByClassName("minesweeper")[0].offsetWidth;
+      this.gameWindow = window.innerWidth;
     },
     flagMark(e, row, col) {
       if (e.button == 2) {
@@ -217,13 +234,20 @@ export default {
         e.style.style.setProperty;
       }
     },
-    defeat() {},
+    defeat(y, x) {
+      let blockItem = this.gamearr[y][x];
+      let blockDom =
+        document.getElementsByClassName("sweeperline")[y].children[x];
+      blockDom.classList.remove("sweeperblock-hidden");
+      blockDom.classList.add("sweeperblock-active");
+      if (blockItem == "mdi-mine") this.gameState = "游戏结束";
+    },
     victory() {
       if (
         document.getElementsByClassName("sweeperblock-hidden").length ==
         this.mineTotal
       ) {
-        this.gameVictory = true;
+        this.gameState = "游戏胜利";
       }
     },
     // setAnimation(y, x) {
@@ -269,6 +293,7 @@ export default {
     this.initWindow();
     this.gamewindow =
       document.getElementsByClassName("minesweeper")[0].offsetWidth;
+    this.$nextTick(function () {});
     // document.getElementsByClassName("minesweeper")[0].oncontextmenu =
     //   function () {
     //     return false;

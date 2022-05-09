@@ -239,7 +239,9 @@ export default {
       name: [(v) => !!v || "名称不能为空"],
       email: [
         (v) => !!v || "邮箱不能为空",
-        (v) => /.+@.+/.test(v) || "邮箱格式不正确",
+        (v) =>
+          /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(v) ||
+          "邮箱格式不正确",
       ],
       content: [(v) => !!v || "内容不能为空"],
     },
@@ -279,7 +281,8 @@ export default {
         this.$http.post("/api/comments/", this.commentForm).then((res) => {
           if (res.data.code == 10000) {
             this.getComments();
-            this.$snacbar.success("评论成功");
+            this.$refs.comment.reset();
+            this.$snackbar.success("评论成功");
           }
         });
       }
@@ -291,10 +294,17 @@ export default {
       document.getElementById("comment_top").scrollIntoView();
     },
     getPost() {
-      this.$http.get(`/api/posts/${this.$route.params.id}`).then((res) => {
-        if (res.data.code == 10000) this.post = res.data.data;
-        this.$nextTick(this.tonavlist);
-      });
+      this.$http
+        .get(`/api/posts/${this.$route.params.id}`)
+        .then((res) => {
+          if (res.data.code == 10000) this.post = res.data.data;
+          else return Promise.reject("文章不存在");
+          this.$nextTick(this.tonavlist);
+        })
+        .catch((err) => {
+          this.$router.push("./");
+          console.log(err);
+        });
     },
     imgHoverIn() {},
     getPostguide() {
