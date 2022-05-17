@@ -37,7 +37,7 @@
         ><v-icon :style="blocksize" style="height: 40px; width: 40px">{{
           x ? x : "&nbsp;"
         }}</v-icon
-        >&nbsp;</span
+        ></span
       >
     </div>
   </div>
@@ -79,8 +79,8 @@ export default {
   },
   methods: {
     gradeSelect(grade) {
-      this.Vertical = grade.width;
-      this.Horizontal = grade.height;
+      this.Vertical = grade.height;
+      this.Horizontal = grade.width;
       this.mineTotal = grade.mine;
       this.onResize();
       this.initWindow();
@@ -314,7 +314,7 @@ export default {
 .sweeperblock i {
   transition-duration: 0.3s;
 }
-.sweeperblock-flag i{
+.sweeperblock-flag i {
   visibility: visible;
 }
 .sweeperblock-hidden i {

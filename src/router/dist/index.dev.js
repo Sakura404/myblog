@@ -54,10 +54,10 @@ router.beforeEach(function (to, from, next) {
     if (token) {
       // 查询本地存储信息是否已经登陆 
       //  console.log(token)
-      _axios["default"].post('/api/users/isLogin/', token).then(function (res) {
+      _axios["default"].post('/api/users/isLogin/', token).then(function (res, resolve, reject) {
         if (res.data.code === 10000) {
           next();
-        } else throw new Error('未登录');
+        } else reject('未登录');
       })["catch"](function (err) {
         console.log(err);
         next({
