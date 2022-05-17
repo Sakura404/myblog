@@ -17,7 +17,7 @@ public interface CommentService {
 
     Comment addComment(Map<String, Object> comment);
 
-    void deleteComment(int id);
+    boolean deleteComment(int id);
 
     Comment updateComment(int id, Comment comment);
 }

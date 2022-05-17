@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserMapper userMapper;
 
-//    @Cacheable(key = "#postId")
+    //    @Cacheable(key = "#postId")
     @Override
     public List<Comment> getComments(int postId) {
         List<Comment> commentList = commentMapper.findCommentsByPostId(postId);
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
                 throw new BaseException("500", "添加失败");
             }
         }
-       // System.out.println(user);
+        // System.out.println(user);
         Comment comment = new Comment();
         comment.setContent(commentVO.get("content").toString());
         comment.setUser(user);
@@ -90,8 +90,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id) {
-
+    public boolean deleteComment(int id) {
+        if (commentMapper.deleteComment(id) == 1)
+            return true;
+        else {
+            return false;
+        }
     }
 
     @Override

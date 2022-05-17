@@ -6,8 +6,8 @@
         <v-card-text>确定要删除该评论么</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="delectcancel()" depressed>取消</v-btn>
-          <v-btn @click="delectsumbit()" depressed>确认</v-btn>
+          <v-btn @click="deleteCancel()" depressed>取消</v-btn>
+          <v-btn @click="deleteSumbit()" depressed>确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -23,31 +23,16 @@
             <v-toolbar-title>评论管理</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-icon @click="updata()">mdi-refresh</v-icon>
+            <!-- <v-icon @click="updata()">mdi-refresh</v-icon> -->
           </v-toolbar>
         </template>
+        <template v-slot:[`item.postId`]="{ item }">
+          <a :href="`./editor/${item.postId}`">{{ item.postId }}</a>
+        </template>
         <template v-slot:[`item.opreation`]="{ item }">
-          <v-btn icon :to="`editor/${item.id}`">
-            <v-icon>mdi-pencil-outline</v-icon>
-          </v-btn>
-          <v-btn icon @click="delect(item)">
+          <v-btn icon @click="deleteComment(item)">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
-        </template>
-        <template v-slot:[`item.status`]="{ item }">
-          <v-menu offset-y bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn depressed v-on="on" v-bind="attrs">{{
-                item.status
-              }}</v-btn>
-            </template>
-            <!-- <v-list dense>
-              <v-list-item v-for="(status, key) in otherstate(item.status)"
-                @click="changestate(item, status)"
-                :key="key"
-                class="text-center">{{ status }}</v-list-item>
-            </v-list> -->
-          </v-menu>
         </template>
       </v-data-table>
     </v-card>
@@ -68,9 +53,10 @@ export default {
       headers: [
         { text: "评论编号", value: "id" },
         { text: "文章编号", value: "postId" },
-        { text: "作者", value: "author" },
+        { text: "评论内容", value: "content" },
+        { text: "评论者", value: "user.name" },
+        { text: "邮箱", value: "user.email" },
         { text: "发表时间", value: "date", align: "center" },
-        { text: "状态", value: "status", align: "center" },
         { text: "操作", value: "opreation", align: "center", sortable: false },
       ],
       desserts: [],
@@ -86,18 +72,32 @@ export default {
         return this.allstate;
       }
     },
-    changestate(item, status) {
+    changeState(item, status) {
       this.changeitem = this.desserts.indexOf(item);
       this.desserts[this.changeitem].status = status;
       //发送改变状态请求到后端
       //this.updata()
       this.changeitem = null;
     },
-    deletecancel() {
+    deleteCancel() {
       this.dialogdelete = false;
       this.deleteitem = null;
     },
-    deletePost(item) {
+    deleteSumbit() {
+      this.dialogdelete = false;
+      this.$http
+        .delete(`/api/comments/${this.desserts[this.deleteitem].id}`)
+        .then((res, resolve, reject) => {
+          if (res.data.code == 10000) {
+            this.$snackbar.success("删除成功");
+            this.desserts.splice(this.deleteitem, 1);
+          } else reject();
+        })
+        .catch(() => {
+          this.$snackbar.error("删除失败");
+        });
+    },
+    deleteComment(item) {
       this.deleteitem = this.desserts.indexOf(item);
       this.dialogdelete = true;
     },

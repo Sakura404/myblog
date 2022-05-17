@@ -36,12 +36,15 @@ public interface CommentMapper {
     @Insert(value = "insert into mb_comments (post_id,reply_id,user_id,comment_content,comment_status,comment_date) values (#{postId},#{reply.id},#{user.id},#{content},#{status},#{date})")
     int addComment(Comment comment);
 
+    @Delete("delete from mb_comments where comment_id=#{id}")
+    int deleteComment(int id);
+
     @Select(value = "select comment_id,post_id,reply_id,user_id,comment_content,comment_status,comment_date " +
             "from mb_comments")
     @ResultMap(value = "commentMap")
     List<Comment> getComments();
 
 
-    @Select(value = "select count(*) from mb_comments where post_id=#{id}")
+    @Select(value = "select  count(*) from mb_comments where post_id=#{id}")
     int getCommentCountByPostId(int id);
 }

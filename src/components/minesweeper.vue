@@ -1,6 +1,6 @@
 <template>
   <div v-resize="onResize" class="minesweeper text-center">
-    <v-dialog persistent :value="gameState != false" max-width="600" >
+    <v-dialog persistent :value="gameState != false" max-width="600">
       <v-card>
         <v-row align-content="center" no-gutters justify="center">
           <v-col class="text-center text-h"> {{ gameState }}</v-col>
@@ -313,6 +313,9 @@ export default {
 }
 .sweeperblock i {
   transition-duration: 0.3s;
+}
+.sweeperblock-flag i{
+  visibility: visible;
 }
 .sweeperblock-hidden i {
   color: rgba(1, 1, 1, 0);

@@ -39,4 +39,15 @@ public class CommentController {
     public ResponseDTO getComments() {
         return ResponseUtil.success(commentService.getComments());
     }
+
+    @RequestMapping(value = "/{id}",method= RequestMethod.DELETE, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO deleteComment(@PathVariable int id) {
+        if (commentService.deleteComment(id)) {
+            return ResponseUtil.success();
+        } else {
+            return ResponseUtil.error(-430, "删除失败");
+        }
+    }
 }
+

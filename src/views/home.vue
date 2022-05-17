@@ -44,10 +44,10 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
       <v-app-bar-title>散の華</v-app-bar-title>
       <v-spacer></v-spacer>
-
+      <!-- 
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <v-menu offset-y fixed bottom>
         <template v-slot:activator="{ on, attrs }">

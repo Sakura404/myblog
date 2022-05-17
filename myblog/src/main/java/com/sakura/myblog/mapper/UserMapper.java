@@ -12,7 +12,7 @@ public interface UserMapper {
     @Insert("Insert into mb_users (user_account,user_password,user_name,user_created,user_modified,user_status,user_email) values (#{account},#{password},#{name},#{created},#{modified},#{status},#{email} )")
     public int addUser(User user);
 
-    @Select("Select user_id, user_account,user_password,user_name,user_created,user_modified,user_status from mb_users  where user_account = #{account}")
+    @Select("Select user_id, user_account,user_password,user_name,user_created,user_modified,user_status,user_email from mb_users  where user_account = #{account}")
     @Results(id = "UserMap", value = {
             @Result(column = "user_id", property = "id"),
             @Result(column = "user_account", property = "account"),
@@ -26,11 +26,11 @@ public interface UserMapper {
     public User findUserByAccount(String account);
 
     @ResultMap(value = "UserMap")
-    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status from mb_users where user_email = #{email}")
+    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status,user_email from mb_users where user_email = #{email}")
     public User findUserByEmail(String email);
 
     @ResultMap(value = "UserMap")
-    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status from mb_users where user_id = #{id}")
+    @Select("Select user_id,user_account,user_name,user_created,user_modified,user_status,user_email from mb_users where user_id = #{id}")
     public User findUserById(int id);
 }
 
