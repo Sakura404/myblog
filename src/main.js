@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import vuetify from './plugins/vuetify'
+import vuetify from './plugins/vuetify.js'
 import router from './router/index.js'
 import './styles.scss'
 import axios from 'axios'
@@ -16,9 +16,8 @@ Prism.highlightAll();
 Vue.prototype.$randomImg = randomImg
 Vue.prototype.$Moment = Moment
 Vue.use(VueAxios, axios)
-
 Vue.config.productionTip = false
-
+Vue.use(vuetify);
 new Vue({
     router,
     vuetify,

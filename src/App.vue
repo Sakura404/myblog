@@ -1,6 +1,5 @@
 <template>
-  <v-app 
-    class="serif chinese-font">
+  <v-app class="serif chinese-font">
     <div id="blogSncakbar">
       <!-- <v-snackbar app
         color="success"
@@ -15,6 +14,8 @@
 <script>
 import snackbar from "./plugins/snackbar/snackbar.js";
 import Vue from "vue";
+import Vuetify from "./plugins/vuetify";
+
 export default {
   name: "App",
   data: () => ({
@@ -22,6 +23,7 @@ export default {
   }),
   mounted() {
     Vue.use(snackbar);
+    Vue.use(Vuetify);
   },
 };
 </script>

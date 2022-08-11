@@ -13956,7 +13956,7 @@
                   if (u)
                     return u(i, !0);
                   var a = new Error('Cannot find module \'' + i + '\'');
-                  throw a.code = 'MODULE_NOT_FOUND', a;
+                  throw (a.code = 'MODULE_NOT_FOUND', a);
                 }
                 var p = n[i] = { exports: {} };
                 e[i][0].call(p.exports, function (r) {
